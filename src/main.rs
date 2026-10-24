@@ -22,6 +22,35 @@ use std::time::Instant;
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = env::args().collect();
 
+    if let Some(command) = args.get(1).map(String::as_str) {
+        match command {
+            "--fabric-build" => {
+                let dir = args.get(2).map(String::as_str).unwrap_or("evidence/fabric");
+                hebc::fabric::write(std::path::Path::new(dir))?;
+                hebc::fabric::verify(std::path::Path::new(dir))?;
+                println!("FABRIC|result=PASS|source_pins={}|out={dir}|models_materialized=0|json=0", hebc::fabric::SOURCES.len());
+                return Ok(());
+            }
+            "--fabric-verify" => {
+                let dir = args.get(2).map(String::as_str).unwrap_or("evidence/fabric");
+                hebc::fabric::verify(std::path::Path::new(dir))?;
+                println!("FABRICVERIFY|result=PASS|source_pins={}|json=0", hebc::fabric::SOURCES.len());
+                return Ok(());
+            }
+            "--fabric-catalog" => {
+                print!("{}", hebc::fabric::catalog());
+                return Ok(());
+            }
+            "--vowel-shape" => {
+                let letter = args.get(2).and_then(|x| x.chars().next()).ok_or("usage: --vowel-shape A|O|I|E")?;
+                let body = hebc::fabric::vowel_shape(letter).ok_or("supported vowel shapes: A O I E")?;
+                print!("{body}");
+                return Ok(());
+            }
+            _ => {}
+        }
+    }
+
     let mut run_243 = true;
     let mut write_dashboard = false;
     let mut expected_source_sha: Option<String> = None;
