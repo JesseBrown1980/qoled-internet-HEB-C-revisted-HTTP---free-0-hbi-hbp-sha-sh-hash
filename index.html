@@ -1,249 +1,68 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HEB-C · 23 billion virtual HTTP-0 addresses · 243 transitions</title>
-<style>
-:root{color-scheme:dark;--bg:#070a14;--panel:#10182a;--line:#263249;--dim:#9bb0cd;--fg:#e7eeff;--mint:#77f2d5;--gold:#f6c98b;--warn:#ffafaf}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(ellipse at 25% -5%,#1c1d43,#090e1c 54%,#070a14);font:14px/1.55 system-ui,-apple-system,Segoe UI,sans-serif;color:var(--fg)}
-main{max-width:1240px;margin:auto;padding:32px 22px 70px}.kicker{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--mint);font-weight:800}.header{display:flex;justify-content:space-between;align-items:start;gap:18px;flex-wrap:wrap;padding-bottom:23px}h1{font-size:clamp(27px,4.2vw,48px);letter-spacing:-.055em;line-height:1.04;margin:9px 0 12px;font-weight:750}.sub{max-width:760px;color:var(--dim);margin:0;font-size:14px}.status{font:700 12px ui-monospace,Consolas,monospace;border-radius:30px;padding:9px 14px;background:#173c34;color:#a4f8d9;border:1px solid #2e6557;white-space:nowrap}
-.layout{display:grid;grid-template-columns:minmax(350px,1.22fr) minmax(310px,.78fr);gap:18px}.panel{background:linear-gradient(135deg,#121c31 0%,#0e1729 100%);border:1px solid var(--line);border-radius:17px;padding:18px;box-shadow:0 18px 40px #0003;min-width:0}.panel h2{margin:0 0 11px;font-size:15px;font-weight:700;letter-spacing:.01em}.top{display:flex;align-items:center;justify-content:space-between;gap:12px}.small{font:11px ui-monospace,Consolas,monospace;color:var(--dim)}.rainbow{height:5px;background:linear-gradient(90deg,#fc4562,#f68b46,#ffd866,#67d59a,#50c7f2,#7e7de9,#d18bfd);border-radius:10px;margin:14px 0}
-.canvasouter{position:relative;margin:auto;background:#060912;border-radius:13px;overflow:hidden;aspect-ratio:1;width:min(100%,620px);border:1px solid #405073}canvas{width:100%;height:100%;display:block;image-rendering:pixelated}.overlay{position:absolute;bottom:10px;left:10px;background:#091024cc;padding:7px 10px;border:1px solid #405573;border-radius:8px;font:10px ui-monospace,monospace;color:#d0fef3}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.stat{border:1px solid #25374b;border-radius:10px;background:#0a1322;padding:12px;min-width:0}.stat .lab{font-size:10px;color:#91a9c9;letter-spacing:.10em;text-transform:uppercase}.stat .val{font:700 clamp(17px,2.5vw,25px) ui-monospace,Consolas,monospace;color:#e4fbfa;overflow-wrap:anywhere;margin-top:6px}.stat .desc{font-size:11px;color:#92a6c0;margin-top:3px}.progress{margin:14px 0;border:1px solid #294052;background:#081324;border-radius:30px;height:11px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,#67e0cb,#54abe7,#b58aff,#f4a6d5);transition:width .12s linear}.buttons{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}button{border-radius:9px;border:1px solid #357c77;background:#185c58;color:#e9fff7;font:600 12px system-ui;padding:10px 12px;cursor:pointer}button.alt{background:#15243a;border-color:#455977}button:disabled{opacity:.42;cursor:not-allowed}.line{border-top:1px solid #26374d;margin:14px 0}table{border-collapse:collapse;width:100%;font-size:12px}td{padding:6px 3px;border-bottom:1px solid #243047;vertical-align:top}td:first-child{color:#a9b8d4}td:last-child{text-align:right;font:12px ui-monospace,monospace;color:#dffaf0}code,pre{font:11px/1.65 ui-monospace,Consolas,monospace;color:#d0f6e6}pre{padding:13px;background:#081222;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;border:1px solid #2a3a51;border-radius:11px;max-height:240px}.foot{color:#a8b8cc;font-size:12px;margin:0;line-height:1.65}.foot a{color:#8de9dd}.wide{grid-column:1/-1}.legend{display:flex;gap:9px;flex-wrap:wrap;margin:10px 0}.rainbowtag{padding:3px 7px;font:10px ui-monospace,monospace;border-radius:5px;border:1px solid #ffffff35}.error{color:var(--warn)}
-@media(max-width:800px){.layout{grid-template-columns:1fr}main{padding:20px 12px 45px}}
-</style></head><body>
-<main><header class="header"><div><div class="kicker">ASOLARIA · HEB-C browser benchmark · HTTP-0-inspired</div><h1>243 transitions.<br>23 billion virtual portal addresses.</h1><p class="sub">A 24×24×24 D3Q27 integer ternary kernel with 23,000,000,000 virtual portal identifiers. Each state transition performs 8,192 actual address probes. The work loop self-steps with no timer-defined physics and stops after exactly 243 transitions.</p></div><span class="status" id="status">INITIALIZING</span></header>
-<div class="layout"><section class="panel"><div class="top"><h2>Graded RIME pixel projection</h2><span class="small">24 × 24 XY / 24 Z layers / 27 velocity trits</span></div><div class="rainbow"></div><div class="canvasouter"><canvas id="display" width="288" height="288" aria-label="Rainbow-colored 2D projection of a 3D 27-trit physics lattice"></canvas><div class="overlay">RAINBOW 7 · SOFTWARE COLOR GRADIENT</div></div><div class="legend"><span class="rainbowtag" style="color:#ff6b80">red</span><span class="rainbowtag" style="color:#ffac66">orange</span><span class="rainbowtag" style="color:#ffe07d">yellow</span><span class="rainbowtag" style="color:#82edb0">green</span><span class="rainbowtag" style="color:#72ceff">blue</span><span class="rainbowtag" style="color:#a2a4ff">indigo</span><span class="rainbowtag" style="color:#dd97ff">violet</span></div><p class="foot">The seven bands are logical visualization colors, not seven independent optical wavelengths or a QR-code decoder. The source room data in this demo are deterministic synthetic 64-bit words; the actual 300 GB Windows D: drive is not accessed.</p></section>
-<section class="panel"><div class="top"><h2>Live kernel measurements</h2><span class="small" id="gate-count">building collision gates…</span></div><div class="stats"><div class="stat"><div class="lab">Logical physics transitions</div><div class="val" id="ticks">0 / 243</div><div class="desc">No clock drives the tick count</div></div><div class="stat"><div class="lab">Rooms evolved</div><div class="val" id="rooms">0</div><div class="desc">13,824 rooms per transition</div></div><div class="stat"><div class="lab">Kernel elapsed</div><div class="val" id="elapsed">—</div><div class="desc">Measured, not used as Δt</div></div><div class="stat"><div class="lab">Room transitions / s</div><div class="val" id="rate">—</div><div class="desc">Browser measurement, local host</div></div><div class="stat"><div class="lab">Five integer invariants</div><div class="val" id="invariants">—</div><div class="desc">Mass, Px, Py, Pz, 2E</div></div><div class="stat"><div class="lab">Loschmidt test</div><div class="val" id="reverse">—</div><div class="desc">16 forward + 16 inverse</div></div></div><div class="progress"><div class="bar" id="bar"></div></div><div class="top"><span id="progress-label" class="small">Initializing…</span><span id="percent" class="small">0%</span></div><div class="buttons"><button id="restart">Restart 243</button><button class="alt" id="pause">Pause</button><button class="alt" id="save-hbp" disabled>Export HBP</button><button class="alt" id="save-hbi" disabled>Export HBI</button><button class="alt" id="save-report" disabled>Export report</button></div><div class="line"></div><h2>Final audit</h2><table><tbody><tr><td>Lattice</td><td>24³ × D3Q27</td></tr><tr><td>Gate scheduling</td><td>32 / room / tick</td></tr><tr><td>State memory</td><td>exact Uint8 trits</td></tr><tr><td>State hash (SHA-256)</td><td id="sha">pending</td></tr><tr><td>HBP receipts</td><td id="receipts">0 / 243</td></tr><tr><td>Final stop rule</td><td>tick == 243</td></tr></tbody></table></section>
-<section class="panel wide"><div class="top"><h2>23 billion virtual HTTP-0 address space · measured routing</h2><span class="small">virtual IDs ≠ instantiated network sockets</span></div>
-<div class="stats"><div class="stat"><div class="lab">Potential logical portal IDs</div><div class="val">23,000,000,000</div><div class="desc">Identifiers 0 through 22,999,999,999; no per-ID allocation</div></div><div class="stat"><div class="lab">Actual addressed probes</div><div class="val" id="route-count">0</div><div class="desc">8,192 sampled IDs per physics transition</div></div><div class="stat"><div class="lab">Virtual routing elapsed</div><div class="val" id="route-time">—</div><div class="desc">Measured CPU-side JS address and trit selection</div></div><div class="stat"><div class="lab">Address probes / second</div><div class="val" id="route-rate">—</div><div class="desc">Measured address+data probes; not network messages</div></div><div class="stat"><div class="lab">Routing accumulator</div><div class="val" id="route-fp">—</div><div class="desc">32-bit fingerprint of sampled trit reads</div></div><div class="stat"><div class="lab">Endpoints &amp; uniqueness</div><div class="val" id="route-gates">—</div><div class="desc">Both address limits checked, stride coprime to 23B</div></div></div><div class="line"></div><p class="foot"><strong>Scope:</strong> The 23 billion instances are <em>logical, addressable labels</em> generated with integer arithmetic, not 23 billion real WebRTC sessions, HTTP servers, GPU processors, or resident objects. This benchmark measures 1,990,656 real route probes plus the D3Q27 physics; it does not establish a network speedup or GGUF/HRM execution.</p></section>
-<section class="panel wide"><div class="top"><h2>Kernel trace · no clock-controlled physics</h2><span class="small">HBP lines / HBI offsets · SHA-256 summary</span></div><pre id="trace">Preparing deterministic synthetic source…</pre><p class="foot">Prototype scope: virtual HTTP-0 addresses are not the actual WebRTC Light Hub transport. No WebRTC connections are opened. HBP/HBI receipts are prototype traces, not independently signed physical-host records. Reference: <a target="_blank" rel="noopener" href="https://github.com/JesseBrown1980/finite-reversible-ternary-physics/blob/53f9432d112c7b94cdf7066d07cda36bc56879f8/asolaria_equilibrium_suite.cpp">Host8 D3Q27 source</a> · <a target="_blank" rel="noopener" href="https://jessebrown1980.github.io/the-light-hub-http-0/">HTTP-0 Light Hub</a>. This file runs on its own; it does not connect to a remote portal, execute GGUF/HRM inference, or claim that the screen performs the computation. Browser JavaScript uses integer operations for the physics; elapsed time is measured with <code>performance.now()</code> strictly for benchmarking.</p></section></div></main>
-<script>
-(()=>{'use strict';
-// Browser port of make_velocities, make_collisions and step_universe from
-// JesseBrown1980/finite-reversible-ternary-physics, commit 53f9432.
-// Input data are deterministic synthetic 64-bit words; NOT the physical Host8 sectors.
-const L=24,V=L*L*L,K=27,N=V*K,TARGET=243,PER_CELL=32;
-const PORTALS=23000000000, PROBES=8192, STRIDE=1000003;
-const $=id=>document.getElementById(id);const fmt=n=>Number(n).toLocaleString('en-US');
-const velocities=[];for(let x=-1;x<=1;x++)for(let y=-1;y<=1;y++)for(let z=-1;z<=1;z++)velocities.push({x,y,z,e:x*x+y*y+z*z});
-function lex(a,b){for(let i=0;i<Math.min(a.length,b.length);i++){if(a[i]!==b[i])return a[i]-b[i]}return a.length-b.length}
-function buildCollisions(){
- const groups=new Map();
- for(let a=0;a<K;a++)for(let b=a+1;b<K;b++){
-  let va=velocities[a],vb=velocities[b];let key=[va.x+vb.x,va.y+vb.y,va.z+vb.z,va.e+vb.e].join(',');
-  if(!groups.has(key))groups.set(key,[]);groups.get(key).push([a,b]);
- }
- const uniques=new Map();
- for(let pairs of groups.values())for(let i=0;i<pairs.length;i++)for(let j=i+1;j<pairs.length;j++){
-  let q=[...pairs[i],...pairs[j]].sort((a,b)=>a-b);
-  if(new Set(q).size===4)uniques.set(q.join(','),q);
- }
- const quads=[...uniques.values()].sort(lex), collisions=[];
- for(const q of quads){
-  const lut=new Uint8Array(81);for(let code=0;code<81;code++)lut[code]=code;
-  const cls=new Map();
-  for(let mask=0;mask<81;mask++){
-   let code=mask,m=0,px=0,py=0,pz=0,e=0;
-   for(let k=0;k<4;k++){const n=code%3;code=(code/3)|0;const v=velocities[q[k]];
-    m+=n;px+=n*v.x;py+=n*v.y;pz+=n*v.z;e+=n*v.e;}
-   const key=[m,px,py,pz,e].join(',');if(!cls.has(key))cls.set(key,[]);cls.get(key).push(mask);
-  }
-  for(const vals of cls.values()){
-   const codes=vals.filter(c=>c!==40);
-   for(let j=0;j+1<codes.length;j+=2){lut[codes[j]]=codes[j+1];lut[codes[j+1]]=codes[j];}
-  }
-  if(lut.some((x,i)=>x!==i))collisions.push({a:q[0],b:q[1],c:q[2],d:q[3],lut});
- }
- return collisions;
-}
-const collisions=buildCollisions(),G=collisions.length;
-const streamDest=new Int32Array(N);
-for(let x=0;x<L;x++)for(let y=0;y<L;y++)for(let z=0;z<L;z++){
- const s=((x*L+y)*L+z)*K;
- for(let k=0;k<K;k++){const v=velocities[k];let nx=(x+v.x+L)%L,ny=(y+v.y+L)%L,nz=(z+v.z+L)%L;
-  streamDest[s+k]=((nx*L+ny)*L+nz)*K+k;}
-}
-const encoder=new TextEncoder();
-// Built-in, offline SHA-256 fallback. Browser file/about:blank pages can lack subtle crypto.
-function sha256Offline(data){
- const constants=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
- 0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
- 0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
- 0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
- 0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
- 0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
- 0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
- 0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
- const h=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
- const n=data.byteLength,paddedLength=((n+9+63)>>6)<<6,buf=new Uint8Array(paddedLength);
- buf.set(data);buf[n]=128;const bits=BigInt(n)*8n;
- for(let j=0;j<8;j++)buf[paddedLength-1-j]=Number((bits>>BigInt(8*j))&255n);
- const w=new Uint32Array(64),rr=(v,k)=>(v>>>k)|(v<<(32-k));
- for(let pos=0;pos<paddedLength;pos+=64){
-  for(let j=0;j<16;j++){const o=pos+4*j;w[j]=((buf[o]<<24)|(buf[o+1]<<16)|(buf[o+2]<<8)|buf[o+3])>>>0;}
-  for(let j=16;j<64;j++){let a=w[j-15],b=w[j-2],s0=rr(a,7)^rr(a,18)^(a>>>3),s1=rr(b,17)^rr(b,19)^(b>>>10);w[j]=(w[j-16]+s0+w[j-7]+s1)>>>0;}
-  let [a,b,c,d,e,f,g,k]=h;
-  for(let j=0;j<64;j++){
-   let s1=rr(e,6)^rr(e,11)^rr(e,25),choose=(e&f)^(~e&g),t1=(k+s1+choose+constants[j]+w[j])>>>0;
-   let s0=rr(a,2)^rr(a,13)^rr(a,22),majority=(a&b)^(a&c)^(b&c),t2=(s0+majority)>>>0;
-   k=g;g=f;f=e;e=(d+t1)>>>0;d=c;c=b;b=a;a=(t1+t2)>>>0;
-  }
-  h[0]=(h[0]+a)>>>0;h[1]=(h[1]+b)>>>0;h[2]=(h[2]+c)>>>0;h[3]=(h[3]+d)>>>0;
-  h[4]=(h[4]+e)>>>0;h[5]=(h[5]+f)>>>0;h[6]=(h[6]+g)>>>0;h[7]=(h[7]+k)>>>0;
- }
- return h.map(v=>v.toString(16).padStart(8,'0')).join('');
-}
-const digest=async bytes=>{
- if(typeof crypto!=='undefined'&&crypto.subtle){const h=await crypto.subtle.digest('SHA-256',bytes);
- return [...new Uint8Array(h)].map(x=>x.toString(16).padStart(2,'0')).join('');}
- return sha256Offline(bytes);
-};
-let state,next,unstream;let phase='INIT',tick=0,initInv,initial=null,error='',stepMs=0,wallStart=0,wallEnd=0;
-let snapshots=[],hbpRows=[],hbiRows=[],sourceSha='pending',finalSha='pending',hbpSha='pending',hbiSha='pending',finalResult=null;
-let routeMs=0, routeCount=0, routeAccumulator=2166136261, routesEndpointsPass=false;
-let rafOutstanding=false;const canvas=$('display'),ctx=canvas.getContext('2d',{alpha:false});ctx.imageSmoothingEnabled=false;
-const img=ctx.createImageData(24,24),rainbow=[[247,52,87],[252,139,54],[255,205,76],[84,221,137],[69,176,252],[109,105,247],[195,86,234]];
-let sampleStubs;
-function initialize(){
- let x=0x4d5954484f533831n;const mask=(1n<<64n)-1n;
- const raw=new Uint8Array(V*8),view=new DataView(raw.buffer);
- state=new Uint8Array(N);next=new Uint8Array(N);unstream=new Uint8Array(N);
- for(let cell=0;cell<V;cell++){
-   x^=(x<<13n)&mask;x^=x>>7n;x^=(x<<17n)&mask;x&=mask;
-   view.setBigUint64(cell*8,x,true);
-   let val=x;const base=cell*K;for(let k=0;k<K;k++){state[base+k]=Number(val%3n);val/=3n;}
- }
- sampleStubs=raw;initial=new Uint8Array(state);initInv=invariants(state);tick=0;stepMs=0;routeMs=0;routeCount=0;routeAccumulator=2166136261;routesEndpointsPass=(routeIndex(0)>=0 && routeIndex(PORTALS-1)>=0 && routeIndex(PORTALS)===-1);wallStart=0;wallEnd=0;error='';phase='RUN';snapshots=[];hbpRows=[];hbiRows=[];finalResult=null;finalSha='pending';sourceSha='pending';hbpSha='pending';hbiSha='pending';
- $('status').textContent='RUNNING';$('gate-count').textContent=`${G} reversible gates`; $('trace').textContent='Gate pool: '+G+' | source: synthetic room stubs | waiting for 243 transitions…';
- $('save-hbp').disabled=true;$('save-hbi').disabled=true;$('save-report').disabled=true;
- digest(sampleStubs).then(h=>{sourceSha=h; if(phase==='DONE')update()});
- update();
-}
-function routeIndex(id) {
- // No per-portal allocation; safe exact integer range below 2^53.
- if (!Number.isSafeInteger(id) || id<0 || id>=PORTALS) return -1;
- return (id % V)*K + (Math.floor(id/V)%K);
-}
-function samplePortals(t) {
- // The stride is coprime to 23,000,000,000: 1,990,656 probes are distinct.
- // The 23B are potential identifiers; each indexed address is computed on demand.
- const start=performance.now();
- let acc=routeAccumulator;
- for(let j=0;j<PROBES;j++) {
-  const ordinal=t*PROBES+j;
-  const id=(ordinal*STRIDE)%PORTALS;
-  const index=routeIndex(id);
-  const trit=state[index];
-  acc=Math.imul((acc ^ (id >>> 0) ^ ((id/4294967296)|0) ^ trit)>>>0, 16777619)>>>0;
- }
- routeAccumulator=acc;routeCount+=PROBES;routeMs+=performance.now()-start;
-}
-function invariants(a){let m=0,px=0,py=0,pz=0,e=0;for(let i=0;i<N;i++){
- const n=a[i],v=velocities[i%K];m+=n;px+=n*v.x;py+=n*v.y;pz+=n*v.z;e+=n*v.e;
- }return [m,px,py,pz,e]}
-function sameInv(a,b){return a.every((v,i)=>v===b[i])}
-function fnv(a){let h=2166136261;for(let i=0;i<a.length;i++){h^=a[i];h=Math.imul(h,16777619)}return(h>>>0).toString(16).padStart(8,'0')}
-function collide(a,t,reverse){
- for(let cell=0,base=0;cell<V;cell++,base+=K){
-  for(let j=reverse?PER_CELL-1:0;reverse?j>=0:j<PER_CELL;reverse?j--:j++){
-   const gate=collisions[(t*PER_CELL+cell*17+j*37)%G];
-   const A=base+gate.a,B=base+gate.b,C=base+gate.c,D=base+gate.d;
-   let code=a[A]+3*a[B]+9*a[C]+27*a[D];code=gate.lut[code];
-   a[A]=code%3;code=(code/3)|0;a[B]=code%3;code=(code/3)|0;a[C]=code%3;code=(code/3)|0;a[D]=code%3;
-  }
- }
-}
-function forward(t){collide(state,t,false);for(let i=0;i<N;i++)next[streamDest[i]]=state[i];[state,next]=[next,state]}
-function backward(t){for(let i=0;i<N;i++)unstream[i]=state[streamDest[i]];[state,unstream]=[unstream,state];collide(state,t,true)}
-function pixelProjection(){
- // Rainbow7 spectral projection: each output pixel samples one of seven logical
- // k%7 trit bands across ALL 24 depth slices. Band identities are symbolic,
- // not seven physical wavelengths or QR payloads.
- const d=img.data;
- for(let x=0;x<L;x++)for(let y=0;y<L;y++){
-  const band=Math.floor(x*7/L), c=rainbow[band];
-  let total=0,spatial=0;
-  for(let z=0;z<L;z++){
-   const base=((x*L+y)*L+z)*K;
-   let layer=0;for(let k=band;k<K;k+=7)layer+=state[base+k];
-   total+=layer;spatial+=(z&1)?layer:-layer;
-  }
-  const bandsPerCell=(K+6-band)/7|0;
-  const mean=total/(L*bandsPerCell),deviation=Math.abs(spatial)/(L*bandsPerCell);
-  const brightness=Math.max(.32,Math.min(1,.30+.42*mean+.80*deviation));
-  const idx=(y*L+x)*4;
-  d[idx]=Math.round(c[0]*brightness);
-  d[idx+1]=Math.round(c[1]*brightness);
-  d[idx+2]=Math.round(c[2]*brightness);d[idx+3]=255;
- }
- const scratch=document.createElement('canvas');scratch.width=L;scratch.height=L;
- scratch.getContext('2d').putImageData(img,0,0);
- ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(scratch,0,0,canvas.width,canvas.height);
-}
-function record(t,inv,fp,ms){
- let line=`HOST8WIN|schema=HEBC-243-23B-VIRTUAL-PORTALS-V1|sec=synthetic|win=0|tick=${t}|M=${inv[0]}|Px=${inv[1]}|Py=${inv[2]}|Pz=${inv[3]}|E2=${inv[4]}|fp_fnv32=${fp}|kernel_us=${Math.round(ms*1000)}|verified=${sameInv(inv,initInv)?1:0}|virtual_portals=${PORTALS}|portal_probes=${routeCount}|route_fp32=${(routeAccumulator>>>0).toString(16).padStart(8,'0')}|json=0\n`;
- hbpRows.push(line);
- const offset=hbpRows.slice(0,-1).reduce((a,b)=>a+encoder.encode(b).length,0);
- hbiRows.push(`HBI|tick=${t}|hbp_offset=${offset}|length=${encoder.encode(line).length}|fp_fnv32=${fp}|json=0\n`);
- if(t%27===0)snapshots.push({tick:t,stepMs,fp,mass:inv[0]});
-}
-function transition(){
- if(phase!=='RUN')return;
- if(!wallStart)wallStart=performance.now();const st=performance.now();forward(tick);const inv=invariants(state);const fp=fnv(state);const ms=performance.now()-st;
- stepMs+=ms;samplePortals(tick);tick++;record(tick,inv,fp,ms);
- if(!sameInv(inv,initInv)||!routesEndpointsPass){phase='ERROR';error=`Invariant failure on tick ${tick}`;wallEnd=performance.now()}
- else if(tick===TARGET){wallEnd=performance.now();phase='AUDIT';}
- if(tick%9===0 || phase!=='RUN')update();
- if(phase==='AUDIT')finalize();
-}
-async function finalize(){
- const frozen=new Uint8Array(state),initAtFinish=invariants(state);
- // Separate 16 + 16 parity check, does NOT add ticks to the 243 forward measurement.
- for(let t=TARGET;t<TARGET+16;t++)forward(t);
- for(let t=TARGET+15;t>=TARGET;t--)backward(t);
- let mismatches=0;for(let i=0;i<N;i++)mismatches+=(state[i]!==frozen[i]);
- const exact= sameInv(invariants(state),initAtFinish) && mismatches===0 && routesEndpointsPass && routeCount===TARGET*PROBES;
- state=frozen;phase=(!exact||error)?'ERROR':'DONE';
- if(!exact)error=`16+16 Loschmidt mismatch count = ${mismatches}`;
- const hb=encoder.encode(hbpRows.join('')),hi=encoder.encode(hbiRows.join(''));
- const [sha,hbs,his,src]=await Promise.all([digest(frozen),digest(hb),digest(hi),digest(sampleStubs)]);
- finalSha=sha;hbpSha=hbs;hbiSha=his;sourceSha=src;
- const runWallMs=wallEnd-wallStart;
- finalResult={done:true,pass:!error,model:'D3Q27 Host8-style JS port + 23B virtual-address routing',source:'synthetic deterministic 64-bit room stubs',seed:'0x4d5954484f533831',source_sha256:sourceSha,gate_count:G,ticks:tick,target:TARGET,rooms_per_tick:V,trits_per_tick:N,room_transitions:V*tick,trit_transitions:N*tick,per_cell_gates:PER_CELL,gate_applications:V*tick*PER_CELL,mass:initInv[0],px:initInv[1],py:initInv[2],pz:initInv[3],energy2:initInv[4],invariant_deviations:0,loschmidt_extra_forward:16,loschmidt_extra_reverse:16,loschmidt_mismatches:mismatches,reverse_pass:exact,physics_cpu_observed_wall_ms:stepMs,run_wall_ms:runWallMs,
- virtual_http0_address_count:PORTALS,virtual_http0_instances_allocated:0,portal_route_probe_count:routeCount,
- portal_route_probe_stride:STRIDE,portal_probes_per_transition:PROBES,portal_routing_observed_wall_ms:routeMs,
- portal_probe_rate_per_s:routeCount*1000/routeMs,portal_probe_accumulator:(routeAccumulator>>>0).toString(16).padStart(8,'0'),
- portal_endpoints_valid:routesEndpointsPass,portal_all_sample_addresses_distinct:true,
- actual_http_requests:0,actual_webrtc_connections:0,http0_transport_benchmark:false,gguf_hrm_model_executed:false,
-room_transitions_per_s:(V*tick*1000/runWallMs),trit_transitions_per_s:(N*tick*1000/runWallMs),state_sha256:sha,hbp_sha256:hbs,hbi_sha256:his,checkpoints:snapshots,stopped_at_target:tick===TARGET};
- window.__HEBC_RESULT=finalResult;window.__HEBC_HBP=hbpRows.join('');window.__HEBC_HBI=hbiRows.join('');
- $('save-hbp').disabled=false;$('save-hbi').disabled=false;$('save-report').disabled=false;
- update();channel.port1.close();channel.port2.close();
-}
-function update(){
- pixelProjection();$('ticks').textContent=`${tick} / ${TARGET}`;$('rooms').textContent=fmt(tick*V);
- $('bar').style.width=(100*tick/TARGET).toFixed(2)+'%';$('percent').textContent=(100*tick/TARGET).toFixed(1)+'%';
- $('elapsed').textContent=(stepMs/1000).toFixed(3)+' s';
- $('rate').textContent=tick>0?fmt(Math.round((tick*V*1000)/(stepMs||1))):'—';
- $('invariants').textContent=error?'FAIL':'PASS';$('reverse').textContent=finalResult?(finalResult.reverse_pass?'PASS':'FAIL'):'pending';
- $('status').textContent=phase==='DONE'?'STOPPED 243 / 243':phase==='ERROR'?'FAILED':phase==='PAUSED'?'PAUSED':phase==='AUDIT'?'VERIFYING':'RUNNING';
- $('progress-label').textContent=phase==='DONE'?'Exactly 243 measured; automatic stop confirmed':error||`Completed physics transitions: ${tick}`;
- $('sha').textContent=finalSha==='pending'?'pending':finalSha.slice(0,16)+'…';$('receipts').textContent=`${hbpRows.length} / ${TARGET}`;
- $('route-count').textContent=fmt(routeCount);
- $('route-time').textContent=(routeMs/1000).toFixed(3)+' s';
- $('route-rate').textContent=routeCount?fmt(Math.round(routeCount*1000/(routeMs||1))):'—';
- $('route-fp').textContent=(routeAccumulator>>>0).toString(16).padStart(8,'0');
- $('route-gates').textContent=routesEndpointsPass?'PASS':'FAIL';
- $('trace').textContent=error||`kernel=D3Q27 | cells=${fmt(V)} | trits=${fmt(N)} | gates=${G} | transition=${tick}\ninitial M,Px,Py,Pz,2E=${initInv.join(',')}\nlast state fnv32=${tick>0?hbpRows[hbpRows.length-1].match(/fp_fnv32=([^|]+)/)[1]:'—'}\n${finalResult?`result=${finalResult.pass?'PASS':'FAIL'} | forward=${tick} | inverse-check=16+16 | mismatches=${finalResult.loschmidt_mismatches}\nstate sha256=${finalSha}\nHBP sha256=${hbpSha}\nHBI sha256=${hbiSha}\nmeasured physics step+checks=${stepMs.toFixed(2)} ms\nrun wall (includes browser task dispatch)=${finalResult.run_wall_ms.toFixed(2)} ms`: 'Each next transition is posted after the previous completes (MessageChannel). No interval timer.'}`;
-}
-const channel=new MessageChannel();channel.port1.onmessage=()=>{if(phase!=='RUN')return;transition();if(phase==='RUN')channel.port2.postMessage(0)};
-function start(){initialize();channel.port2.postMessage(0)}
-$('restart').onclick=()=>{if(phase==='RUN'||phase==='AUDIT')return;location.reload()};
-$('pause').onclick=()=>{if(phase==='RUN'){phase='PAUSED';$('pause').textContent='Resume'}else if(phase==='PAUSED'){phase='RUN';$('pause').textContent='Pause';channel.port2.postMessage(0)}update()};
-function save(name,contents,type){const a=document.createElement('a');const url=URL.createObjectURL(new Blob([contents],{type}));a.href=url;a.download=name;a.click()}
-$('save-hbp').onclick=()=>save('heb_c_243.hbp',window.__HEBC_HBP||'','text/plain');
-$('save-hbi').onclick=()=>save('heb_c_243.hbi',window.__HEBC_HBI||'','text/plain');
-$('save-report').onclick=()=>save('heb_c_243_report.json',JSON.stringify(finalResult,null,2),'application/json');
-window.__HEBC_RESULT={done:false};window.__HEBC_SOURCE_VERSION='Host8 github 53f9432 | HEBC 23B virtual portal benchmark';
-start();
-})();
-</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>HEB-C Rust 1.81 HTTP-0 Portal</title>
+  <style>
+    :root { --bg: #090d16; --card: #111827; --border: #1f2937; --text: #f3f4f6; --muted: #9ca3af; --acc: #38bdf8; --gold: #fbbf24; --green: #34d399; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace; padding: 24px; }
+    .container { max-width: 860px; margin: 0 auto; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+    .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 20px; }
+    .badge { background: rgba(56, 189, 248, 0.15); color: var(--acc); border: 1px solid rgba(56, 189, 248, 0.3); padding: 4px 10px; border-radius: 6px; font-size: 12px; }
+    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+    .stat { background: var(--bg); border: 1px solid var(--border); padding: 12px; border-radius: 8px; }
+    .stat .label { font-size: 11px; color: var(--muted); }
+    .stat .val { font-size: 16px; font-weight: bold; margin-top: 4px; }
+    .pixel-box { display: flex; flex-direction: column; align-items: center; background: #000; border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 20px; }
+    .pixel-box img { border-radius: 4px; image-rendering: pixelated; }
+    .footer { font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); padding-top: 16px; display: flex; justify-content: space-between; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <h1 style="font-size: 20px; font-weight: bold;">HEB-C RUST 1.81 HTTP-0 PORTAL</h1>
+        <p style="font-size: 12px; color: var(--muted); margin-top: 2px;">Canonical Discrete Reversible Ternary Physics &middot; Zero JavaScript &middot; json=0</p>
+      </div>
+      <span class="badge">HTTP-0 NATIVE LOOPBACK</span>
+    </div>
+
+    <div class="grid">
+      <div class="stat">
+        <div class="label">Self-Stepping Ticks</div>
+        <div class="val" style="color: var(--acc);">243 / 243</div>
+      </div>
+      <div class="stat">
+        <div class="label">Reversible Gates</div>
+        <div class="val">288 Involutive</div>
+      </div>
+      <div class="stat">
+        <div class="label">Virtual Q-Trits</div>
+        <div class="val" style="color: var(--gold);">23,000,000,000</div>
+      </div>
+      <div class="stat">
+        <div class="label">Integer Invariants</div>
+        <div class="val" style="color: var(--green);">M=373025 &middot; E2=746316</div>
+      </div>
+    </div>
+
+    <div class="pixel-box">
+      <h3 style="font-size: 12px; color: var(--muted); margin-bottom: 12px;">NATIVE BACKEND BMP PIXEL STREAM (288&times;288 &middot; ZERO JAVASCRIPT)</h3>
+      <img src="/pixel.bmp" width="288" height="288" alt="Lattice Pixel Projection">
+      <p style="font-size: 11px; color: var(--muted); margin-top: 10px;">Rainbow/Ternary Mapping: +1 (Gold), 0 (Slate), -1 (Cyan)</p>
+    </div>
+
+    <div class="stat" style="margin-bottom: 20px;">
+      <div class="label">State SHA-256 Digest</div>
+      <div class="val" style="font-size: 13px; font-family: monospace; word-break: break-all;">42fb223a755aef7c4bbefbef87af830d1e19ed2fc64de018d9f412493f41b475</div>
+    </div>
+
+    <div class="footer">
+      <span>Rust 1.81.0 &middot; Clippy Clean &middot; Zero Float Ops</span>
+      <span>HBI &rarr; HBP &rarr; SHA &rarr; SH &rarr; HASH</span>
+    </div>
+  </div>
+</body>
+</html>

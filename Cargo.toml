@@ -1,0 +1,19 @@
+[package]
+name = "hebc-portal"
+version = "0.2.0"
+edition = "2021"
+rust-version = "1.81"
+authors = ["Jesse Brown", "Asolaria Federation"]
+license = "MIT OR Apache-2.0"
+description = "Canonical Rust 1.81 HEB-C HTTP-0 Portal: Integer-only D3Q27 Q-trit physics, 288 collision gates, HBI/HBP/SHA/SH/HASH trust chain, and zero-JS pixel streaming"
+
+[[bin]]
+name = "hebc-portal"
+path = "src/main.rs"
+
+[lib]
+name = "hebc"
+path = "src/lib.rs"
+
+[dependencies]
+# Zero external runtime dependencies: strictly pure Rust std.
