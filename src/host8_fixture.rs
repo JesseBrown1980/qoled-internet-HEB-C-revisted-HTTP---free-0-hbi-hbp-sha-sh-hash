@@ -2,7 +2,11 @@
 //! This reconstructs 13,824 canonical 8-byte room stubs from the published
 //! Clasy X3 / Host8 integer identity codec; no disk or 300GB allocation.
 #![forbid(unsafe_code)]
-#![deny(clippy::float_arithmetic, clippy::float_cmp, clippy::cast_precision_loss)]
+#![deny(
+    clippy::float_arithmetic,
+    clippy::float_cmp,
+    clippy::cast_precision_loss
+)]
 pub const ROOMS: usize = 13_824;
 pub const SEED: u64 = 0x518b_bb47_2a9d_b786;
 pub const H27: i128 = 3_812_798_742_493;
@@ -19,7 +23,9 @@ pub fn mix(mut z: u64) -> u64 {
 
 /// The global n-th canonical Host8 room stub, not the n-th already decoded trit.
 pub fn room_word(n: u64) -> Result<u64, &'static str> {
-    if i128::from(n) >= TOTAL_ROOMS { return Err("global room outside 300GB plane"); }
+    if i128::from(n) >= TOTAL_ROOMS {
+        return Err("global room outside 300GB plane");
+    }
     let signed_word = (i128::from(n) - TOTAL_ROOMS / 2 + H27) as u64;
     Ok(mix(signed_word ^ SEED))
 }
@@ -27,7 +33,11 @@ pub fn room_word(n: u64) -> Result<u64, &'static str> {
 pub fn sector000_window000_bytes() -> Vec<u8> {
     let mut bytes = Vec::with_capacity(ROOMS * 8);
     for n in 0..ROOMS as u64 {
-        bytes.extend_from_slice(&room_word(n).expect("bounded canonical room index").to_le_bytes());
+        bytes.extend_from_slice(
+            &room_word(n)
+                .expect("bounded canonical room index")
+                .to_le_bytes(),
+        );
     }
     bytes
 }
@@ -35,8 +45,8 @@ pub fn sector000_window000_bytes() -> Vec<u8> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{unpack_room_stubs, N};
     use crate::sha256::hash_bytes;
+    use crate::{unpack_room_stubs, N};
 
     #[test]
     fn canonical_block_matches_published_physical_input_sha() {
@@ -47,9 +57,10 @@ mod tests {
             "2dfe7d757ecb012475806b86fcdefc602680d042db836ffbcb2bfe924f2a18ee"
         );
         let mut state = vec![0; N];
-        let words = raw.chunks_exact(8).map(|b| u64::from_le_bytes(
-            b.try_into().expect("8 byte word")
-        )).collect::<Vec<_>>();
+        let words = raw
+            .chunks_exact(8)
+            .map(|b| u64::from_le_bytes(b.try_into().expect("8 byte word")))
+            .collect::<Vec<_>>();
         unpack_room_stubs(&words, &mut state);
         assert_eq!(
             hash_bytes(&state),
