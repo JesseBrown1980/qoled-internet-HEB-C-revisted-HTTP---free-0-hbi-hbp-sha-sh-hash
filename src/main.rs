@@ -23,6 +23,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = env::args().collect();
 
     let mut run_243 = true;
+    let mut write_dashboard = false;
+    let mut expected_source_sha: Option<String> = None;
     let mut serve_portal = false;
     let mut port = DEFAULT_PORT;
     let mut physical_input_path: Option<String> = None;
@@ -30,10 +32,32 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut hbi_out = "evidence/heb_c_rust_243.hbi".to_string();
     let mut anchor_out = "evidence/heb_c_rust_243.anchor".to_string();
 
+    // Reconstruct the exact canonical Host8 block, no 300GB volume required.
+    if args.get(1).map(String::as_str) == Some("--write-host8-window") {
+        let out = args.get(2).ok_or("usage: --write-host8-window <path>")?;
+        let bytes = hebc::host8_fixture::sector000_window000_bytes();
+        let sha = hebc::sha256::hash_bytes(&bytes);
+        if sha != "2dfe7d757ecb012475806b86fcdefc602680d042db836ffbcb2bfe924f2a18ee" {
+            return Err("Host8 canonical fixture failed SHA validation".into());
+        }
+        if let Some(parent) = std::path::Path::new(out).parent() {
+            fs::create_dir_all(parent)?;
+        }
+        fs::write(out, &bytes)?;
+        println!("FIXTURE|bytes={}|source_sha256={sha}|json=0", bytes.len());
+        return Ok(());
+    }
     let mut i = 1;
     while i < args.len() {
         match args[i].as_str() {
             "--run-243" => run_243 = true,
+            "--dashboard" => write_dashboard = true,
+            "--headless" | "--no-dashboard" => write_dashboard = false,
+            "--expect-input-sha" => {
+                if i+1 >= args.len() { return Err("--expect-input-sha needs a value".into()); }
+                expected_source_sha = Some(args[i+1].clone());
+                i += 1;
+            },
             "--serve" => serve_portal = true,
             "--port" => {
                 if i + 1 < args.len() {
@@ -71,14 +95,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     let hbp_p = &args[i + 2];
                     let hbi_p = &args[i + 3];
                     println!("[*] Verifying trust anchor: {a_p}");
-                    match hebc::receipts::verify_trust_anchor(a_p, hbp_p, hbi_p) {
-                        Ok(true) => {
+                    match hebc::audit::verify_files(
+                        std::path::Path::new(a_p), std::path::Path::new(hbp_p), std::path::Path::new(hbi_p)
+                    ) {
+                        Ok(_count) => {
                             println!("  [OK] Trust anchor verification passed!");
                             return Ok(());
-                        }
-                        Ok(false) => {
-                            eprintln!("  [FAIL] Trust anchor verification failed (returned false)");
-                            std::process::exit(1);
                         }
                         Err(e) => {
                             eprintln!("  [FAIL] Trust anchor verification failed: {e}");
@@ -146,6 +168,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         unpack_room_stubs(&stubs, &mut state);
     }
 
+    if let Some(expected) = expected_source_sha {
+        if source_sha != expected {
+            return Err(format!("Source SHA mismatch: expected {expected}, got {source_sha}").into());
+        }
+    }
     let sh = &source_sha[..16];
     let init_state_sha = hebc::sha256::hash_bytes(&state);
     let init_inv = compute_integer_invariants(&state, &v);
@@ -257,11 +284,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         )?;
         println!("  Trust Anchor written to    : {anchor_out}");
 
-        // Update plain index.html dashboard (ZERO JavaScript)
-        let html_content =
-            generate_plain_html_dashboard(243, &final_state_sha, init_inv.mass, init_inv.energy_2x);
-        fs::write("index.html", html_content)?;
-        println!("  Updated index.html (STRICTLY ZERO JAVASCRIPT)");
+        // Display is entirely optional: headless execution never edits tracked HTML.
+        if write_dashboard {
+            let html_content = generate_plain_html_dashboard(
+                243, &final_state_sha, init_inv.mass, init_inv.energy_2x
+            );
+            fs::write("index.html", html_content)?;
+            println!("  Updated index.html (STRICTLY ZERO JAVASCRIPT)");
+        }
     }
 
     if serve_portal {
