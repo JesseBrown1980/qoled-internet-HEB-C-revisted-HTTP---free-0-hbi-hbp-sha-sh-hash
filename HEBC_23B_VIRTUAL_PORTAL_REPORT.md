@@ -53,7 +53,6 @@ Here `gcd(1000003, 23000000000) = 1` and total probes = 1,990,656 (less than 23B
 | `evidence/heb_c_23b_measurement.json` | 2,810 | `30bfba482770ccf7da78f82cde2ffc68ad4ee66e8bda867ff042f25c11219809` |
 | `evidence/heb_c_23b_trace.hbp` | 57,736 | `bf3e3befe62a60b12e7de41957db1724ba826f552e364eace051d6406790374d` |
 | `evidence/heb_c_23b_index.hbi` | 15,880 | `0805191b405003a87611c0bf7681a6502c696e9ee6943bf8f4acb672dd9fb4a2` |
-| `evidence/heb_c_23b_screen.png` | 814,015 | `9fda60d2075e3252c7d7ed3fbb9c776dcf361f460e532b4180d048e5ec8b4201` |
 
 ## Validation and scope
 
