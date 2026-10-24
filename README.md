@@ -1,4 +1,14 @@
-# HEB-C — Canonical Rust 1.81 Engine, Virtual HTTP-0 Portal & Q-Trit Physics
+# HEB-C — Canonical Rust 1.81 Native Kernel and Self-Contained Reproduction
+
+**[One-checkout complete reproduction](REPRODUCE_NATIVE_RUST_181.md)** · **[Finite S3 Yang–Mills Stage 2 reference included](research/yang_mills_stage2/README.md)** · **[GitHub native CI](.github/workflows/ci.yml)**
+
+Both fully independent Rust-native crates are included in this repository. The Host8 300 GB source volume is **not required** for the bounded window regression: the exact 110,592-byte canonical physical test block is regenerated locally, matched to its pinned SHA-256, and replayed for all 244 states. The Stage 2 Yang–Mills crate includes the finite Gauss-law state counting, exact integer Hamiltonian spectral certification and 512×512 encoded-Q-trit stress tests.
+
+One-command Bash/WSL reproduction: `bash scripts/reproduce_native.sh`. Windows PowerShell: `pwsh -File scripts/reproduce_native.ps1`. These scripts use pinned Rust 1.81 with `--offline --locked`, Clippy `-D warnings`, integer-only kernels, no Node/V8/JavaScript, and no native JSON serialization.
+
+**Headless is the default.** The screen/BMP adapter is optional. **23 billion** is a *virtual address capacity*, not a count of simultaneously instantiated kernels or particles. The HBI/HBP SHA hash chain authenticates its bytes relative to an anchor; the unkeyed anchor checksum is **not** a third-party cryptographic signature.
+
+
 
 Canonical Rust 1.81 implementation of the HEB-C discrete ternary physics kernel, native HBI/HBP/SHA/SH/HASH wire fabric, and zero-JavaScript HTTP-0 portal.
 
@@ -25,13 +35,13 @@ Canonical Rust 1.81 implementation of the HEB-C discrete ternary physics kernel,
 ## Running the Engine
 ```bash
 # Execute canonical 243-step simulation and generate receipts
-cargo run --release -- --run-243
+cargo +1.81.0 run --release --locked --offline -- --run-243 --headless
 
 # Verify trust anchor and receipt chain
-cargo run --release -- --verify-anchor evidence/heb_c_rust_243.anchor evidence/heb_c_rust_243.hbp evidence/heb_c_rust_243.hbi
+cargo +1.81.0 run --release --locked --offline -- --verify-anchor evidence/heb_c_rust_243.anchor evidence/heb_c_rust_243.hbp evidence/heb_c_rust_243.hbi
 
 # Launch zero-JavaScript HTTP-0 Portal
-cargo run --release -- --serve --port 5088
+cargo +1.81.0 run --release --locked --offline -- --serve --port 5088 --dashboard
 
 # Run against 300 GB physical dataset (Sector 000 Window 0)
 cargo run --release -- --physical-input D:\ASOLARIA-HOST8-ROOMS-300G\sector-000.rooms
@@ -42,3 +52,11 @@ cargo run --release -- --physical-input D:\ASOLARIA-HOST8-ROOMS-300G\sector-000.
 - [Cross-Validation Report (Host8 C++ vs HEB-C Rust)](CROSS_VALIDATION_HOST8_HEBC_REPORT.md)
 - [23B Virtual Portal Report](HEBC_23B_VIRTUAL_PORTAL_REPORT.md)
 - Reference C++ Host8 Kernel: [finite-reversible-ternary-physics](https://github.com/JesseBrown1980/finite-reversible-ternary-physics)
+
+## Self-contained Host8 physical fixture and strict verifier
+
+- [Integer Host8 window generator](src/host8_fixture.rs) · [Native per-step state replay](tests/native_physical_replay.rs) · [Full HBP/HBI SHA chain audit](src/audit.rs)
+- [Full native reproduction guide](REPRODUCE_NATIVE_RUST_181.md) · [Automated cross-platform CI](.github/workflows/ci.yml)
+- [Vendored, separately scoped finite S3 Stage 2 crate](research/yang_mills_stage2/) (pinned to upstream commit `276f776c80b7c22c49811ec5d6972c588fcec75e`; Rustfmt normalized)
+
+Prior JSON and browser benchmark files are historical evidence. The active engine, tests and receipts are Rust-native and `json=0`. The finite S3 graph and single-plaquette gaps do not establish continuum 4D Yang–Mills existence or mass gap.
