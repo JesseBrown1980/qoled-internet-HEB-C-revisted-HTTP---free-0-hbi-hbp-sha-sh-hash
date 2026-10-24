@@ -7,7 +7,6 @@ The 23 billion are **addressable labels, not 23 billion simultaneously executing
 - [Full results and limitations](HEBC_23B_VIRTUAL_PORTAL_REPORT.md)
 - [243-step measurement](evidence/heb_c_23b_measurement.json)
 - [HBP receipts](evidence/heb_c_23b_trace.hbp) / [HBI index](evidence/heb_c_23b_index.hbi)
-- [Screenshot](evidence/heb_c_23b_screen.png)
 - [Original no-portal 243-step baseline](baseline/heb_c_243_measurement.json)
 
 For static evidence verification run `python tests/verify_evidence.py`. For a new browser run, open `index.html`, let it reach STOPPED 243 / 243, and export fresh receipts using the webpage buttons. Timings depend on the machine.
