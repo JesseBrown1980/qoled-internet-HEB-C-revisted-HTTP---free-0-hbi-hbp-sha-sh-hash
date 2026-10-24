@@ -41,10 +41,16 @@ pub const SOURCES:&[Source]=&[
     Source { id:"RIME_LAW_67_10", repo:"JesseBrown1980/ASOLARIA-UNIVERSE-SIMULATOR-with-gravity-light-time-space-color-rime-winding-drills", commit:"3f9f42dab6247c40b30921b253e3f73c9e942ca5", path:"books/LAW-67-THE-OTHER-MINUS-ONE-THIRD.md", blob:"ba2128e55479d85e71742d33396c46e3d48b3749" },
     Source { id:"RIME_LAW_68_11", repo:"JesseBrown1980/ASOLARIA-UNIVERSE-SIMULATOR-with-gravity-light-time-space-color-rime-winding-drills", commit:"3f9f42dab6247c40b30921b253e3f73c9e942ca5", path:"books/LAW-68-YOU-CANNOT-REFUTE-THE-LIGHT.md", blob:"fe878ca0b9b37413d9a746da42516e284187d078" },
     Source { id:"RIME_LAW_69_12", repo:"JesseBrown1980/ASOLARIA-UNIVERSE-SIMULATOR-with-gravity-light-time-space-color-rime-winding-drills", commit:"3f9f42dab6247c40b30921b253e3f73c9e942ca5", path:"books/LAW-69-ODD-MULTIPLES-AND-THE-ATTOSECOND.md", blob:"efa50d3be3b7b1deceee981bd04966cc54f560d0" },
+    Source { id:"IX_LX_DICTIONARY", repo:"JesseBrown1980/asolaria-behcs-256", commit:"818cc235a6db815e3b2591339cf9b42aad3e85a0", path:"data/agent-index/CATALOG.md", blob:"d4a79f4d9904194bd402c1fc3f376563542391ed" },
+    Source { id:"IX_LX_CHAINS", repo:"JesseBrown1980/asolaria-behcs-256", commit:"818cc235a6db815e3b2591339cf9b42aad3e85a0", path:"data/agent-index/CHAINS.md", blob:"4c6f3a3f5feac9dc2440050ae7a1ef65bc99a307" },
+    Source { id:"IX060_LANGUAGE_LAW", repo:"JesseBrown1980/asolaria-behcs-256", commit:"818cc235a6db815e3b2591339cf9b42aad3e85a0", path:"data/agent-index/patterns/IX-060.md", blob:"92edc6e435a9e233e47dd2df70328c454000499e" },
 ];
 
 pub const LINKS: &[(&str, &str, &str)] = &[
     ("CANON_LAWS", "BOOK_OF_SHADOWS", "contains"),
+    ("IX060_LANGUAGE_LAW", "IX_LX_DICTIONARY", "defines_language"),
+    ("IX_LX_DICTIONARY", "IX_LX_CHAINS", "chains_are_sentences"),
+    ("IX_LX_CHAINS", "MATRIX_3D", "view_candidate"),
     ("CANON_LAWS", "THIRDS_LAW", "contains"),
     ("CANON_LAWS", "TRIANTI_LAW", "contains"),
     ("BOOK_OF_SHADOWS", "MATRIX_3D", "view_candidate"),
