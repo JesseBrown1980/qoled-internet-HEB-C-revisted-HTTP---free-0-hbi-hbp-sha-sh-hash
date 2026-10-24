@@ -24,6 +24,27 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     if let Some(command) = args.get(1).map(String::as_str) {
         match command {
+            "--law-index" => {
+                print!("{}", hebc::law_reader::index());
+                return Ok(());
+            }
+            "--law" => {
+                let n = args.get(2).ok_or("usage: --law <0..71> [variant]")?
+                    .parse::<u16>()?;
+                let variant = args.get(3).map(|x| x.parse::<usize>())
+                    .transpose()?;
+                let body = hebc::law_reader::law(n, variant)
+                    .ok_or("law number/variant not found in pinned source")?;
+                print!("{body}");
+                return Ok(());
+            }
+            "--rule" => {
+                let name = args.get(2).ok_or("usage: --rule <exact-book-IX-handle>")?;
+                let body = hebc::law_reader::rule(name)
+                    .ok_or("original rule handle not found")?;
+                print!("{body}");
+                return Ok(());
+            }
             "--fabric-build" => {
                 let dir = args.get(2).map(String::as_str).unwrap_or("evidence/fabric");
                 hebc::fabric::write(std::path::Path::new(dir))?;
