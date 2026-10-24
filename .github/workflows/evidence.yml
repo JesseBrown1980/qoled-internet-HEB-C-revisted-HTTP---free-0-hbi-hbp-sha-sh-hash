@@ -1,0 +1,16 @@
+name: Verify HEB-C published measurements
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  static-receipt-verification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify recorded 243-step and 23B-address evidence
+        run: python tests/verify_evidence.py
