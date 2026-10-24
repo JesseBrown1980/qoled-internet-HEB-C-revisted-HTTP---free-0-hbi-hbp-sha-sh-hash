@@ -202,8 +202,7 @@ pub fn handle_client(
         "/fabric/anchor" => {
             write_plain(&mut stream, "200 OK", &crate::fabric::evidence().anchor)?;
         }
-        "/fabric/vowel/A" | "/fabric/vowel/O" |
-        "/fabric/vowel/I" | "/fabric/vowel/E" => {
+        "/fabric/vowel/A" | "/fabric/vowel/O" | "/fabric/vowel/I" | "/fabric/vowel/E" => {
             let vowel = path.chars().last().unwrap_or('A');
             if let Some(shape) = crate::fabric::vowel_shape(vowel) {
                 write_plain(&mut stream, "200 OK", &shape)?;
