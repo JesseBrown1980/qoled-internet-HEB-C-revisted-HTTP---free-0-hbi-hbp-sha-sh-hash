@@ -71,6 +71,8 @@ jobs:
             echo "FAIL: malformed HBP accepted"; exit 1
           fi
           echo "PASS: corruption rejected"
+      - name: Validate published one-command Bash reproducer end-to-end
+        run: bash scripts/reproduce_native.sh
       - name: Store full reproducible receipts and reconstructed source block
         uses: actions/upload-artifact@v4
         with:
