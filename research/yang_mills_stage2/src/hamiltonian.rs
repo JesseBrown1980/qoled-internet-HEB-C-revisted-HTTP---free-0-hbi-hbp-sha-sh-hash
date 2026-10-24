@@ -16,7 +16,8 @@ fn sign_char(g: u8) -> i64 {
     match g {
         1 | 2 | 5 => -1,
         _ => 1,
-    }}
+    }
+}
 
 fn chi(which: usize, g: u8) -> i64 {
     match which {
@@ -352,5 +353,4 @@ mod tests {
             }
         }
     }
-
 }
