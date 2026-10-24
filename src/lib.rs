@@ -5,6 +5,7 @@
 #![deny(warnings)]
 #![deny(clippy::all)]
 
+pub mod audit;
 pub mod host8_fixture;
 pub mod receipts;
 pub mod server;
