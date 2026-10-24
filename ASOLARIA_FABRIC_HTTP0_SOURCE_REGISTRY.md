@@ -10,6 +10,10 @@ Every `SOURCE` record records exact repository, Git commit, path, and original G
 
 `LINK` records are qualified. `uses` and `pinned_source_in_adapter` describe known source relationships; `view_candidate` and `structural_C3_candidate_only` are **not** executable communication links, compiled dependencies, or physics proofs. HEB-C itself continues running the existing, bounded D3Q27 kernel. The finite S3 torus is a separate research system.
 
+## Canonical IX/LX dictionary and glyph-function source
+
+The source graph now pins [Asolaria IX CATALOG](https://github.com/JesseBrown1980/asolaria-behcs-256/blob/818cc235a6db815e3b2591339cf9b42aad3e85a0/data/agent-index/CATALOG.md), the [original chain-sentence ledger](https://github.com/JesseBrown1980/asolaria-behcs-256/blob/818cc235a6db815e3b2591339cf9b42aad3e85a0/data/agent-index/CHAINS.md), and [IX-060 — the index is a language](https://github.com/JesseBrown1980/asolaria-behcs-256/blob/818cc235a6db815e3b2591339cf9b42aad3e85a0/data/agent-index/patterns/IX-060.md). Their unchanged contents are also in the permanent [IX/LX language archive](canon/IX_LX_GLYPH_DICTIONARY_ORIGINAL.md) with per-source Git OIDs. This is the **actual original dictionary and chain topology**, not a newly invented English grammar. HEB-C catalogs these functions and index sentences but does not yet execute their permissions, verbs or training cascades.
+
 ## 3D colour-matrix and vowel entry points
 
 The native code deterministically projects each source ID into a **small, collision-prone 3D ternary view** and reports the original source/commit/blob identity alongside it, so coordinates are not mistaken for injective addresses.
