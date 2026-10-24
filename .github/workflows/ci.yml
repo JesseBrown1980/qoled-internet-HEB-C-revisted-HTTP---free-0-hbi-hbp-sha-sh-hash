@@ -38,8 +38,7 @@ jobs:
           target/release/hebc-portal --vowel-shape O > repro-output/fabric/vowel-O.hbp
           target/release/hebc-portal --vowel-shape I > repro-output/fabric/vowel-I.hbp
           target/release/hebc-portal --vowel-shape E > repro-output/fabric/vowel-E.hbp
-          grep 'model.*' repro-output/fabric/catalog.stdout >/dev/null || grep 'MODEL|format=GGUF' repro-output/fabric/catalog.stdout
-          grep 'MODE[L]|format=GGUF' repro-output/fabric/catalog.stdout >/dev/null || grep -F 'MODEL|format=GGUF' repro-output/fabric/catalog.stdout
+          grep -F 'MODEL|format=GGUF' repro-output/fabric/catalog.stdout
           grep -F 'speech_synthesis=NOT_VALIDATED' repro-output/fabric/vowel-A.hbp
           cp -r repro-output/fabric repro-output/fabric-bad
           printf X | dd of=repro-output/fabric-bad/catalog.hbp bs=1 seek=50 conv=notrunc status=none
