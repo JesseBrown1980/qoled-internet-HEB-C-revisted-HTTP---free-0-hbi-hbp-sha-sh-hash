@@ -5,6 +5,7 @@
 #![deny(warnings)]
 #![deny(clippy::all)]
 
+pub mod host8_fixture;
 pub mod receipts;
 pub mod server;
 pub mod sha256;
