@@ -255,11 +255,7 @@ mod tests {
     }
     #[test]
     fn evidence_replay_and_corruption_rejection() {
-        let d = std::env::temp_dir().join(format!(
-            "hebc-fabric-{}-{}",
-            std::process::id(),
-            std::thread::current().name().unwrap_or("test")
-        ));
+        let d = std::env::temp_dir().join(format!("hebc-fabric-{}", std::process::id()));
         write(&d).unwrap();
         verify(&d).unwrap();
         let p = d.join("catalog.hbp");
