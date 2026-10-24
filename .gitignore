@@ -1,2 +1,6 @@
 /target
 *.lock.d
+
+/repro-output/
+/research/yang_mills_stage2/target/
+/research/yang_mills_stage2/ci-stress-*/
