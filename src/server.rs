@@ -140,6 +140,19 @@ pub fn generate_plain_html_dashboard(
       <div class="val" style="font-size: 13px; font-family: monospace; word-break: break-all;">{state_sha}</div>
     </div>
 
+    <div class="stat" style="margin-bottom: 20px;">
+      <div class="label">ASOLARIA CONSTELLATION SOURCE REGISTRY (NO MODEL WEIGHTS BUNDLED)</div>
+      <div class="val" style="font-size: 13px; margin-top: 8px;">
+        <a style="color: var(--acc);" href="/fabric/catalog">HBI/HBP source-pinned catalog</a>
+        &middot; <a style="color: var(--acc);" href="/fabric/anchor">SHA anchor</a>
+        &middot; <a style="color: var(--acc);" href="/fabric/vowel/A">A</a>
+        &middot; <a style="color: var(--acc);" href="/fabric/vowel/O">O</a>
+        &middot; <a style="color: var(--acc);" href="/fabric/vowel/I">I</a>
+        &middot; <a style="color: var(--acc);" href="/fabric/vowel/E">E</a>
+      </div>
+      <p style="font-size: 11px; color: var(--muted); margin-top: 8px;">Pinned pointers and integer 3D shape templates; not remote repository execution, GGUF inference, or demonstrated FTL transfer.</p>
+    </div>
+
     <div class="footer">
       <span>Rust 1.81.0 &middot; Clippy Clean &middot; Zero Float Ops</span>
       <span>HBI &rarr; HBP &rarr; SHA &rarr; SH &rarr; HASH</span>
@@ -149,6 +162,15 @@ pub fn generate_plain_html_dashboard(
 </html>
 "#
     )
+}
+
+fn write_plain(stream: &mut TcpStream, status: &str, body: &str) -> std::io::Result<()> {
+    let header = format!(
+        "HTTP/1.1 {status}\r\nContent-Type: text/plain; charset=utf-8\r\nContent-Length: {}\r\nCache-Control: no-store\r\nConnection: close\r\n\r\n",
+        body.len()
+    );
+    stream.write_all(header.as_bytes())?;
+    stream.write_all(body.as_bytes())
 }
 
 /// Handle a single incoming HTTP client request.
@@ -174,6 +196,19 @@ pub fn handle_client(
         .unwrap_or("/");
 
     match path {
+        "/fabric" | "/fabric/catalog" => {
+            write_plain(&mut stream, "200 OK", &crate::fabric::catalog())?;
+        }
+        "/fabric/anchor" => {
+            write_plain(&mut stream, "200 OK", &crate::fabric::evidence().anchor)?;
+        }
+        "/fabric/vowel/A" | "/fabric/vowel/O" |
+        "/fabric/vowel/I" | "/fabric/vowel/E" => {
+            let vowel = path.chars().last().unwrap_or('A');
+            if let Some(shape) = crate::fabric::vowel_shape(vowel) {
+                write_plain(&mut stream, "200 OK", &shape)?;
+            }
+        }
         "/pixel.bmp" => {
             let bmp = render_lattice_bmp_288(state, 12);
             let header = format!(
