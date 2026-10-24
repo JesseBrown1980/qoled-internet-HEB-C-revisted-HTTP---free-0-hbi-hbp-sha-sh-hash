@@ -77,3 +77,46 @@ jobs:
           name: hecb-rust-181-host8-self-contained-repro
           path: repro-output/
           retention-days: 30
+
+  stage2-s3-research:
+    name: Pinned native Rust Yang-Mills Stage 2 research snapshot
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: research/yang_mills_stage2
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Rust 1.81.0 with offline Clippy
+        run: rustup toolchain install 1.81.0 --profile minimal --component rustfmt --component clippy
+      - name: Check pinned Stage 2 source formatting
+        run: cargo +1.81.0 fmt --all -- --check
+      - name: Native Stage 2 integer tests and independent characteristic determinant
+        run: cargo +1.81.0 test --all-targets --offline --locked
+      - name: Native Stage 2 all-target Clippy zero warnings
+        run: cargo +1.81.0 clippy --all-targets --offline --locked -- -D warnings
+      - name: Build finite S3 headless kernel
+        run: cargo +1.81.0 build --release --offline --locked
+      - name: Reproduce physical Gauss Hilbert counts and certified interacting gap
+        run: |
+          target/release/hebc sector single | grep 'physical_hilbert_dim=3'
+          target/release/hebc sector double | grep 'physical_hilbert_dim=11'
+          target/release/hebc sector torus2 | grep 'physical_hilbert_dim=1393'
+          target/release/hebc spectrum 1 0 | grep 'positive=1'
+          target/release/hebc spectrum 1 1 | grep 'positive=1'
+          target/release/hebc spectrum 3 5 | grep 'positive=1'
+          target/release/hebc spectrum 0 0 | grep 'positive=0'
+      - name: Reproduce 1,048,576 encoded Q-trit stress with native receipts
+        run: |
+          target/release/hebc run 3 512 0 ci-stress-512
+          target/release/hebc verify ci-stress-512
+          target/release/hebc run 3 512 0 ci-stress-512-repeat
+          cmp ci-stress-512/run.hbp ci-stress-512-repeat/run.hbp
+          cmp ci-stress-512/index.hbi ci-stress-512-repeat/index.hbi
+          cmp ci-stress-512/run.anchor ci-stress-512-repeat/run.anchor
+      - name: Store Stage 2 S3 native evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: hecb-vendored-yang-mills-stage2-s3-repro
+          path: research/yang_mills_stage2/ci-stress-512/
+          retention-days: 30
