@@ -89,7 +89,7 @@ pub fn rule(name: &str) -> Option<String> {
         || name.len() > 120
         || !name
             .bytes()
-            .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == b'-')
+            .all(|c| c.is_ascii_alphabetic() || c.is_ascii_digit() || c == b'-')
     {
         return None;
     }
