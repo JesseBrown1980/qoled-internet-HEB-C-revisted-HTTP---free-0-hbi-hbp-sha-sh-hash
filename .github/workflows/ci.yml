@@ -120,3 +120,25 @@ jobs:
           name: hecb-vendored-yang-mills-stage2-s3-repro
           path: research/yang_mills_stage2/ci-stress-512/
           retention-days: 30
+
+  windows-cross-platform-repro:
+    name: Windows Rust 1.81 reproducibility (Host8 fixture + finite S3)
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned Windows Rust 1.81.0
+        shell: pwsh
+        run: rustup toolchain install 1.81.0 --profile minimal --component rustfmt --component clippy
+      - name: Native headless PowerShell one-checkout reproduction
+        shell: pwsh
+        run: ./scripts/reproduce_native.ps1
+      - name: Preserve independently generated Windows receipts
+        uses: actions/upload-artifact@v4
+        with:
+          name: hecb-windows-rust181-cross-platform-evidence
+          path: |
+            repro-output/synthetic/
+            repro-output/physical/
+            repro-output/ym-stress-512/
+          retention-days: 30
