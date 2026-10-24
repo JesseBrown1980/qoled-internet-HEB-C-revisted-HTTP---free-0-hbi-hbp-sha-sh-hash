@@ -54,10 +54,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             "--dashboard" => write_dashboard = true,
             "--headless" | "--no-dashboard" => write_dashboard = false,
             "--expect-input-sha" => {
-                if i+1 >= args.len() { return Err("--expect-input-sha needs a value".into()); }
-                expected_source_sha = Some(args[i+1].clone());
+                if i + 1 >= args.len() {
+                    return Err("--expect-input-sha needs a value".into());
+                }
+                expected_source_sha = Some(args[i + 1].clone());
                 i += 1;
-            },
+            }
             "--serve" => serve_portal = true,
             "--port" => {
                 if i + 1 < args.len() {
@@ -96,7 +98,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     let hbi_p = &args[i + 3];
                     println!("[*] Verifying trust anchor: {a_p}");
                     match hebc::audit::verify_files(
-                        std::path::Path::new(a_p), std::path::Path::new(hbp_p), std::path::Path::new(hbi_p)
+                        std::path::Path::new(a_p),
+                        std::path::Path::new(hbp_p),
+                        std::path::Path::new(hbi_p),
                     ) {
                         Ok(_count) => {
                             println!("  [OK] Trust anchor verification passed!");
@@ -170,7 +174,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     if let Some(expected) = expected_source_sha {
         if source_sha != expected {
-            return Err(format!("Source SHA mismatch: expected {expected}, got {source_sha}").into());
+            return Err(
+                format!("Source SHA mismatch: expected {expected}, got {source_sha}").into(),
+            );
         }
     }
     let sh = &source_sha[..16];
@@ -287,7 +293,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         // Display is entirely optional: headless execution never edits tracked HTML.
         if write_dashboard {
             let html_content = generate_plain_html_dashboard(
-                243, &final_state_sha, init_inv.mass, init_inv.energy_2x
+                243,
+                &final_state_sha,
+                init_inv.mass,
+                init_inv.energy_2x,
             );
             fs::write("index.html", html_content)?;
             println!("  Updated index.html (STRICTLY ZERO JAVASCRIPT)");
