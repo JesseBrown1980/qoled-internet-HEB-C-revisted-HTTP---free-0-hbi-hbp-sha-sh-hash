@@ -7,8 +7,8 @@ $out = Join-Path $root "repro-output"
 foreach ($name in @("fixture","synthetic","physical","synthetic-again","physical-again")) {
     New-Item -ItemType Directory -Force (Join-Path $out $name) | Out-Null
 }
-function Checked($command, [string[]]$args) {
-    & $command @args
+function Checked($command, [string[]]$arguments) {
+    & $command @arguments
     if ($LASTEXITCODE -ne 0) { throw "Command failed: $command" }
 }
 Checked cargo @("+1.81.0", "fmt", "--all", "--", "--check")
