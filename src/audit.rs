@@ -14,7 +14,7 @@ use crate::{PROBES_PER_STEP, V, VIRTUAL_PORTALS};
 use std::collections::BTreeMap;
 use std::path::Path;
 
-fn fields(line: &str, prefix: &str) -> Result<BTreeMap<&str, &str>, String> {
+fn fields<'a>(line: &'a str, prefix: &str) -> Result<BTreeMap<&'a str, &'a str>, String> {
     if !line.starts_with(prefix) {
         return Err(format!("wrong record type: {prefix}"));
     }
