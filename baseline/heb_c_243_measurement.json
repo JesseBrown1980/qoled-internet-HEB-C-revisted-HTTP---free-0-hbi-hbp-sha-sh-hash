@@ -1,0 +1,91 @@
+{
+  "done": true,
+  "pass": true,
+  "model": "D3Q27 Host8-style JS port",
+  "source": "synthetic deterministic 64-bit room stubs",
+  "seed": "0x4d5954484f533831",
+  "source_sha256": "be1b5585cafa0cf1dc75293f96914dbfe59a128a07d821588194cb33e36469f6",
+  "gate_count": 288,
+  "ticks": 243,
+  "target": 243,
+  "rooms_per_tick": 13824,
+  "trits_per_tick": 373248,
+  "room_transitions": 3359232,
+  "trit_transitions": 90699264,
+  "per_cell_gates": 32,
+  "gate_applications": 107495424,
+  "mass": 373025,
+  "px": 113,
+  "py": 167,
+  "pz": -60,
+  "energy2": 746316,
+  "invariant_deviations": 0,
+  "loschmidt_extra_forward": 16,
+  "loschmidt_extra_reverse": 16,
+  "loschmidt_mismatches": 0,
+  "reverse_pass": true,
+  "physics_cpu_observed_wall_ms": 2998.6000000024214,
+  "run_wall_ms": 3602.8000000000466,
+  "room_transitions_per_s": 932394.8040412891,
+  "trit_transitions_per_s": 25174659.70911481,
+  "state_sha256": "42fb223a755aef7c4bbefbef87af830d1e19ed2fc64de018d9f412493f41b475",
+  "hbp_sha256": "537e3638c95f68bbfa5133a1592555624c4b7e1a6d8125b9deab8ef34185dc0e",
+  "hbi_sha256": "ec24e369718451a2264729c95b974fab0d7927e77bbb0a5c9d2f62d0cd9252a3",
+  "checkpoints": [
+    {
+      "tick": 27,
+      "stepMs": 408.10000000032596,
+      "fp": "b87cebf6",
+      "mass": 373025
+    },
+    {
+      "tick": 54,
+      "stepMs": 801.4000000006054,
+      "fp": "96f3b1dc",
+      "mass": 373025
+    },
+    {
+      "tick": 81,
+      "stepMs": 1109.4000000013039,
+      "fp": "dfdf4d1e",
+      "mass": 373025
+    },
+    {
+      "tick": 108,
+      "stepMs": 1386.6000000007916,
+      "fp": "b08f5e92",
+      "mass": 373025
+    },
+    {
+      "tick": 135,
+      "stepMs": 1664.600000001723,
+      "fp": "c7ffa8da",
+      "mass": 373025
+    },
+    {
+      "tick": 162,
+      "stepMs": 1963.6000000014901,
+      "fp": "83b779b0",
+      "mass": 373025
+    },
+    {
+      "tick": 189,
+      "stepMs": 2276.800000002142,
+      "fp": "eb48350c",
+      "mass": 373025
+    },
+    {
+      "tick": 216,
+      "stepMs": 2679.100000001723,
+      "fp": "9917750a",
+      "mass": 373025
+    },
+    {
+      "tick": 243,
+      "stepMs": 2998.6000000024214,
+      "fp": "977c6526",
+      "mass": 373025
+    }
+  ],
+  "stopped_at_target": true
+}
