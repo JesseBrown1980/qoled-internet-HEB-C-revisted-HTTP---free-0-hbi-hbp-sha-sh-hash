@@ -5,3 +5,10 @@
 *.md text eol=lf
 *.py text eol=lf
 *.html text eol=lf
+
+*.rs text eol=lf
+*.toml text eol=lf
+*.sh text eol=lf
+*.ps1 text eol=lf
+*.anchor text eol=lf
+*.rooms binary
