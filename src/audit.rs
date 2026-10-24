@@ -105,7 +105,7 @@ pub fn verify_bundle(hbp: &[u8], hbi: &[u8], anchor: &str) -> Result<usize, Stri
 
     let mut prev = GENESIS_CHAIN_HASH.to_string();
     let mut offset = hbp_rows[0].len();
-    let mut first_source: Option<&str> = None;
+    let mut first_source: Option<String> = None;
     for (pos, (raw, raw_index)) in hbp_rows[1..].iter().zip(&hbi_rows[1..]).enumerate() {
         if !raw.ends_with(b"\n") || !raw_index.ends_with(b"\n") {
             return Err("unterminated row".into());
@@ -160,12 +160,12 @@ pub fn verify_bundle(hbp: &[u8], hbi: &[u8], anchor: &str) -> Result<usize, Stri
         {
             return Err(format!("source/SH invalid at tick {tick}"));
         }
-        if let Some(source) = first_source {
+        if let Some(ref source) = first_source {
             if source != src {
                 return Err("source changed within run".into());
             }
         } else {
-            first_source = Some(src);
+            first_source = Some(src.to_owned());
         }
 
         let (original_payload, _) = line
