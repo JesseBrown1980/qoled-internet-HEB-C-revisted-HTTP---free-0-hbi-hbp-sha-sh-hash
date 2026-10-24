@@ -21,6 +21,13 @@ jobs:
           ! find src -type f \( -name '*.js' -o -name '*.json' -o -name '*.ts' \) | grep .
           ! grep -i -E '<script|javascript:' index.html
           test -f Cargo.lock
+      - name: Verify preserved original Asolaria lawbook byte identity and every later law variant
+        run: |
+          test "$(git hash-object canon/COMBINED-BOOK-OF-LAWS.original.md)" = "82b3fe3e833ab34a21451e57f4fb9b0a8d5304f5"
+          test "$(grep -c '^## BEGIN IMMUTABLE SOURCE' canon/RIME_LAWS_58_TO_71_SOURCE_SNAPSHOTS.md)" -eq 15
+          grep -F 'Original Git blob SHA-1: ae05ff790b1c8ce76564d58f5a9dbc95405092d8' canon/RIME_LAWS_58_TO_71_SOURCE_SNAPSHOTS.md
+          grep -F 'Original Git blob SHA-1: 24e5e8837e40804a19bb0bf5048985c179d35272' canon/RIME_LAWS_58_TO_71_SOURCE_SNAPSHOTS.md
+          echo "PASS: 710577-byte original compiled lawbook and all 15 standalone 58-71 source variants preserved"
       - name: Format strictly
         run: cargo +1.81.0 fmt --all -- --check
       - name: Rust 1.81 Clippy zero warnings
