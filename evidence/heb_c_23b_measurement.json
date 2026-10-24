@@ -1,0 +1,105 @@
+{
+  "done": true,
+  "pass": true,
+  "model": "D3Q27 Host8-style JS port + 23B virtual-address routing",
+  "source": "synthetic deterministic 64-bit room stubs",
+  "seed": "0x4d5954484f533831",
+  "source_sha256": "be1b5585cafa0cf1dc75293f96914dbfe59a128a07d821588194cb33e36469f6",
+  "gate_count": 288,
+  "ticks": 243,
+  "target": 243,
+  "rooms_per_tick": 13824,
+  "trits_per_tick": 373248,
+  "room_transitions": 3359232,
+  "trit_transitions": 90699264,
+  "per_cell_gates": 32,
+  "gate_applications": 107495424,
+  "mass": 373025,
+  "px": 113,
+  "py": 167,
+  "pz": -60,
+  "energy2": 746316,
+  "invariant_deviations": 0,
+  "loschmidt_extra_forward": 16,
+  "loschmidt_extra_reverse": 16,
+  "loschmidt_mismatches": 0,
+  "reverse_pass": true,
+  "physics_cpu_observed_wall_ms": 2624.300000000978,
+  "run_wall_ms": 3110.100000000093,
+  "virtual_http0_address_count": 23000000000,
+  "virtual_http0_instances_allocated": 0,
+  "portal_route_probe_count": 1990656,
+  "portal_route_probe_stride": 1000003,
+  "portal_probes_per_transition": 8192,
+  "portal_routing_observed_wall_ms": 70.50000000093132,
+  "portal_probe_rate_per_s": 28236255.31877593,
+  "portal_probe_accumulator": "6182581f",
+  "portal_endpoints_valid": true,
+  "portal_all_sample_addresses_distinct": true,
+  "actual_http_requests": 0,
+  "actual_webrtc_connections": 0,
+  "http0_transport_benchmark": false,
+  "gguf_hrm_model_executed": false,
+  "room_transitions_per_s": 1080104.1767145428,
+  "trit_transitions_per_s": 29162812.771292653,
+  "state_sha256": "42fb223a755aef7c4bbefbef87af830d1e19ed2fc64de018d9f412493f41b475",
+  "hbp_sha256": "bf3e3befe62a60b12e7de41957db1724ba826f552e364eace051d6406790374d",
+  "hbi_sha256": "0805191b405003a87611c0bf7681a6502c696e9ee6943bf8f4acb672dd9fb4a2",
+  "checkpoints": [
+    {
+      "tick": 27,
+      "stepMs": 351.69999999995343,
+      "fp": "b87cebf6",
+      "mass": 373025
+    },
+    {
+      "tick": 54,
+      "stepMs": 677.7999999995809,
+      "fp": "96f3b1dc",
+      "mass": 373025
+    },
+    {
+      "tick": 81,
+      "stepMs": 949.4999999993015,
+      "fp": "dfdf4d1e",
+      "mass": 373025
+    },
+    {
+      "tick": 108,
+      "stepMs": 1217.4999999990687,
+      "fp": "b08f5e92",
+      "mass": 373025
+    },
+    {
+      "tick": 135,
+      "stepMs": 1497.8999999999069,
+      "fp": "c7ffa8da",
+      "mass": 373025
+    },
+    {
+      "tick": 162,
+      "stepMs": 1765.7999999998137,
+      "fp": "83b779b0",
+      "mass": 373025
+    },
+    {
+      "tick": 189,
+      "stepMs": 2038.8999999989755,
+      "fp": "eb48350c",
+      "mass": 373025
+    },
+    {
+      "tick": 216,
+      "stepMs": 2361.399999999907,
+      "fp": "9917750a",
+      "mass": 373025
+    },
+    {
+      "tick": 243,
+      "stepMs": 2624.300000000978,
+      "fp": "977c6526",
+      "mass": 373025
+    }
+  ],
+  "stopped_at_target": true
+}
