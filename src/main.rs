@@ -28,13 +28,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 let dir = args.get(2).map(String::as_str).unwrap_or("evidence/fabric");
                 hebc::fabric::write(std::path::Path::new(dir))?;
                 hebc::fabric::verify(std::path::Path::new(dir))?;
-                println!("FABRIC|result=PASS|source_pins={}|out={dir}|models_materialized=0|json=0", hebc::fabric::SOURCES.len());
+                println!(
+                    "FABRIC|result=PASS|source_pins={}|out={dir}|models_materialized=0|json=0",
+                    hebc::fabric::SOURCES.len()
+                );
                 return Ok(());
             }
             "--fabric-verify" => {
                 let dir = args.get(2).map(String::as_str).unwrap_or("evidence/fabric");
                 hebc::fabric::verify(std::path::Path::new(dir))?;
-                println!("FABRICVERIFY|result=PASS|source_pins={}|json=0", hebc::fabric::SOURCES.len());
+                println!(
+                    "FABRICVERIFY|result=PASS|source_pins={}|json=0",
+                    hebc::fabric::SOURCES.len()
+                );
                 return Ok(());
             }
             "--fabric-catalog" => {
@@ -42,8 +48,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 return Ok(());
             }
             "--vowel-shape" => {
-                let letter = args.get(2).and_then(|x| x.chars().next()).ok_or("usage: --vowel-shape A|O|I|E")?;
-                let body = hebc::fabric::vowel_shape(letter).ok_or("supported vowel shapes: A O I E")?;
+                let letter = args
+                    .get(2)
+                    .and_then(|x| x.chars().next())
+                    .ok_or("usage: --vowel-shape A|O|I|E")?;
+                let body =
+                    hebc::fabric::vowel_shape(letter).ok_or("supported vowel shapes: A O I E")?;
                 print!("{body}");
                 return Ok(());
             }
