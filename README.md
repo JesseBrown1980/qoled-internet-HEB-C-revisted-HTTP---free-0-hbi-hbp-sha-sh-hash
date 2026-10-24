@@ -2,7 +2,7 @@
 
 **[Permanent native source registry, laws, 3D matrix and model boundary](ASOLARIA_FABRIC_HTTP0_SOURCE_REGISTRY.md)** · **[Rust registry implementation](src/fabric.rs)**
 
-**[Byte-identical original Books I–IX](canon/COMBINED-BOOK-OF-LAWS.original.md)** · **[Original standalone Law 58–71 bodies](canon/RIME_LAWS_58_TO_71_SOURCE_SNAPSHOTS.md)** · **[Verified source contract](ASOLARIA_FABRIC_HTTP0_SOURCE_REGISTRY.md)**
+**[Original IX/LX dictionary and chain language](canon/IX_LX_GLYPH_DICTIONARY_ORIGINAL.md)** · **[Byte-identical original Books I–IX](canon/COMBINED-BOOK-OF-LAWS.original.md)** · **[Original standalone Law 58–71 bodies](canon/RIME_LAWS_58_TO_71_SOURCE_SNAPSHOTS.md)** · **[Verified source contract](ASOLARIA_FABRIC_HTTP0_SOURCE_REGISTRY.md)**
 
 The HTTP-0 portal now indexes the existing Asolaria law corpus, original Constellation Rust oscillator/trit source, Q-PRISM 3D harness, and Yang–Mills research via **full Git commit + Git blob pins**. It includes reproducible HBI/HBP/SHA catalog receipts, a deterministic 3D trinary source view, and A/O/I/E vowel *glyph templates*. These are addresses and shapes, not trained voice/audio, runtime GGUF inference, reconstructed remote model weights or a claimed FTL connection. The existing D3Q27 calculation is unchanged.
 
