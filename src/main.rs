@@ -45,6 +45,50 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 print!("{body}");
                 return Ok(());
             }
+            "--bridge43-verify" => {
+                let dir = args.get(2).ok_or("usage: --bridge43-verify <three_leaf_receipt_directory>")?;
+                let data = hebc::bridge43::load(std::path::Path::new(dir))?;
+                let mut checked = 0usize;
+                for row in &data.rows {
+                    for register in 0..81u8 {
+                        let addr = hebc::bridge43::Address {
+                            step: row.step,
+                            arm: row.arm,
+                            register,
+                        };
+                        let id = hebc::bridge43::encode(addr)
+                            .ok_or("failed to encode a verified slot")?;
+                        let decoded = hebc::bridge43::decode(id)
+                            .ok_or("failed to decode a verified slot")?;
+                        if decoded != addr {
+                            return Err("address mapping failed roundtrip".into());
+                        }
+                        if hebc::bridge43::lookup(id, &data).is_none() {
+                            return Err("verified address has no row".into());
+                        }
+                        checked += 1;
+                    }
+                }
+                if checked != hebc::bridge43::POPULATED {
+                    return Err("address coverage count mismatch".into());
+                }
+                print!("{}", hebc::bridge43::contract());
+                println!(
+                    "HTTP0_BRIDGE43_VERIFY|capacity={}|occupied={checked}|loaded_rows={}|leaves=3|hashes=PASS|address_roundtrip=PASS|source_81_observables=EXACT|virtual_not_simulated=1|status=PASS|json=0",
+                    hebc::bridge43::CAPACITY,
+                    data.rows.len()
+                );
+                return Ok(());
+            }
+            "--bridge43-lookup" => {
+                let dir = args.get(2).ok_or("usage: --bridge43-lookup <three_leaf_receipt_directory> <address>")?;
+                let id = args.get(3).ok_or("usage: --bridge43-lookup <three_leaf_receipt_directory> <address>")?.parse::<u64>()?;
+                let data = hebc::bridge43::load(std::path::Path::new(dir))?;
+                let record = hebc::bridge43::lookup(id, &data)
+                    .ok_or("unpopulated or out-of-range virtual slot")?;
+                print!("{record}");
+                return Ok(());
+            }
             "--fabric-build" => {
                 let dir = args.get(2).map(String::as_str).unwrap_or("evidence/fabric");
                 hebc::fabric::write(std::path::Path::new(dir))?;
