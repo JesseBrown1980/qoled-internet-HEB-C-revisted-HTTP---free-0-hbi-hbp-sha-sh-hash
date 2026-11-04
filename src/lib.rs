@@ -11,6 +11,7 @@ pub mod fabric;
 pub mod host8_fixture;
 pub mod law_reader;
 pub mod receipts;
+pub mod scale96;
 pub mod server;
 pub mod sha256;
 pub mod ym43;

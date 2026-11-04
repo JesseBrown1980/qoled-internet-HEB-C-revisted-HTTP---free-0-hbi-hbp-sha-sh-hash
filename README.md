@@ -1,3 +1,7 @@
+## Native 96³ physical computation: 23,887,872 channels
+
+The [new actual D3Q27 compute engine](engine96/README.md) upgrades the supported finite spatial grid from **24³** to **24³, 48³ and 96³**. At 96³ it advances **23,887,872 real ternary channels** with two 23,887,872-byte state buffers and on-the-fly periodic streaming, rather than treating virtual HTTP-0 addresses as computed channels. The prediction-first [Rust 1.81 benchmark](.github/workflows/engine96.yml) requires byte-for-byte legacy 24³ agreement, exact integer conservation, three-step reversal and independent coordinate-streaming checks. The original 243-tick 24³ engine and all certificate records remain pinned; the 192-tick driven Taylor–Green cut-off is separately scoped.
+
 ## New: 3^16 exact three-leaf Clay/Taylor bridge namespace (2026-11-04)
 
 The [HTTP-0 Clay/Taylor address contract](docs/HTTP0-CLAY-3POWER16-BRIDGE.md) provides **43,046,721 virtual 16-trit addresses**—the smallest power of three above 23 million. Exactly **729 addresses are populated** by three measured steps × three arms × 81 real Clay projection registers from the [pinned verified comparison](https://github.com/JesseBrown1980/continuum-Clay-variation/tree/36b304006adfecff13df6ed1098c9ed30433bc3b/bridge/taylor-green). The other addresses are intentionally unpopulated; no 43-million-element simulation or physical-equivalence theorem is claimed.

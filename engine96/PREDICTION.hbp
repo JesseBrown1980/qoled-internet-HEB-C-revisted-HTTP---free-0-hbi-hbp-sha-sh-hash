@@ -1,0 +1,13 @@
+HTTP0_SCALE_PREDICTION|version=1|date=2026-11-04|statement_before_engine_patch=1|scope=UNFORCED_D3Q27|integer_only=1|rust=1.81|json=0
+PRED|id=GATES|expect=288_exact_involutions_and_sha256_a7fca71ac8a85fd3acbe4188e9c246e98e4beeeaa459f3e77d40c0342aa4bb12|json=0
+PRED|id=ROOM24|l=24|cells=13824|channels=373248|ticks=3|expect=old_engine_new_engine_byte_identical_at_each_tick|json=0
+PRED|id=ROOM48|l=48|cells=110592|channels=2985984|ticks=3|expect=integer_conservation_and_reversibility|json=0
+PRED|id=ROOM96|l=96|cells=884736|channels=23887872|ticks=3|expect=integer_conservation_and_reversibility|json=0
+PRED|id=INDEPENDENT96|l=96|ticks=1|expect=streaming_reference_using_original_Taylor_green_coordinate_equations_byte_equal|json=0
+PRED|id=INITIAL|source=exact_old_seed_xorshift64_and_base3|expect=first_24cubed_cells_byte_equal_original_engine|json=0
+PRED|id=MOTION|expect=synthetic_nonuniform_96_state_changes_at_each_step|json=0
+PRED|id=TIME|expect=emit_unrounded_elapsed_ns_native24_new24_new48_new96_no_claim_of_speedup_before_measure|json=0
+PRED|id=MEMORY|expect=96cubed_2_buffers_of_23887872_bytes_no_96cubed_27_usize_destination_table|json=0
+PRED|id=NEGATIVE|expect=reject_l_zero_unsupported_sizes_bad_ticks_nontrit_data|json=0
+PRED|id=SOURCE_SCOPE|original_24_engine_unchanged=1|ym_hamiltonian_unchanged=1|taylor_green_96_record_C1_PASS_A1_FAIL_preserved=1|json=0
+PRED|id=NEXT|full_96cubed_192step_driven_Taylor_green_A1_A2_A3_replay=SEPARATE|json=0
