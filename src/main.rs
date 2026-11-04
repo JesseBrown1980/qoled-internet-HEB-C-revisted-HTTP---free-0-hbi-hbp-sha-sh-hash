@@ -97,7 +97,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 return Ok(());
             }
             "--ym43-verify" => {
-                let dir = args.get(2).ok_or("usage: --ym43-verify <pinned_yang_mills_repo_root>")?;
+                let dir = args
+                    .get(2)
+                    .ok_or("usage: --ym43-verify <pinned_yang_mills_repo_root>")?;
                 let records = hebc::ym43::load(std::path::Path::new(dir))?;
                 if records.records.len() != hebc::ym43::OCCUPIED {
                     return Err("Yang-Mills evidence index incomplete".into());
@@ -109,7 +111,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     if hebc::bridge43::decode(address).is_some() {
                         return Err("Yang-Mills address collides with Clay".into());
                     }
-                    let record = records.lookup(address)
+                    let record = records
+                        .lookup(address)
                         .ok_or("missing registered Yang-Mills record")?;
                     print!("{record}");
                 }
@@ -122,11 +125,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 return Ok(());
             }
             "--ym43-lookup" => {
-                let dir = args.get(2).ok_or("usage: --ym43-lookup <pinned_ym_root> <address>")?;
-                let id = args.get(3).ok_or("usage: --ym43-lookup <pinned_ym_root> <address>")?
+                let dir = args
+                    .get(2)
+                    .ok_or("usage: --ym43-lookup <pinned_ym_root> <address>")?;
+                let id = args
+                    .get(3)
+                    .ok_or("usage: --ym43-lookup <pinned_ym_root> <address>")?
                     .parse::<u64>()?;
                 let store = hebc::ym43::load(std::path::Path::new(dir))?;
-                let record = store.lookup(id).ok_or("unpopulated or out-of-range Yang-Mills slot")?;
+                let record = store
+                    .lookup(id)
+                    .ok_or("unpopulated or out-of-range Yang-Mills slot")?;
                 print!("{record}");
                 return Ok(());
             }
