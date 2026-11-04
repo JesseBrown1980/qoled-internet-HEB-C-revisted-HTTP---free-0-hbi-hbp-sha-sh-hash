@@ -1,3 +1,9 @@
+## New: 3^16 exact three-leaf Clay/Taylor bridge namespace (2026-11-04)
+
+The [HTTP-0 Clay/Taylor address contract](docs/HTTP0-CLAY-3POWER16-BRIDGE.md) provides **43,046,721 virtual 16-trit addresses**—the smallest power of three above 23 million. Exactly **729 addresses are populated** by three measured steps × three arms × 81 real Clay projection registers from the [pinned verified comparison](https://github.com/JesseBrown1980/continuum-Clay-variation/tree/36b304006adfecff13df6ed1098c9ed30433bc3b/bridge/taylor-green). The other addresses are intentionally unpopulated; no 43-million-element simulation or physical-equivalence theorem is claimed.
+
+A new **fail-closed HTTP-0 route** exposes the exact sparse value when the original three SHA-256-pinned HBP leaves and index are locally available, and returns 503 when they are not. Native Rust CLI: `--bridge43-verify <leaf-dir>`; HTTP-0: `/bridge/43m/contract` and `/bridge/43m/address/<id>`. The separate 23-billion virtual portal is unchanged. [CI verifies original Taylor–Green inputs, 3 leaves and corrupted-receipt rejection](.github/workflows/bridge43.yml).
+
 ## Asolaria Constellation source fabric — pinned inside HTTP-0
 
 **[Permanent native source registry, laws, 3D matrix and model boundary](ASOLARIA_FABRIC_HTTP0_SOURCE_REGISTRY.md)** · **[Rust registry implementation](src/fabric.rs)**
