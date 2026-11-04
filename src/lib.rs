@@ -7,6 +7,7 @@
 
 pub mod audit;
 pub mod bridge43;
+pub mod ym43;
 pub mod fabric;
 pub mod host8_fixture;
 pub mod law_reader;
