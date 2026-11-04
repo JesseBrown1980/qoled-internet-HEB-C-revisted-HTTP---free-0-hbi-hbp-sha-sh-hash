@@ -1,0 +1,78 @@
+name: Actual D3Q27 24³ to 96³ compute benchmark
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "src/scale96.rs"
+      - "src/lib.rs"
+      - "src/main.rs"
+      - "engine96/**"
+      - ".github/workflows/engine96.yml"
+  push:
+    branches: [main]
+    paths:
+      - "src/scale96.rs"
+      - "src/lib.rs"
+      - "src/main.rs"
+      - "engine96/**"
+      - ".github/workflows/engine96.yml"
+permissions:
+  contents: read
+jobs:
+  physical-96:
+    name: Native 23,887,872-channel evolution, reversibility and speed
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - name: Checkout exact candidate source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Rust 1.81 pinned toolchain
+        run: rustup toolchain install 1.81.0 --profile minimal --component rustfmt --component clippy
+      - name: Exact source-format, lint and real unit tests
+        run: |
+          set -euo pipefail
+          cargo +1.81.0 fmt --all -- --check
+          cargo +1.81.0 clippy --locked --offline --all-targets -- -D warnings
+          cargo +1.81.0 test --locked --offline --lib scale96
+      - name: Build actual optimized engine
+        run: cargo +1.81.0 build --release --locked --offline
+      - name: Three actual physical steps on 24³, 48³ and 96³
+        run: |
+          set -euo pipefail
+          mkdir -p engine96/out
+          for side in 24 48 96; do
+            target/release/hebc-portal --bench-engine "$side" 3 | tee "engine96/out/SCALE-$side.hbp"
+            grep -F "ENGINE96_RESULT|side=$side|" "engine96/out/SCALE-$side.hbp" | grep -F 'reversal=PASS'
+            test "$(grep -c "^ENGINE96_TICK|side=$side|" "engine96/out/SCALE-$side.hbp")" -eq 3
+          done
+          grep -F 'channels=373248|' engine96/out/SCALE-24.hbp | grep -F 'old24_byte_equal=PASS'
+          grep -F 'channels=2985984|' engine96/out/SCALE-48.hbp | grep -F 'status=PASS'
+          grep -F 'channels=23887872|' engine96/out/SCALE-96.hbp | grep -F 'reference96_first_step=PASS'
+          grep -F 'physical_two_buffer_bytes=47775744|' engine96/out/SCALE-96.hbp
+      - name: Independent 96³ deterministic second run and adversarial arguments
+        run: |
+          set -euo pipefail
+          target/release/hebc-portal --bench-engine 96 3 > engine96/out/SCALE-96-repeat.hbp
+          grep '^ENGINE96_TICK' engine96/out/SCALE-96.hbp | sed -E 's/elapsed_ns=[0-9]+/elapsed_ns=MEASURED/' > engine96/out/sha-first.txt
+          grep '^ENGINE96_TICK' engine96/out/SCALE-96-repeat.hbp | sed -E 's/elapsed_ns=[0-9]+/elapsed_ns=MEASURED/' > engine96/out/sha-repeat.txt
+          cmp engine96/out/sha-first.txt engine96/out/sha-repeat.txt
+          if target/release/hebc-portal --bench-engine 97 3; then echo 'unexpected size accepted'; exit 1; fi
+          if target/release/hebc-portal --bench-engine 96 0; then echo 'zero ticks accepted'; exit 1; fi
+          if target/release/hebc-portal --bench-engine 96 244; then echo 'too many ticks accepted'; exit 1; fi
+          if target/release/hebc-portal --bench-engine 96 nope; then echo 'malformed tick accepted'; exit 1; fi
+          echo 'ENGINE96_FAULTS|bad_side=REJECTED|bad_tick_zero=REJECTED|too_many_ticks=REJECTED|noninteger_ticks=REJECTED|repeat_96_sha=PASS|json=0' | tee engine96/out/FAULTS.hbp
+      - name: Seal physical simulation receipts
+        run: |
+          set -euo pipefail
+          (cd engine96/out && sha256sum SCALE-24.hbp SCALE-48.hbp SCALE-96.hbp SCALE-96-repeat.hbp FAULTS.hbp > SHA256SUMS)
+          (cd engine96/out && sha256sum -c SHA256SUMS)
+      - name: Retain 24³–96³ physical computation and elapsed-nanosecond records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: actual-d3q27-96cubed-benchmark
+          path: |
+            engine96/out/SCALE-*.hbp
+            engine96/out/FAULTS.hbp
+            engine96/out/SHA256SUMS
+          if-no-files-found: warn
