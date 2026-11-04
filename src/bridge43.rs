@@ -20,8 +20,7 @@ pub const LEAF_HASHES: [&str; 3] = [
     "67c1ceb79d45761b68835910e0a05c76564785b77b487bff3fe6d5a49901b11e",
     "c638926523a7b45e44e1396320a4f3a640c17633716e65824351a8a543819c9f",
 ];
-pub const INDEX_HASH: &str =
-    "7c4b65c4c36e57d5447b5ece0312d1e2e440d2b09cae192ccbafa38ae0501f51";
+pub const INDEX_HASH: &str = "7c4b65c4c36e57d5447b5ece0312d1e2e440d2b09cae192ccbafa38ae0501f51";
 pub const ARM_NAMES: [&str; 3] = ["TGV", "SCR", "NULL"];
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -125,9 +124,13 @@ fn field<'a>(line: &'a str, label: &str) -> Result<&'a str, String> {
 fn parse_csv_i64<const N: usize>(src: &str) -> Result<[i64; N], String> {
     let v: Vec<i64> = src
         .split(',')
-        .map(|x| x.parse::<i64>().map_err(|_| "bad signed integer".to_string()))
+        .map(|x| {
+            x.parse::<i64>()
+                .map_err(|_| "bad signed integer".to_string())
+        })
         .collect::<Result<_, _>>()?;
-    v.try_into().map_err(|_| format!("expected {N} signed values"))
+    v.try_into()
+        .map_err(|_| format!("expected {N} signed values"))
 }
 fn parse_csv_u64<const N: usize>(src: &str) -> Result<[u64; N], String> {
     let v: Vec<u64> = src
@@ -139,7 +142,10 @@ fn parse_csv_u64<const N: usize>(src: &str) -> Result<[u64; N], String> {
 
 impl ReceiptStore {
     pub fn get(&self, slot: Address) -> Option<(i64, u64)> {
-        let row = self.rows.iter().find(|r| r.step == slot.step && r.arm == slot.arm)?;
+        let row = self
+            .rows
+            .iter()
+            .find(|r| r.step == slot.step && r.arm == slot.arm)?;
         let i = usize::from(slot.register);
         Some((row.signed[i], row.field[i]))
     }
@@ -148,8 +154,8 @@ impl ReceiptStore {
 /// Read only three complete, published, byte-pinned leaf receipts.
 /// No network access, data generation, or substitute fixtures on failure.
 pub fn load(dir: &Path) -> Result<ReceiptStore, String> {
-    let index = std::fs::read(dir.join("LEAVES.hbi"))
-        .map_err(|e| format!("missing LEAVES.hbi: {e}"))?;
+    let index =
+        std::fs::read(dir.join("LEAVES.hbi")).map_err(|e| format!("missing LEAVES.hbi: {e}"))?;
     if hash_bytes(&index) != INDEX_HASH {
         return Err("HBI index SHA256 mismatch".into());
     }
@@ -161,8 +167,7 @@ pub fn load(dir: &Path) -> Result<ReceiptStore, String> {
     let mut rows = Vec::with_capacity(9);
     for step in 1..=3usize {
         let name = format!("LEAF-{step}.hbp");
-        let leaf = std::fs::read(dir.join(&name))
-            .map_err(|e| format!("missing {name}: {e}"))?;
+        let leaf = std::fs::read(dir.join(&name)).map_err(|e| format!("missing {name}: {e}"))?;
         if hash_bytes(&leaf) != LEAF_HASHES[step - 1] {
             return Err(format!("{name} SHA256 mismatch"));
         }
@@ -180,8 +185,8 @@ pub fn load(dir: &Path) -> Result<ReceiptStore, String> {
         {
             return Err(format!("HBI row {step} inconsistent"));
         }
-        let leaf_text = String::from_utf8(leaf)
-            .map_err(|_| format!("invalid leaf UTF8 at {step}"))?;
+        let leaf_text =
+            String::from_utf8(leaf).map_err(|_| format!("invalid leaf UTF8 at {step}"))?;
         let lines: Vec<&str> = leaf_text.lines().collect();
         if lines.len() != 5
             || !lines[0].starts_with("LEAF_HEADER|")
@@ -211,9 +216,7 @@ pub fn load(dir: &Path) -> Result<ReceiptStore, String> {
                 return Err(format!("residue mapping mismatch {step}/{arm}"));
             }
             let global = parse_csv_i64::<3>(field(record, "global")?)?;
-            let q: u64 = field(record, "Q")?
-                .parse()
-                .map_err(|_| "bad Q field")?;
+            let q: u64 = field(record, "Q")?.parse().map_err(|_| "bad Q field")?;
             if q != signed.iter().sum::<i64>().rem_euclid(P) as u64
                 || q != global.iter().sum::<i64>().rem_euclid(P) as u64
                 || field(record, "mass")? != "373248"
@@ -221,9 +224,10 @@ pub fn load(dir: &Path) -> Result<ReceiptStore, String> {
             {
                 return Err(format!("total/energy mismatch {step}/{arm}"));
             }
-            if label == "NULL" && (signed.iter().any(|&j| j != 0)
-                || field(record, "moved_trits")? != "0"
-                || field(record, "local_defect")? != "0")
+            if label == "NULL"
+                && (signed.iter().any(|&j| j != 0)
+                    || field(record, "moved_trits")? != "0"
+                    || field(record, "local_defect")? != "0")
             {
                 return Err(format!("NULL moved at {step}"));
             }
@@ -292,7 +296,11 @@ mod tests {
         for step in 1..=3 {
             for arm in 0..3 {
                 for register in 0..81 {
-                    let slot = Address { step, arm, register };
+                    let slot = Address {
+                        step,
+                        arm,
+                        register,
+                    };
                     let id = encode(slot).expect("valid slot");
                     assert!(unique.insert(id));
                     assert_eq!(decode(id), Some(slot));
@@ -311,9 +319,24 @@ mod tests {
         assert!(decode(CAPACITY).is_none());
         assert!(decode(CAPACITY - 1).is_none());
         assert!(decode(81).is_none());
-        assert!(encode(Address { step: 0, arm: 0, register: 0 }).is_none());
-        assert!(encode(Address { step: 1, arm: 3, register: 0 }).is_none());
-        assert!(encode(Address { step: 1, arm: 0, register: 81 }).is_none());
+        assert!(encode(Address {
+            step: 0,
+            arm: 0,
+            register: 0
+        })
+        .is_none());
+        assert!(encode(Address {
+            step: 1,
+            arm: 3,
+            register: 0
+        })
+        .is_none());
+        assert!(encode(Address {
+            step: 1,
+            arm: 0,
+            register: 81
+        })
+        .is_none());
         assert_eq!(from_trits16(&[3; 16]), None);
         let max = to_trits16(CAPACITY - 1).unwrap();
         assert_eq!(from_trits16(&max), Some(CAPACITY - 1));
