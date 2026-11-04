@@ -22,6 +22,14 @@ A separate 8-byte packed *room representation* would use 7,077,888 bytes at 96³
 
 The system's existing HTTP-0 (3^{16}=43,046,721) virtual address scheme and its 732 verified source slots remain a separate capability. They do **not** provide the physical mutable state.
 
+## First measured hosted 96³ run
+
+[Exact HBP measurement record](MEASURED-20261104.hbp) · [GitHub Actions run 41882698750](https://github.com/JesseBrown1980/qoled-internet-HEB-C-revisted-HTTP---free-0-hbi-hbp-sha-sh-hash/actions/runs/41882698750).
+
+The first Rust 1.81 hosted run computed all three updates and their reverse at 96³. Forward collision-and-stream timing was **1,025,157,327 ns for three steps**, with the three 96³ forward ticks measuring 347,899,742 ns, 338,463,012 ns and 338,794,573 ns. At 24³ the original engine took **14,188,226 ns** and the new general engine took **16,446,135 ns** for the same three steps, with every output byte matching. The 48³ 3-step time was **128,052,008 ns**. This records computational scaling; the new generalized engine has **not** shown an advantage over the original optimized 24³ implementation.
+
+All original 96³ trit state hashes were reproduced by a second full run. Lossless three-step reversal, integer invariants and the pinned Taylor–Green 288-gate SHA matched. The recorded output came from code head `2fcf531`; the later change adds strict input validation without modifying simulation kernels.
+
 ## Native computation and measurement
 
 The new [Rust 1.81 engine](../src/scale96.rs) reuses the repository's **exact original 288 involutive collision gates**, deterministic xorshift64 seed, 32 collisions per cell per step and periodic D3Q27 streaming. Its physical state transition has no floating-point operations, external runtime libraries, JSON or Node dependency.
