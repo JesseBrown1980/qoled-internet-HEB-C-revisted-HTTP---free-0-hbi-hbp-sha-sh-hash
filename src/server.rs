@@ -295,8 +295,9 @@ pub fn handle_client(
             };
             write_plain(&mut stream, status, &body)?;
         }
-        target if target.starts_with("/ym/43m/address/")
-            || target.starts_with("/bridge/43m/lookup/") =>
+        target
+            if target.starts_with("/ym/43m/address/")
+                || target.starts_with("/bridge/43m/lookup/") =>
         {
             let global = target.starts_with("/bridge/43m/lookup/");
             let prefix = if global {
