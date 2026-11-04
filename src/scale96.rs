@@ -58,12 +58,7 @@ pub fn seeded_occupancies(side: usize) -> Vec<u8> {
 fn registered_gate_sha(gates: &[CollisionGate]) -> String {
     let mut bytes = Vec::with_capacity(gates.len() * 85);
     for gate in gates {
-        bytes.extend_from_slice(&[
-            gate.a as u8,
-            gate.b as u8,
-            gate.c as u8,
-            gate.d as u8,
-        ]);
+        bytes.extend_from_slice(&[gate.a as u8, gate.b as u8, gate.c as u8, gate.d as u8]);
         bytes.extend_from_slice(&gate.lut);
     }
     crate::sha256::hash_bytes(&bytes)
@@ -124,11 +119,7 @@ impl ScaledEngine {
         let side2k = side * side * K;
         let sidek = side * K;
         for x in 0..side {
-            let xx = [
-                self.minus[x] * side2k,
-                x * side2k,
-                self.plus[x] * side2k,
-            ];
+            let xx = [self.minus[x] * side2k, x * side2k, self.plus[x] * side2k];
             for y in 0..side {
                 let yy = [self.minus[y] * sidek, y * sidek, self.plus[y] * sidek];
                 for z in 0..side {
@@ -259,8 +250,7 @@ pub fn run_benchmark(side: usize, ticks: usize) -> Result<String, String> {
         let stubs = crate::generate_synthetic_stubs();
         let mut old_state = vec![0u8; crate::N];
         unpack_room_stubs(&stubs, &mut old_state);
-        if old_state != initial
-            || compute_integer_invariants(&old_state, &v) != baseline_invariants
+        if old_state != initial || compute_integer_invariants(&old_state, &v) != baseline_invariants
         {
             return Err("old 24^3 deterministic initial state mismatch".into());
         }
@@ -298,7 +288,9 @@ pub fn run_benchmark(side: usize, ticks: usize) -> Result<String, String> {
         elapsed_new_ns += ns;
 
         if engine.invariants() != baseline_invariants || engine.state.iter().any(|&s| s > 2) {
-            return Err(format!("conservation or occupancy invariant failed at tick {tick}"));
+            return Err(format!(
+                "conservation or occupancy invariant failed at tick {tick}"
+            ));
         }
         if before == engine.state {
             return Err(format!("no state movement at tick {tick}"));
@@ -369,11 +361,7 @@ mod tests {
 
     #[test]
     fn finite_size_validation_and_memory() {
-        for (side, expected_channels) in [
-            (24, 373_248),
-            (48, 2_985_984),
-            (96, 23_887_872),
-        ] {
+        for (side, expected_channels) in [(24, 373_248), (48, 2_985_984), (96, 23_887_872)] {
             assert_eq!(validate_size(side), Ok(expected_channels));
             assert_eq!(2 * expected_channels, 2 * seeded_occupancies(side).len());
         }
