@@ -14,6 +14,12 @@ The HTTP-0 portal now indexes the existing Asolaria law corpus, original Constel
 
 Build catalog offline: `cargo +1.81.0 run --release --locked --offline -- --fabric-build repro-output/fabric`; independently replay: `--fabric-verify repro-output/fabric`; view `--fabric-catalog` or `--vowel-shape A`. Optional loopback `/fabric/catalog`, `/fabric/anchor`, `/fabric/vowel/A` (O/I/E similarly).
 
+## New: finite Yang–Mills certificate index in the 3^16 HTTP-0 portal
+
+The [pinned Yang–Mills 3×4 evidence bridge](docs/HTTP0-YANG-MILLS-3POWER16.md) occupies addresses **81, 82 and 83** in a **distinct ternary source domain**, alongside the 729 verified Clay/Taylor–Green leaf observations. This makes **732 occupied source/observation slots** in the existing **43,046,721-address** space. The bridge reads and validates the *original* Perron, full-row-rebuild and all-pairs HBP records by SHA-256; it **does not recompute the spectrum, promote the 3×4 gap verdict from OPEN, or equate the two physical models**.
+
+Read-only native HTTP-0 endpoints: **/bridge/43m/catalog**, **/ym/43m/contract**, **/ym/43m/address/81**, **/bridge/43m/lookup/81**. Original 23-billion virtual portal and prior 729 Clay slots remain unchanged. [Independent native CI and fault controls](.github/workflows/ym43.yml).
+
 # HEB-C — Canonical Rust 1.81 Native Kernel and Self-Contained Reproduction
 
 **[One-checkout complete reproduction](REPRODUCE_NATIVE_RUST_181.md)** · **[Finite S3 Yang–Mills Stage 2 reference included](research/yang_mills_stage2/README.md)** · **[GitHub native CI](.github/workflows/ci.yml)**
