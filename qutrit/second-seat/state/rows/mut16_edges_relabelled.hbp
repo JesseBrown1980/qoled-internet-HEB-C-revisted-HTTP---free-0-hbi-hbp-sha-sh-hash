@@ -1,0 +1,10 @@
+OWN_READ|qutrits=16|cycle=1|when=after_first_fourier|stat_e9=999999999|dp1=43046721|dp2=0|dp3=0|a=449343393494594481|b=5457963869306355271288806|c=16573833080630327461973995309689|sum_q=19342813113845371106920683|norm_full=1267650600228970243635405760209|scale=50|json=0
+OWN_READ|qutrits=16|cycle=40|when=end_of_cycle|stat_e9=1999623558|dp1=15836391|dp2=5825919|dp3=2141245|a=898515718829907257|b=19344264273067493789240926|c=277604707805568948929724229806410|sum_q=19342813113828262086070590|norm_full=1267650600227848985482937644450|scale=50|json=0
+OWN_GATES|mut=edges_relabelled|f=640|t=640|t_zero=84|cz=240|ms=231915|json=0
+OWN_AMP|mut=edges_relabelled|scale=50|label=0|re=65946113489|im=-97393179442|json=0
+OWN_AMP|mut=edges_relabelled|scale=50|label=1|re=170608098804|im=74919319444|json=0
+OWN_AMP|mut=edges_relabelled|scale=50|label=2|re=87694686354|im=111790062555|json=0
+OWN_AMP|mut=edges_relabelled|scale=50|label=81|re=-40884801|im=-106444455677|json=0
+OWN_AMP|mut=edges_relabelled|scale=50|label=82|re=134783242951|im=-160553953385|json=0
+OWN_AMP|mut=edges_relabelled|scale=50|label=83|re=-95683482658|im=108488919311|json=0
+OWN_AMP|mut=edges_relabelled|scale=50|label=43046720|re=202747025665|im=-1029979274|json=0

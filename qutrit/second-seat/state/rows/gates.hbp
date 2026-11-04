@@ -1,0 +1,21 @@
+CONST|engine_root=665639541039271462|own_root=665639541039271463|json=0
+CONST|power=0|cos_off_ulps=0|sin_off_ulps=0|json=0
+CONST|power=1|cos_off_ulps=0|sin_off_ulps=-1|json=0
+CONST|power=2|cos_off_ulps=-1|sin_off_ulps=-1|json=0
+CONST|power=3|cos_off_ulps=0|sin_off_ulps=-1|json=0
+CONST|power=4|cos_off_ulps=0|sin_off_ulps=-1|json=0
+CONST|power=5|cos_off_ulps=0|sin_off_ulps=1|json=0
+CONST|power=6|cos_off_ulps=0|sin_off_ulps=1|json=0
+CONST|power=7|cos_off_ulps=-1|sin_off_ulps=1|json=0
+CONST|power=8|cos_off_ulps=0|sin_off_ulps=1|json=0
+F_MATRIX|trials=2000000|largest_part_difference_ulps=1|json=0
+F_SIGNED_MEAN|output=0|re_mean_1e-4_ulps=0|im_mean_1e-4_ulps=-1|json=0
+F_SIGNED_MEAN|output=1|re_mean_1e-4_ulps=2504|im_mean_1e-4_ulps=-2502|json=0
+F_SIGNED_MEAN|output=2|re_mean_1e-4_ulps=-2495|im_mean_1e-4_ulps=2494|json=0
+F_COLUMN|input=0|x=(665639541039271462, 0)|y=(665639541039271462, 0)|z=(665639541039271462, 0)|expected=(665639541039271463, 0),(665639541039271463, 0),(665639541039271463, 0)|json=0
+F_COLUMN|input=1|x=(665639541039271462, 0)|y=(-332819770519635731, 576460752303423488)|z=(-332819770519635731, -576460752303423488)|expected=(665639541039271463, 0),(-332819770519635732, 576460752303423488),(-332819770519635732, -576460752303423488)|json=0
+F_COLUMN|input=2|x=(665639541039271462, 0)|y=(-332819770519635731, -576460752303423488)|z=(-332819770519635731, 576460752303423488)|expected=(665639541039271463, 0),(-332819770519635732, -576460752303423488),(-332819770519635732, 576460752303423488)|json=0
+T_POWER|register=3^6|strides=6|powers=1..8|labels=729|worst_part_ulps=0|json=0
+CZ3_RULE|register=3^6|pairs=15|labels=729|worst_part_ulps=0|json=0
+GRID_EDGES|distinct=24|grid_edges_expected=24|each_seen_over_40_cycles=10|gates_total=240|per_pattern=[8, 8, 4, 4]|disjoint_in_each_pattern=1|equal_to_own_filter=1|p_less_than_q=1|json=0
+ADDRESS_ORDER|qutrit_q_is_stride_3^q=1|its_trit_in_the_16_trit_string_is_position_15-q_from_the_left|checked=6/6|grid_cell_of_q=row_q_div_4_col_q_mod_4|json=0

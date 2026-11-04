@@ -1,0 +1,121 @@
+CHECK|receipt_rows|got=86|want=86|ok=1
+CHECK|receipt_sha|got=c16c54f7e8cc855ba54e89bb75833cc6b759a9f8ad58ca46f62161a50262ab5b|want=c16c54f7e8cc855ba54e89bb75833cc6b759a9f8ad58ca46f62161a50262ab5b|ok=1
+CHECK|receipt_eq_all.out|got=c16c54f7e8cc855ba54e89bb75833cc6b759a9f8ad58ca46f62161a50262ab5b|want=c16c54f7e8cc855ba54e89bb75833cc6b759a9f8ad58ca46f62161a50262ab5b|ok=1
+CHECK|qutrits|got=23887872|want=23887872|ok=1
+CHECK|fourier|got=23887872|want=23887872|ok=1
+CHECK|t|got=23887872|want=23887872|ok=1
+CHECK|ring|got=23887872|want=23887872|ok=1
+CHECK|stream|got=23003136|want=23003136|ok=1
+CHECK|stream=rooms*26|got=23003136|want=23003136|ok=1
+CHECK|cz_total|got=46891008|want=46891008|ok=1
+CHECK|cz_sum|got=46891008|want=46891008|ok=1
+CHECK|coll|got=28311552|want=28311552|ok=1
+CHECK|coll=rooms*32|got=28311552|want=28311552|ok=1
+CHECK|tables|got=288|want=288|ok=1
+CHECK|bytes|got=23887872|want=23887872|ok=1
+DERIVED|collision_gates_in_3_ticks=84934656|per_read_T_plus_CZ_terms=70778880
+CHECK|branch_A_phase|got=8|want=8|ok=1
+CHECK|branch_A_read|got=8|want=8|ok=1
+CHECK|branch_A_rev|got=11|want=11|ok=1
+CHECK|branch_A_counts_consistent|got=0|want=0|ok=1
+DERIVED|branch=A|n0=7962014|n1=7961913|n2=7963945
+CHECK|branch_B_phase|got=8|want=8|ok=1
+CHECK|branch_B_read|got=8|want=8|ok=1
+CHECK|branch_B_rev|got=11|want=11|ok=1
+CHECK|branch_B_counts_consistent|got=0|want=0|ok=1
+DERIVED|branch=B|n0=7964472|n1=7962565|n2=7960835
+CHECK|branch_C_A_with_one_trit_changed_phase|got=0|want=0|ok=1
+CHECK|branch_C_A_with_one_trit_changed_read|got=0|want=0|ok=1
+CHECK|branch_C_A_with_one_trit_changed_rev|got=11|want=11|ok=1
+CHECK|branch_C_A_with_one_trit_changed_counts_consistent|got=0|want=0|ok=1
+DERIVED|branch=C_A_with_one_trit_changed|n0=7962014|n1=7961912|n2=7963946
+CHECK|cone|got=(69, 9261, 3, 0)|want=(69, 9261, 3, 0)|ok=1
+CHECK|cone_ceiling|got=9261|want=9261|ok=1
+CHECK|flipped_site|got=12069648|want=12069648|ok=1
+CHECK|flips|got=(81, 81, 93806350, 93806350)|want=(81, 81, 93806350, 93806350)|ok=1
+CHECK|twice_cz|got=93806350|want=93806350|ok=1
+CHECK|rungs|got=16|want=16|ok=1
+CHECK|top|got=43046721|want=43046721|ok=1
+DERIVED|ring_flips_per_power=3,9,27,81,81,81,81,81,81,81,81,81,81,81,81,81
+CHECK|norm_max|got=3|want=3|ok=1
+CHECK|cycles|got=[1, 2, 3, 4, 6, 8, 12, 16, 20, 24, 32, 40]|want=[1, 2, 3, 4, 6, 8, 12, 16, 20, 24, 32, 40]|ok=1
+CHECK|xeb_table|got=[1000000, 1444444, 65982442, 3395840, 2003499, 2018045, 2000417, 2000647, 1999926, 1999317, 1999680, 1999463]|want=[1000000, 1444444, 65982442, 3395840, 2003499, 2018045, 2000417, 2000647, 1999926, 1999317, 1999680, 1999463]|ok=1
+MEASURED|frac_off_ppm=31,-19,-23
+CHECK|state_gates|got=('640', '640', '240', '688747536')|want=('640', '640', '240', '688747536')|ok=1
+CHECK|window_xeb|got=[1518518, 1493827, 1499923, 1499999, 1499999]|want=[1518518, 1493827, 1499923, 1499999, 1499999]|ok=1
+MEASURED|window_norm_off_1e-15=0,0,0,1,8|window_dp_above_3=0,0,0,0,0
+CHECK|window_27|got=('27', '27')|want=('27', '27')|ok=1
+MEASURED|window_full_recomputations_other_m=27,0,0,0,0
+DERIVED|largest_window_ulps=1166|in_units_1e-19=10113|amps_compared=4,4,7,7,7|of_total=29
+DERIVED|window_amplitudes_total=43584831
+CHECK|window_xeb_second|got=True|want=True|ok=1
+CHECK|small|got=[('486', '0', '9', '1'), ('1458', '0', '11', '1'), ('39366', '0', '22', '1')]|want=[('486', '0', '9', '1'), ('1458', '0', '11', '1'), ('39366', '0', '22', '1')]|ok=1
+CHECK|lat2|got=('1', '71673473', '46903175', '8')|want=('1', '71673473', '46903175', '8')|ok=1
+CHECK|rings2|got=16|want=16|ok=1
+CHECK|second_route_is_logs|got=SECOND_ROUTE_SMALL|rows=1|cols=5|cycles=6|amplitudes=243|exact_sum_abs2_equals_3^fourier=1|fourier_gates=30|parts=486|parts_above_1e-12=0|largest_difference_ulps_of_2^-60=9|zeta_constants_largest_off_ulps=2|root_off_ulps=0|json=0
+SECOND_ROUTE_SMALL|rows=2|cols=3|cycles=6|amplitudes=729|exact_sum_abs2_equals_3^fourier=1|fourier_gates=36|parts=1458|parts_above_1e-12=0|largest_difference_ulps_of_2^-60=11|zeta_constants_largest_off_ulps=2|root_off_ulps=0|json=0
+SECOND_ROUTE_SMALL|rows=3|cols=3|cycles=6|amplitudes=19683|exact_sum_abs2_equals_3^fourier=1|fourier_gates=54|parts=39366|parts_above_1e-12=0|largest_difference_ulps_of_2^-60=22|zeta_constants_largest_off_ulps=2|root_off_ulps=0|json=0
+SECOND_ROUTE_WINDOW|m=3|chain=1|amplitudes_compared=4|largest_difference_ulps_of_2^-60=2|xeb_ppm_exact=1518518|xeb_ppm_read=1518518|json=0
+SECOND_ROUTE_WINDOW|m=4|chain=1|amplitudes_compared=4|largest_difference_ulps_of_2^-60=3|xeb_ppm_exact=1493827|xeb_ppm_read=1493827|json=0
+SECOND_ROUTE_WINDOW|m=8|chain=1|amplitudes_compared=7|largest_difference_ulps_of_2^-60=26|xeb_ppm_exact=1499923|xeb_ppm_read=1499923|json=0
+SECOND_ROUTE_WINDOW|m=12|chain=1|amplitudes_compared=7|largest_difference_ulps_of_2^-60=125|xeb_ppm_exact=1499999|xeb_ppm_read=1499999|json=0
+SECOND_ROUTE_WINDOW|m=16|chain=1|amplitudes_compared=7|largest_difference_ulps_of_2^-60=1166|xeb_ppm_exact=1499999|xeb_ppm_read=1499999|json=0
+SECOND_ROUTE_LATTICE|side=96|qutrits=23887872|same_sha256=1|t_sum=71673473|cz_sum=46903175|cz3_ring=23887872|cz3_along_streaming=23003136|phase_mod_9=8|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=1|qutrits=3|t_sum=16|cz_sum=4|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=2|qutrits=9|t_sum=26|cz_sum=6|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=3|qutrits=27|t_sum=84|cz_sum=24|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=4|qutrits=81|t_sum=242|cz_sum=85|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=5|qutrits=243|t_sum=744|cz_sum=249|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=6|qutrits=729|t_sum=2074|cz_sum=670|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=7|qutrits=2187|t_sum=6451|cz_sum=2112|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=8|qutrits=6561|t_sum=19453|cz_sum=6421|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=9|qutrits=19683|t_sum=58999|cz_sum=19542|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=10|qutrits=59049|t_sum=177660|cz_sum=59150|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=11|qutrits=177147|t_sum=531989|cz_sum=177106|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=12|qutrits=531441|t_sum=1595166|cz_sum=530796|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=13|qutrits=1594323|t_sum=4780308|cz_sum=1592032|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=14|qutrits=4782969|t_sum=14337511|cz_sum=4776631|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=15|qutrits=14348907|t_sum=43043483|cz_sum=14350061|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=16|qutrits=43046721|t_sum=129122307|cz_sum=43041568|equal_to_the_rust_row=1|json=0
+|want=SECOND_ROUTE_SMALL|rows=1|cols=5|cycles=6|amplitudes=243|exact_sum_abs2_equals_3^fourier=1|fourier_gates=30|parts=486|parts_above_1e-12=0|largest_difference_ulps_of_2^-60=9|zeta_constants_largest_off_ulps=2|root_off_ulps=0|json=0
+SECOND_ROUTE_SMALL|rows=2|cols=3|cycles=6|amplitudes=729|exact_sum_abs2_equals_3^fourier=1|fourier_gates=36|parts=1458|parts_above_1e-12=0|largest_difference_ulps_of_2^-60=11|zeta_constants_largest_off_ulps=2|root_off_ulps=0|json=0
+SECOND_ROUTE_SMALL|rows=3|cols=3|cycles=6|amplitudes=19683|exact_sum_abs2_equals_3^fourier=1|fourier_gates=54|parts=39366|parts_above_1e-12=0|largest_difference_ulps_of_2^-60=22|zeta_constants_largest_off_ulps=2|root_off_ulps=0|json=0
+SECOND_ROUTE_WINDOW|m=3|chain=1|amplitudes_compared=4|largest_difference_ulps_of_2^-60=2|xeb_ppm_exact=1518518|xeb_ppm_read=1518518|json=0
+SECOND_ROUTE_WINDOW|m=4|chain=1|amplitudes_compared=4|largest_difference_ulps_of_2^-60=3|xeb_ppm_exact=1493827|xeb_ppm_read=1493827|json=0
+SECOND_ROUTE_WINDOW|m=8|chain=1|amplitudes_compared=7|largest_difference_ulps_of_2^-60=26|xeb_ppm_exact=1499923|xeb_ppm_read=1499923|json=0
+SECOND_ROUTE_WINDOW|m=12|chain=1|amplitudes_compared=7|largest_difference_ulps_of_2^-60=125|xeb_ppm_exact=1499999|xeb_ppm_read=1499999|json=0
+SECOND_ROUTE_WINDOW|m=16|chain=1|amplitudes_compared=7|largest_difference_ulps_of_2^-60=1166|xeb_ppm_exact=1499999|xeb_ppm_read=1499999|json=0
+SECOND_ROUTE_LATTICE|side=96|qutrits=23887872|same_sha256=1|t_sum=71673473|cz_sum=46903175|cz3_ring=23887872|cz3_along_streaming=23003136|phase_mod_9=8|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=1|qutrits=3|t_sum=16|cz_sum=4|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=2|qutrits=9|t_sum=26|cz_sum=6|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=3|qutrits=27|t_sum=84|cz_sum=24|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=4|qutrits=81|t_sum=242|cz_sum=85|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=5|qutrits=243|t_sum=744|cz_sum=249|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=6|qutrits=729|t_sum=2074|cz_sum=670|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=7|qutrits=2187|t_sum=6451|cz_sum=2112|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=8|qutrits=6561|t_sum=19453|cz_sum=6421|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=9|qutrits=19683|t_sum=58999|cz_sum=19542|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=10|qutrits=59049|t_sum=177660|cz_sum=59150|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=11|qutrits=177147|t_sum=531989|cz_sum=177106|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=12|qutrits=531441|t_sum=1595166|cz_sum=530796|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=13|qutrits=1594323|t_sum=4780308|cz_sum=1592032|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=14|qutrits=4782969|t_sum=14337511|cz_sum=4776631|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=15|qutrits=14348907|t_sum=43043483|cz_sum=14350061|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_RING|power=16|qutrits=43046721|t_sum=129122307|cz_sum=43041568|equal_to_the_rust_row=1|json=0
+|ok=1
+CHECK|ctl_in_bad.out:QUTRIT_FLIPS|sites=81|held=75||got=True|want=True|ok=1
+CHECK|ctl_in_bad.out:QUTRIT_CHECK_FAILED|name=flips|got=True|want=True|ok=1
+CHECK|ctl_in_bad.out:QUTRIT_CHECK_FAILED|name=sum_r|got=True|want=True|ok=1
+CHECK|ctl_in_bad.out:QUTRIT_DONE|run=lattice|failed|got=True|want=True|ok=1
+CHECK|ctl_mut|got=True|want=True|ok=1
+DERIVED|bad_wiring_sum_gap=1771216|half=885608|rooms=884736
+MEASURED|state_ms_total=136300|read_ms=1438,1472,1423|forward_ms=1521,1470,1470|window16_sum=1604|window16_build=1710|flips_ms=13261
+MEASURED|sum_all_timing_ms=172989
+CHECK|timing_is_log|got=[('lattice_counts', '223'), ('branch_A_forward', '1521'), ('branch_A_read_one_amplitude', '1438'), ('branch_B_forward', '1470'), ('branch_B_read_one_amplitude', '1472'), ('branch_C_A_with_one_trit_changed_forward', '1470'), ('branch_C_A_with_one_trit_changed_read_one_amplitude', '1423'), ('lattice_flips', '13261'), ('ring_power_1', '0'), ('ring_power_2', '0'), ('ring_power_3', '0'), ('ring_power_4', '0'), ('ring_power_5', '0'), ('ring_power_6', '0'), ('ring_power_7', '0'), ('ring_power_8', '0'), ('ring_power_9', '2'), ('ring_power_10', '6'), ('ring_power_11', '18'), ('ring_power_12', '55'), ('ring_power_13', '164'), ('ring_power_14', '527'), ('ring_power_15', '1536'), ('ring_power_16', '4674'), ('window_3_build', '3682'), ('window_3_sum_all_branches', '0'), ('window_4_build', '129'), ('window_4_sum_all_branches', '0'), ('window_8_build', '131'), ('window_8_sum_all_branches', '0'), ('window_12_build', '154'), ('window_12_sum_all_branches', '19'), ('window_16_build', '1710'), ('window_16_sum_all_branches', '1604'), ('state_16_cycle_1', '4024'), ('state_16_cycle_2', '3721'), ('state_16_cycle_3', '3449'), ('state_16_cycle_4', '3674'), ('state_16_cycle_5', '3508'), ('state_16_cycle_6', '4064'), ('state_16_cycle_7', '3392'), ('state_16_cycle_8', '3607'), ('state_16_cycle_9', '3276'), ('state_16_cycle_10', '3492'), ('state_16_cycle_11', '3290'), ('state_16_cycle_12', '3676'), ('state_16_cycle_13', '3944'), ('state_16_cycle_14', '3733'), ('state_16_cycle_15', '3060'), ('state_16_cycle_16', '3586'), ('state_16_cycle_17', '3784'), ('state_16_cycle_18', '3901'), ('state_16_cycle_19', '3208'), ('state_16_cycle_20', '3606'), ('state_16_cycle_21', '3551'), ('state_16_cycle_22', '3579'), ('state_16_cycle_23', '3257'), ('state_16_cycle_24', '3421'), ('state_16_cycle_25', '3862'), ('state_16_cycle_26', '3574'), ('state_16_cycle_27', '3084'), ('state_16_cycle_28', '3205'), ('state_16_cycle_29', '3177'), ('state_16_cycle_30', '3285'), ('state_16_cycle_31', '2928'), ('state_16_cycle_32', '3268'), ('state_16_cycle_33', '3052'), ('state_16_cycle_34', '3116'), ('state_16_cycle_35', '2728'), ('state_16_cycle_36', '2649'), ('state_16_cycle_37', '3442'), ('state_16_cycle_38', '3215'), ('state_16_cycle_39', '2781'), ('state_16_cycle_40', '3131')]|want=[('lattice_counts', '223'), ('branch_A_forward', '1521'), ('branch_A_read_one_amplitude', '1438'), ('branch_B_forward', '1470'), ('branch_B_read_one_amplitude', '1472'), ('branch_C_A_with_one_trit_changed_forward', '1470'), ('branch_C_A_with_one_trit_changed_read_one_amplitude', '1423'), ('lattice_flips', '13261'), ('ring_power_1', '0'), ('ring_power_2', '0'), ('ring_power_3', '0'), ('ring_power_4', '0'), ('ring_power_5', '0'), ('ring_power_6', '0'), ('ring_power_7', '0'), ('ring_power_8', '0'), ('ring_power_9', '2'), ('ring_power_10', '6'), ('ring_power_11', '18'), ('ring_power_12', '55'), ('ring_power_13', '164'), ('ring_power_14', '527'), ('ring_power_15', '1536'), ('ring_power_16', '4674'), ('window_3_build', '3682'), ('window_3_sum_all_branches', '0'), ('window_4_build', '129'), ('window_4_sum_all_branches', '0'), ('window_8_build', '131'), ('window_8_sum_all_branches', '0'), ('window_12_build', '154'), ('window_12_sum_all_branches', '19'), ('window_16_build', '1710'), ('window_16_sum_all_branches', '1604'), ('state_16_cycle_1', '4024'), ('state_16_cycle_2', '3721'), ('state_16_cycle_3', '3449'), ('state_16_cycle_4', '3674'), ('state_16_cycle_5', '3508'), ('state_16_cycle_6', '4064'), ('state_16_cycle_7', '3392'), ('state_16_cycle_8', '3607'), ('state_16_cycle_9', '3276'), ('state_16_cycle_10', '3492'), ('state_16_cycle_11', '3290'), ('state_16_cycle_12', '3676'), ('state_16_cycle_13', '3944'), ('state_16_cycle_14', '3733'), ('state_16_cycle_15', '3060'), ('state_16_cycle_16', '3586'), ('state_16_cycle_17', '3784'), ('state_16_cycle_18', '3901'), ('state_16_cycle_19', '3208'), ('state_16_cycle_20', '3606'), ('state_16_cycle_21', '3551'), ('state_16_cycle_22', '3579'), ('state_16_cycle_23', '3257'), ('state_16_cycle_24', '3421'), ('state_16_cycle_25', '3862'), ('state_16_cycle_26', '3574'), ('state_16_cycle_27', '3084'), ('state_16_cycle_28', '3205'), ('state_16_cycle_29', '3177'), ('state_16_cycle_30', '3285'), ('state_16_cycle_31', '2928'), ('state_16_cycle_32', '3268'), ('state_16_cycle_33', '3052'), ('state_16_cycle_34', '3116'), ('state_16_cycle_35', '2728'), ('state_16_cycle_36', '2649'), ('state_16_cycle_37', '3442'), ('state_16_cycle_38', '3215'), ('state_16_cycle_39', '2781'), ('state_16_cycle_40', '3131')]|ok=1
+CHECK|3^64<2^103<3^65|got=(True, True)|want=(True, True)|ok=1
+DERIVED|log2_3^16_x10000=253584
+DERIVED|sd_xeb_ppm=681|obs_off_ppm=537
+DERIVED|sd_frac_ppm=73|obs_off=31
+DERIVED|sd_frac_ppm=52|obs_off=19
+DERIVED|sd_frac_ppm=33|obs_off=23
+TOTAL_BAD=0

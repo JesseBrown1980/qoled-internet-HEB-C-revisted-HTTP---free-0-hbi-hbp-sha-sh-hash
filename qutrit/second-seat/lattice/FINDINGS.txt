@@ -1,0 +1,91 @@
+FINDINGS, lattice and ladder code and the second route, HTTP-0 PR #5, commit 6114590e34bf7a40238f20f2ad1550aaa50ab348
+Seat: second seat, Opus 5.5. Checkout read only. All edits in copy/ (mutants, probes), applied/ (the holds), this folder.
+Tags: MEASURED (a run here, file named), DERIVED (proof written here), NAMED (stated, unrun), CANNOT_SEE.
+
+SUMMARY. No number in the receipt was refuted. The holds are on what the checks cover.
+The refuted reading: "second routes" for the lattice cover the ticks. They cover branch A's input string.
+
+F1. Amplitude formula. HOLDS UP.
+DERIVED: F on |0..0> is 3^(-n/2) times the sum over x of |x>. T and CZ3 are diagonal and commute, giving z^phase(x). U^t permutes
+basis states, so <b|psi> = 3^(-n/2) z^phase(U^-t(b)). Code: T_PHASE=[0,1,8] (line 18), z^(3ab) via 3*cz_sum, read on reader's state after backward.
+MEASURED formula_toy.hbp: a gate-by-gate state vector in Z[z] on 9 qutrits (15 edges, 3 ticks, a real conserving involution, shift):
+19,683 of 19,683 amplitudes equal the formula. Controls: phase read on the output string 10,935, T with z^2 6,561, CZ3 after ticks 10,530.
+MEASURED: flip_delta 180 of 180 against the definition.
+SCOPE: the lattice's gates are summed, and never applied to an amplitude vector. That is what the README says.
+CANNOT_SEE: a state vector on the real 96^3 wiring; settled only by F1's derivation and the toy.
+
+F2. Edge counts. HOLD UP.
+DERIVED: ring edges stay in a room, streaming edges change room (v != 0, side >= 3), so they cannot coincide. Two streaming edges of one channel
+coincide only if 2v = 0 mod side, side 2. Channels differ between channels' edges.
+MEASURED probe_edges.hbp, list built from my own velocity list, sorted, deduplicated: side 96 pushed 46,891,008, distinct 46,891,008, inside a room 23,887,872,
+self-loops 0, degree 2 on 884,736 sites and degree 4 on 23,003,136. Side 24 likewise, 732,672.
+MEASURED probe_wiring.hbp: neighbours() against my own list on all 23,887,872 sites, 0 different, 0 repeats, 0 self-loops. phase_sum on all ones reads cz=46,891,008,
+all twos 187,564,032 = 4 x 46,891,008. 12 random strings, 0 differ from my own edge sum.
+NOTE: the receipt's counts and second_route's are loop counters, and second_route never compares its counters (H1, H15).
+
+F3. Bijection and reversal. THE MAP IS BIJECTIVE; THE REVERSAL ROW READS LESS THAN IT LOOKS.
+MEASURED probe_gates.hbp: 288 gates, 288 with 4 distinct channels, 288 permutations, 288 involutions, 288 conserve mass, momentum, energy, each 51 fixed codes and 15 swaps.
+Each room's 32 gates touch 26 or 27 channels across the 288 residues. backward() reuses the same table, so reversal rests on the involution. The receipt prints permutations only (H17).
+DERIVED: distinct-channel permutations composed with per-channel translation are a bijection on strings.
+replace_state: length-checked copy_from_slice over the whole state; next is stale but stream writes every index. MEASURED by F5's route, which starts B and C from explicit strings and reaches their output SHA-256.
+REVERSAL WITH LESS WORK, MEASURED mutants.hbp, 96^3, run exit and current second-route exit:
+  e_noop (ticks do nothing): 0, 0. Output SHA-256 = input SHA-256. Reversal 3 of 3, conserved, phase read equal, cone differ=1 r=0, flips 81.
+  e_nocollide: 0, 0. e_nostream: 0, 0. e_one_gate: 0, 0. e_stream_sign: 0, 0.
+  Each changes exactly 4 rows from the receipt (3 branches and the cone). The byte compare is the only catch in the folder, and it pins the run to itself.
+  The phase read from the output follows from reversal, since it is the same string.
+  engine96.yml's direct_coordinate_reference_step covers the first tick's streaming at 96^3, with the same gate loop (read, unrun).
+
+F4. flip_sites and mutants. REFUTES THE COVERAGE.
+MEASURED sites.txt, replay of the draws: 81 distinct sites at sides 24, 48, 96, on 23 of 27 channels. Channels 12, 15, 19, 20, velocities (0,0,-1), (0,1,-1), (1,-1,0), (1,-1,1), have no site.
+The counts are the same at all three sides, since n has a factor 27 and so draw mod n mod 27 = draw mod 27. Boundary rooms: 12 of the 81 at 96.
+MEASURED mutants.hbp, 96^3 (run exit, route exit, rows off the receipt):
+  SURVIVE EVERYTHING, BYTE-IDENTICAL:
+    n_fwd2_channel19: channel 19's backward neighbour replaced by forward on 884,736 sites. 0, 0, 0. Sum rule reads 1 because the edge weights keep their total.
+    n_one_site (site 27046, trit 0 on A, undrawn): 0, 0, 0.
+    p_sign_all, p_sign_even, n_swap_sign: 0, 0, 0. These are equivalent mutants (F5).
+  SURVIVE THE CHECKS, ONE ROW MOVES: p_one_site (phase_sum, site 27046, trit 0 on A, 2 on B): 0, 0, 1. Branch B's phase row is wrong and no route reads B.
+  CAUGHT BY FLIPS ONLY, SUM RULE STILL 1: n_fwd2_all held 22, n_ringfwd2_all held 29.
+  CAUGHT BY THE ROUTE ONLY, RUST EXIT 0: t_012, t_mod9_alias, cz_omega2, v_xz_lattice_only.
+  CAUGHT BY BOTH: p_drop_ring0, pn_drop_ring0 (the Rust side through window_phase).
+  So the sum rule is blind on sites whose trit is 0, and to rewirings that keep total weight.
+FIX TESTED: stratified sites (H8, H9). n_fwd2_channel19 then exits 1, held 78. Unmutated rows equal the receipt; bad_wiring reads 73, was 75.
+Neighbour_sum feeds flips, sum rule and, through neighbours, window fields; channel 19 is outside the windows, so no receipt row was wrong here.
+
+F5. Second route's independence. CODE-INDEPENDENT, INPUT-SIDE, SIGN-BLIND.
+DERIVED: channel k's edge set {r, r+v} equals {r-v, r}, so phase_sum is the same on every string for each of the 2^26 per-channel sign choices.
+MEASURED: p_sign_all, p_sign_even byte-identical. v_inverted (make_velocities negated): the gate pin passes because quads and classes are the same under negation, phases equal, route exit 0, px py pz flip sign, output SHA differs, cone 41 against 69.
+Shared by both routes: seeds, velocity order, room index order, ring order. Written twice, same seat. velocity_order_equals_my_list=1. A non-sign permutation is caught: v_xz_lattice_only, route exit 1.
+Sign is observable at the output: MEASURED 24^3 sign +1 and -1 differ. Stream sign is a choice of U, and the amplitude formula holds for either.
+NEW ROUTE, MEASURED proposed_engine.hbp, engine_route_A_96.hbp, engine_route_C_96.hbp: pure Python derives the 288 gates from the velocities, SHA-256 equal to the pin a7fca71a..., runs collision and slice streaming.
+  A output 3839ad44..., B 046cb997..., C 11647b90..., all equal to the receipt. Exit 0.
+  Branch A: 31,455,566 of 84,934,656 gate applications change trits. 13.56M channels change in each collision. 15,908,063 of 23,887,872 differ input to output.
+  e_noop and e_stream_sign, exit 1 on this route. p_one_site, exit 1 on the three-branch lattice route.
+  So the ticks do what the receipt says, now from a route with no shared code.
+
+F6. Light cone. RADIUS RIGHT, CEILING VALID WITH SLACK, 69 IS ONE SITE.
+DERIVED: 3 ticks, one room each, radius 3. 9,261 = 7^3 x 27 holds. Collide then stream gives a smaller bound: before the last stream the differences lie in 5^3 rooms, and each (room, channel) moves one-to-one, so 125 x 27 = 3,375.
+MEASURED probe_cone.hbp, 162 flips (rooms 48,48,48 and 0,0,0 and 95,17,3, 27 channels, +1 and +2): differ 3 to 687, median 278. Radius 3 on 158, 2 on 4, outside 0.
+Gate-by-gate dependency ceiling 2,733 to 3,365, none exceeded. 48,48,48 channel 0: +1 gives 69 (receipt), +2 gives 120.
+The check passes at differ=1, r=0, so it reads locality and leaves spread unread.
+
+F7. Ring ladder. HOLDS UP AT SMALL n.
+DERIVED: n=3 is a triangle of 3 distinct edges; n >= 3 has left != right.
+MEASURED probe_ringbrute.hbp: every string at n=3 and n=9, every site and change, 354,456 cases, 0 wrong, all-ones cz = n.
+MEASURED sites.txt: duplicates at powers 5, 6, 7: distinct sites 69, 73, 80, distinct (site, change) 72, 74, 80. Powers 1 to 4 cover every site. Power 8 up, 81 distinct (H13).
+
+F8. Platform. REPRODUCES.
+MEASURED: clean extract, Windows msvc 1.81.0: --qutrit all exit 0, cmp equal, SHA-256 c16c54f7..., 334 s under load.
+MEASURED: clean extract, Linux gnu 1.81.0 on WSL: cmp equal, same SHA-256. second_route lattice exit 0 on it.
+MEASURED owning gate: gh pr checks 5 at head 6114590: the qutrit job on ubuntu-24.04 passes, run 41919836095, and that job holds the cmp.
+READ: no HashMap, target_os, or stdout timing in these files; Instant goes to stderr; BTreeMap in make_collisions; to_le_bytes for state_sha.
+NAMED: redirecting stdout through PowerShell may rewrite line endings, so the compare should use cmd or bash. Not run.
+CANNOT_SEE: 32-bit and big-endian targets, not run.
+
+F9. Held tree. MEASURED applied/: all 17 holds apply, each OLD once. cargo +1.81.0 fmt --check, clippy --all-targets -D warnings, test --lib qutrit 6 of 6, whole run cmp equal to RECEIPT.hbp, SHA-256 c16c54f7....
+Receipt bytes stay the same under the holds. CONTROLS.hbp, SECOND-ROUTE.hbp and README change. second_route_proposed.py equals the held qutrit/second_route.py.
+NOT RUN: the full hosted workflow on the held tree, since nothing here pushes.
+
+F10. Boundaries.
+The checkout had one modified file before this seat touched it, canon/books/LAW-34-BROWN-SCHRODINGER.md (line endings), seen in the first status. Left alone.
+Fabric, recall and owner seats not asked; this was an attack on the code at a fixed commit. Windows and 16-qutrit state belong to another lane, read only where they touch neighbours() and the second route.
+PREDICTION.hbp last changed at a9f3dbe, before the receipt commit 6114590; the code first appears at a9f3dbe, the same commit as the additions. The README says this.

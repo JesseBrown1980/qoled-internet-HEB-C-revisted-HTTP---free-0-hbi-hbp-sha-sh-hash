@@ -1,0 +1,4 @@
+ONEROOM|room=0|a0=1|a1=0|json=0
+QUTRIT_FLIPS|sites=81|held=80|sum_of_trit_times_neighbours=93806350|twice_the_cz_sum=93806350|sum_rule=1|degree_rule=1|json=0
+QUTRIT_CHECK_FAILED|name=flips_held|json=0
+QUTRIT_DONE|run=oneroom|failed=1|json=0

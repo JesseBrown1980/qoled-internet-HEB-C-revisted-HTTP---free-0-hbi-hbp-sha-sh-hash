@@ -1,0 +1,95 @@
+SECOND SEAT, STATE LANE. Target HTTP-0 fable5-qutrit-96cubed-20261104 at 6114590, PR #5. Files read: qutrit/README.md, PREDICTION.hbp, RECEIPT.hbp, SECOND-ROUTE.hbp, CONTROLS.hbp, second_route.py, src/qutrit.rs, src/scale96.rs.
+Own programs: src/own.rs + src/bin/own16.rs (separate engine, no shared lines, SoA arrays, one rounding per output part, T and CZ3 merged into one diagonal pass, F order q=15..0, constants from Taylor + literal pi),
+src/bin/own_window.rs (own trits, own wiring by a full scan of all 46,891,008 edges), window_exact.py (exact Z[zeta]), src/engine_gates.rs + src/bin/engine_copy.rs (VERBATIM sed copy of the engine's gate functions, used only for rounding measurements). Rust cargo +1.81.0. Raw rows in out/.
+
+F1. 16-QUTRIT STATE, SEPARATE ENGINE. MEASURED. out/own50_matrix.hbp, out/compare_own50.hbp, out/own62_short.hbp, out/compare_own62.hbp.
+  Scale 2^50, full-matrix route, 3 threads, 189 s. Gate counts equal: 640 F, 640 T, 84 of power zero, 240 CZ3.
+  3^16 Sum p^2 by exact fractions from my integer sums, against the receipt's floor ppm:
+    cycle 1   1.000000000000  receipt 1000000   ppm diff 0
+    cycle 2   1.444444444444  receipt 1444444   ppm diff 0
+    cycle 3  65.982442605475  receipt 65982442  ppm diff 0  (at 2^62: 65.982442605461)
+    cycle 4   3.395840681522  receipt 3395840   ppm diff 0
+    cycle 6   2.003499947685  receipt 2003499   ppm diff 0
+    cycle 40  1.999463765955  receipt 1999463   ppm diff 0  (at 2^62: 1.999463765955)
+    also 8, 12, 16, 20, 24, 32: ppm diff 0.
+  Dp fractions equal to the ppm at every cycle from 2 to 40. Cycle 40: 367910, 135316, 49764 both ways.
+  At cycle 1 the fraction above 1 reads 0 in the receipt and 1000000 / 555657 in mine. The state is flat, so Dp = 1 up to rounding, and this reading only shows the rounding direction. The receipt's floor gives 0.
+  7 QUTRIT_STATE_AMP rows, receipt minus my 2^62 run, units of 2^-60 (re, im):
+    label 0        -6,  -7    magnitude 1.37e14
+    label 1       135, -1345  magnitude 1.09e14   <- see F3
+    label 2     -1334,  111   magnitude 1.71e14   <- see F3
+    label 81      -54,  139
+    label 82       30,  150
+    label 83     -145,   67
+    label 43046720  3,    6
+  Against my 2^50 run the differences are 1,488 to 13,190 units, the size of my own 2^-50 rounding (1 unit of 2^-50 = 1024 units of 2^-60).
+  Falsifier: any ppm difference above, or an amp difference above about 10^4 units at 2^50. None.
+  This is the first second route at 16 qutrits and 40 cycles. The repository's second route stops at 3x3 and 6 cycles.
+
+F2. GATES. MEASURED. out/gates.hbp, engine functions verbatim.
+  F against the exact matrix on 2,000,000 random inputs: largest part difference 1 ulp of 2^-60. Columns of F correct: (1,1,1), (1,w,w^2), (1,w^2,w) over sqrt 3. Root 665639541039271462 is the floor, mine rounded to nearest is ...463.
+  T^k on a 3^6 register, all 6 strides, k=1..8, every label: 0 ulps against diag(1, z^k, z^8k). Constants against my Taylor values: at most 1 ulp.
+  CZ3 on a 3^6 register, all 15 pairs, every label: 0 ulps against w^(h*l).
+  grid_edges 4x4: 24 distinct edges, each seen 10 times over 40 cycles, 240 total, per pattern 8, 8, 4, 4, disjoint within a pattern, p<q always, equal to my separate filter.
+  Order: qutrit q has stride 3^q, sits at row q/4, column q%4, and its trit is at position 15-q from the left of address_trits. Consistent everywhere checked (6/6). The README does not state it: the string reads qutrit 15 first. HOLD H3.
+
+F3. ROUNDING, A REAL BIAS THE NORM ROW CANNOT SEE, SMALL. MEASURED. out/gates.hbp, out/roundtrip_floor.hbp, out/roundtrip_even.hbp, out/l2_floor_vs_own62.hbp, out/l2_even_vs_own62.hbp.
+  The `>> 1` halves in fourier floor. Signed mean of (engine F minus exact matrix), 2,000,000 trials: output y (+0.2504, -0.2502) ulp, output z (-0.2495, +0.2494), output x (0.0000, -0.0001). A constant bias per F gate, the same in every group.
+  A constant on the other qutrits focuses under the F gates that follow, by sqrt 3 each. The first gate of a layer, q=0, has 15 after it: (1/4)*sqrt 2*3^7.5 = 1,339 units. Measured at labels 1 and 2 of the final state: 1,352 and 1,338 units of 2^-60. Labels 3..8 read 765 (a ratio sqrt 3 down), labels 9.. read 455.
+  Same run with only `>> 1` replaced by round-half-even: largest part anywhere in the state 70 units, at no special label. Labels 1 and 2 then differ by 4 and 12 units (17,-15 and -33,-35 in units of 2^-62).
+  Whole-state l2 distance from my 2^62 run: floor 107,714 units = 9.3e-14; even 107,645 units. So the bias is 0.06% of the l2 error and every reading digit is the same.
+  Exact inverse after the forward run, same arithmetic: return amplitude re - 1 = -24 units, im = -58 units. Leak l2 = 151,537 units = 1.31e-13 (even halves: 151,437). 2,872 gates, sqrt(2872) * 2,700 units per gate = 144,700 predicted from independent rounding, so the error is a random walk and does not grow faster.
+  Largest leak 2,759 units at label 2. It is at labels 1, 2, 5, 8 in both variants, so that one comes from rounding on the near-flat state of cycle 1, which repeats across labels.
+  Copy check: the verbatim copy reproduces state seal 84eccaaa...de25 and every QUTRIT_STATE reading.
+  Effect on the receipt: labels 1 and 2 of QUTRIT_STATE_AMP are off by 1,345 units, relative 1.2e-11 of the amplitude; the other five by about 150 or less; a typical amplitude over the state differs by about 16 units, relative 1e-13. So the printed 2^-60 digits are not all good: about 4 digits of label 1's imaginary part, about 2 elsewhere. The README does not claim 16-qutrit amplitude accuracy. HOLD H2 states it.
+  No effect on any 3^16 Sum p^2 or Dp digit: ppm differences 0 in F1 with and without the bias.
+  Norm row: the true largest off is 3.963e-15 (after the first Fourier layer); the row's 3 is a floor. README says "Within 3 x 10^-15 at every reading". HOLD H1.
+
+F4. read_state ARITHMETIC. MEASURED. out/readcheck.hbp.
+  For the reported rows: no overflow, no digit changed; F1's ppm differences are all 0 and 65.982442 stands by exact fractions at 2^50 and 2^62.
+  Outside the reported rows: `(sum_p2 >> 16) * d` wraps u128 when the statistic passes 2^24 = 16,777,216. Basis state on 3^16: true 43046721000000 ppm, xeb_ppm reads 9492289000000. Flat on two labels: true 21523360500000, reads 4746144500000. Flat on 3 or more labels reads true. The largest statistic in the run is 65.98, so the receipt is not touched. It would bite only a run-and-return test read by this function. HOLD H5 (low).
+  xeb_ppm is the name of the row and the quantity is 3^16 Sum p^2 of the ideal state, a collision statistic. No samples or a second distribution enter it. README's text uses 3^16 Sum p^2, the receipt's field is xeb_ppm. HOLD H6 (low).
+
+F5. WINDOWS. MEASURED unless tagged. out/own_window.hbp, out/window_labels.hbp, out/window_exact.hbp.
+  Fields and edges: my own trits (sha 022b8869...abf0 equal) and a full scan of the register's 46,891,008 edges find 47 edges touching the first 16 channels. Fields, inside edges and rest_phase equal the receipt's at m=3,4,8,12,16, including channel 13, whose two edges both lie inside at m=16 and whose field reads 0. For channels at the window's edge the ring neighbour outside goes into the field (m=4 channel 3 takes base[4]; m=8 channel 7 reads 5 and m=12 channel 7 reads 3 since base[8]=2 moved inside).
+  Full recomputation at 40 random strings at m=4,8,12,16 and all 27 at m=3 on my wiring: all equal. The receipt ran this at m=3 only.
+  Every amplitude: my local table, the engine's verbatim magnitude table and F, reproduce all five window state_sha256 in the receipt. So all 3^m amplitudes at m=16 follow from my wiring.
+  Exact integer counts over all 3^m terms at the receipt's labels (no transfer vector): receipt minus exact at m=16, units of 2^-60: label 0 (-1167, 49); label 1 (465, -728); label 2 (398, 875); 81 (164, -172); 82 (105, -67); 83 (120, -152); last (224, 677). So the second route's 1166 stands, and it is at label 0.
+  Label 0's 1167 is the same in the even-halves run. It comes from the nine-entry scaled table: its rounding has a nonzero mean, a constant over all 3^16 entries, which F gathers at y=0 by 3^8. Labels 1 and 2's imaginary parts are the floor halves again: even halves reads 56 and -76 there. CONJECTURE on the mechanism for label 0, MEASURED that it does not change with the halves.
+  Meaning of the amplitudes: A(y) = 3^-m Sum_w z^(local(w) + 3 w.y), which is what the code computes, what my counts compute. In the register the amplitude of (y, rest) is 3^(-(n-m)/2) * z^rest_phase * A(y). So A is the amplitude conditioned on the branch of the other qutrits, renormalized, and rest_phase is printed but not multiplied in. README says "the other qutrits on one branch". It does not state the conditioning or the phase. HOLD H7.
+  second_route.py's window check takes `fields` from the receipt (window(): fields = row["fields"]), so it checks the transfer vector and F, and the fields rest on Rust's m=3 test. My scan closes that for all five m.
+
+  EXACT STATISTIC, DERIVED BY HAND AND CHECKED. Claim: 3^m Sum_y |A(y)|^4 = 3/2 - (1/2)(-1/3)^m for every m. Limit 3/2. Fields do not enter.
+  (a) Fields cancel. Expand |A|^4 over replicas w, w', u, u'. Sum_y gives 3^m delta(w-w'+u-u' = 0 mod 3) at each site. The field term is 3 f (w-w'+u-u'), a multiple of 9, so z to it is 1. Sound, and second_route.py's restriction to (a-b+c-d)%3==0 is this delta. Statistic = 9^-m Z_m, Z_m = chain sum over 27 site states.
+  (b) 27 site states split: 15 pairing states (a=b,c=d or a=d,b=c), 12 others, (p,q,p,r) and (q,p,r,p) with p,q,r distinct. On the others, T = (0,1,-1) gives site weights 1, w, w^2 along each shift p->p+1 with q,r shifting too. The edge sum from any neutral source to (p,q,p,r) depends only on p-q, p-r, so it is unchanged by the shift. Same for edges out of such a triple, which depend on the same differences. So each triple's values sum to 0 going in, and it feeds nothing onward. Checked: sum over the 12 is 0 in Z[z] at chain lengths 1..6.
+  (c) On the pairing states, classes: all equal (3 states, value d), two-level (12 states, value u). Edge phases: inside one pairing type 1; between types w^((a-c)(a'-c')), which sum to 3(w+w^2) = -3 over one type's 6 states; to an all-equal state 1. So (d,u) -> (3d+12u, 3d+3u), starting at (1,1). Characteristic polynomial x^2 - 6x - 27 = (x-9)(x+3). Z_1 = 15, Z_2 = 117, so Z_m = (3/2) 9^m - (1/2)(-3)^m.
+  Checks: brute force over all y and w in Z[z] at m=1..5 with 3 field choices reads 5/3, 13/9, 41/27, 121/81, 365/243, all equal to the form; the vector identity M^2 v = 6 M v + 27 v holds exactly in Z[z] for the 27x27 matrix, which proves the recursion for all m; second_route.py's window_xeb equals the floor of the form at m=1,2,3,4,8,12,16,24. Rust read at m=16: 1.499999988, form 1.4999999884.
+  Transfer vector in second_route.py: SOUND. Its window_amplitude (3 entries) and window_xeb (27 entries) are both right.
+  What 3/2 is: 2D/(D+1) at D=3. A(y) = 3^((1-m)/2) <+|Prod (T Z^(y_i) F)|+>, a product of 3x3 unitaries, and 3^m p(y) = 3 |<+|U|+>|^2, at most 3. So Dp above 3 reads 0 at every m in the receipt by construction, and the window's statistic is the second moment of a three-dimensional bond, independent of m in the limit. DERIVED for the bound and the value. Whether the words y_i fill a 2-design on C^3 is NAMED, not needed for the formula.
+  What it can show: T^k with k not 0 mod 3 gives the same statistic at every m checked (m=1..4, 12); k=0,3,6 gives 3,1,3,1 and reads 1 at m=12. A wrong field, a wrong branch, a wrong rest of the register all read the same digits. So the row "Window statistic ... Equal on all five" tests the chain and T only. HOLD H8.
+
+F6. WHAT THE PORTER-THOMAS READING CAN SHOW. MEASURED. out/mut16_*.hbp, out/mut12.hbp. Separate engine, 2^50, 40 cycles.
+  16 qutrits, cycle 40, 3^16 Sum p^2:
+    baseline                                   1.999464
+    F replaced by F-dagger everywhere          1.999984
+    F replaced by a real orthogonal 3x3
+      (1,1,1)/r3, (1,-1,0)/r2, (1,1,-2)/r6     2.000232
+    every T power set to 1                     2.000406
+    T = diag(1, z, z^2) in place of (1, z, z^8)   2.000152
+    CZ3 table wrong at (2,2): w^2 in place of w   2.000144
+    edge 0-1 dropped (10 gates)                2.000653
+    the 240 CZ3 on a wrong graph, q -> 5q+3 mod 16   1.999624
+    one F missing, qutrit 0, cycle 20          1.999725
+    pattern 3 replaced by pattern 1            4.048577  (graph falls into two 2x4 blocks)
+  8 of 9 mutations read 2.000 within 0.00066, and their Dp fractions stay in the predicted band: above 1 from 367755 to 367950 ppm, above 2 from 135306 to 135379, above 3 from 49715 to 49815.
+  Spread: 2/sqrt(D) = 3.05e-4 for a statistic normalized by Sum p (delta method on x^2 - 4x, x exponential, variance 4/D). DERIVED. Sample standard deviation over the 9 runs reading near 2: 3.6e-4. MEASURED. The receipt's 1.999463 is -1.76 spreads. The predicted band [1.9, 2.1] is about +-330 spreads.
+  12 qutrits (3x4), cycle 40, spread 0.0027: read 2.00: F-dagger 1.9945, real gate 1.9996, T table 1.9947, seed+1 2.0012, CZ squared 1.9945, CZ wrong (2,2) 1.9946, CZ as z^(ab) 2.0028, T power fixed 1.9992, T power +1 2.0035, edge dropped 1.9976, wrong graph 1.9982, one F missing 1.9988.
+  Moved: Clifford only (T power 0, 3, 6) 1.000000; no T 1.000000; T in cycle 1 only 1.691358; patterns 0,1 only 11.62; patterns 0,2 only 6.15; F never on qutrit 0 6.00; pattern 3 as 1 3.558.
+  So the statistic reads: non-Clifford present beyond one layer, graph connected over the depth, every qutrit rotated. It reads none of the gates' identities. The evidence that these are the gates said is F2, the repository's exact 3x3 route, and F1. HOLD H4.
+
+COULD NOT CHECK.
+  NOT RUN: exact Z[zeta] amplitudes on the 16-qutrit circuit. The repository has them through 3x3. The reference is my 2^62 run, whose own error is about a quarter of the engine's.
+  CANNOT_SEE: the running system. I did not query the fabric or recall; the checks are arithmetic on a frozen commit, on the Windows Rust lane the task named.
+  NOT RUN: the 96^3 lattice, ladder and collision tables beyond branch A's sha and phase (another seat's lane). hebc-portal itself was not built; I ran verbatim copies of its functions, which reproduce the state seal and all five window seals.
+  NOT RUN: the owning gate, GitHub required checks and clippy on the repository. My programs are review tools outside the repository.
+  Note, no action: checkout shows canon/books/LAW-34-BROWN-SCHRODINGER.md as modified, line endings, already present at my first read. HEAD is 6114590 and my runs did not touch it. PREDICTION row QUTRIT_SCOPE says interference_is_in_the_16_qutrit_state_alone and the later QUTRIT_WINDOW rows add windows; the README's Scope carries the later reading.

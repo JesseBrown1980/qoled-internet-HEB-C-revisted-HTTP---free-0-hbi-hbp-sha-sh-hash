@@ -1,0 +1,7 @@
+READ_EDGE|state=basis|true_stat_ppm=43046721000000|xeb_ppm=9492289000000|json=0
+READ_EDGE|state=flat_on_2|true_stat_ppm=21523360500000|xeb_ppm=4746144500000|json=0
+READ_EDGE|state=flat_on_3|true_stat_ppm=14348907000000|xeb_ppm=14348907000000|json=0
+READ_EDGE|state=flat_on_4|true_stat_ppm=10761680250000|xeb_ppm=10761680250000|json=0
+READ_EDGE|state=flat_on_8|true_stat_ppm=5380840125000|xeb_ppm=5380840125000|json=0
+READ_EDGE|state=flat_on_81|true_stat_ppm=531441000000|xeb_ppm=531441000000|json=0
+READ_EDGE|state=flat_on_729|true_stat_ppm=59049000000|xeb_ppm=59049000000|json=0

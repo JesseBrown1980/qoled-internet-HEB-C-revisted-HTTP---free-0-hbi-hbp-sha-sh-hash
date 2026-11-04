@@ -1,0 +1,4 @@
+PROBE_NEIGHBOURS|side=96|sites=23887872|sites_with_a_different_neighbour_set=0|self_loops=0|repeated_neighbour=0|asymmetric_sampled=0|json=0
+PROBE_FLAT|side=96|value=1|t_sum=23887872|cz_sum=46891008|edges_read=46891008|json=0
+PROBE_FLAT|side=96|value=2|t_sum=191102976|cz_sum=187564032|edges_read=46891008|json=0
+PROBE_RANDOM_STRINGS|side=96|strings=12|differ=0|json=0

@@ -139,6 +139,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 print!("{record}");
                 return Ok(());
             }
+            "--qutrit" => {
+                hebc::qutrit::run(&args[2..])?;
+                return Ok(());
+            }
             "--bench-engine" => {
                 let side = args
                     .get(2)

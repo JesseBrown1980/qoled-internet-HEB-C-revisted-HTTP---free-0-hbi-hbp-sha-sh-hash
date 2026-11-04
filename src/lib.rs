@@ -10,6 +10,7 @@ pub mod bridge43;
 pub mod fabric;
 pub mod host8_fixture;
 pub mod law_reader;
+pub mod qutrit;
 pub mod receipts;
 pub mod scale96;
 pub mod server;

@@ -1,0 +1,8 @@
+CONTROL|name=bad_wiring_on_96^3|command=hebc-portal --qutrit lattice 96 mutate=bad_wiring|exit_code=1|json=0
+QUTRIT_FLIPS|sites=81|held=73|sum_of_trit_times_neighbours=92035134|twice_the_cz_sum=93806350|sum_rule=0|degree_rule=1|json=0
+QUTRIT_CHECK_FAILED|name=flips_held|json=0
+QUTRIT_CHECK_FAILED|name=sum_rule|json=0
+QUTRIT_DONE|run=lattice|failed=2|json=0
+CONTROL_HISTORY|first_run_held=75_of_81|its_sites_read=23_of_27_channels|missing_channels=12,15,19,20|now_read=all_27|json=0
+CONTROL|name=conjugated_fourier_on_2x3|command=hebc-portal --qutrit small 2 3 6 mutate=conjugated_fourier|compared_with=second_route_small_must_disagree|json=0
+SECOND_ROUTE_SMALL|rows=2|cols=3|cycles=6|amplitudes=729|exact_sum_abs2_equals_3^fourier=1|fourier_gates=36|parts=1458|parts_above_1e-12=1458|largest_difference_ulps_of_2^-60=151545872166934394|zeta_constants_largest_off_ulps=2|root_off_ulps=0|json=0

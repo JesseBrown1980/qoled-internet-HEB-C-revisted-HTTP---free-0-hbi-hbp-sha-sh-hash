@@ -1,0 +1,2 @@
+PROBE_EDGES|side=96|pushed=46891008|ring_pushed=23887872|distinct=46891008|edges_inside_a_room=23887872|self_loops=0|sites_by_degree_0..9=[0, 0, 884736, 0, 23003136, 0, 0, 0, 0, 0]|json=0
+PROBE_EDGES|side=24|pushed=732672|ring_pushed=373248|distinct=732672|edges_inside_a_room=373248|self_loops=0|sites_by_degree_0..9=[0, 0, 13824, 0, 359424, 0, 0, 0, 0, 0]|json=0
