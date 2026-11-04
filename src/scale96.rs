@@ -17,7 +17,7 @@ const SEED: u64 = 0x4d59_5448_4f53_3831;
 #[derive(Debug)]
 pub struct ScaledEngine {
     pub side: usize,
-    pub state: Vec<u8>,
+    state: Vec<u8>,
     next: Vec<u8>,
     plus: Vec<usize>,
     minus: Vec<usize>,
@@ -87,6 +87,24 @@ impl ScaledEngine {
             velocities,
             gates,
         })
+    }
+
+    /// Only ternary input of the canonical grid width can replace the state.
+    /// This prevents malformed external state bytes reaching LUT indexing.
+    pub fn replace_state(&mut self, bytes: &[u8]) -> Result<(), String> {
+        if bytes.len() != self.state.len() {
+            return Err("source channel count does not match physical grid".into());
+        }
+        if bytes.iter().any(|&n| n > 2) {
+            return Err("nontrit source occupancy rejected".into());
+        }
+        self.state.copy_from_slice(bytes);
+        Ok(())
+    }
+
+    #[must_use]
+    pub fn state_bytes(&self) -> &[u8] {
+        &self.state
     }
 
     /// Exact integer invariants for an arbitrary finite cube side.
@@ -370,6 +388,18 @@ mod tests {
         assert!(validate_size(97).is_err());
         assert!(run_benchmark(24, 0).is_err());
         assert!(run_benchmark(24, 244).is_err());
+    }
+
+    #[test]
+    fn malformed_external_states_fail_closed() {
+        let mut engine = ScaledEngine::new(24).expect("gate pin");
+        let pristine = engine.state.clone();
+        assert!(engine.replace_state(&[0, 1, 2]).is_err());
+        let mut corrupted = pristine.clone();
+        corrupted[0] = 3;
+        assert!(engine.replace_state(&corrupted).is_err());
+        assert_eq!(engine.state, pristine);
+        assert!(engine.replace_state(&pristine).is_ok());
     }
 
     #[test]
