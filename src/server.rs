@@ -150,6 +150,8 @@ pub fn generate_plain_html_dashboard(
         &middot; <a style="color: var(--acc);" href="/fabric/vowel/I">I</a>
         &middot; <a style="color: var(--acc);" href="/fabric/vowel/E">E</a>
         &middot; <a style="color: var(--acc);" href="/bridge/43m/contract">3^16 Clay/Taylor bridge</a>
+        &middot; <a style="color: var(--acc);" href="/bridge/43m/catalog">3^16 shared evidence catalog</a>
+        &middot; <a style="color: var(--acc);" href="/ym/43m/contract">Yang–Mills certificate index</a>
       </div>
       <p style="font-size: 11px; color: var(--muted); margin-top: 8px;">Pinned pointers and integer 3D shape templates; not remote repository execution, GGUF inference, or demonstrated FTL transfer.</p>
     </div>
@@ -258,6 +260,94 @@ pub fn handle_client(
                         "HTTP0_BRIDGE43_SLOT|status=RECEIPTS_NOT_VERIFIED|no_synthetic_fallback=1|json=0\n".to_string(),
                     ),
                 },
+            };
+            write_plain(&mut stream, status, &body)?;
+        }
+        "/ym/43m" | "/ym/43m/contract" => {
+            write_plain(&mut stream, "200 OK", &crate::ym43::contract())?;
+        }
+        "/bridge/43m/catalog" => {
+            let body = format!(
+                "HTTP0_3POW16_CATALOG|capacity={}|clay_evidence_slots={}|yang_mills_evidence_slots={}|occupied_total={}|remaining_unpopulated={}|ym_source_commit={}|ym_gap_verdict=OPEN|virtual_not_physical_states=1|json=0\n",
+                crate::ym43::CAPACITY,
+                crate::bridge43::POPULATED,
+                crate::ym43::OCCUPIED,
+                crate::ym43::COMBINED_OCCUPIED,
+                crate::ym43::CAPACITY - crate::ym43::COMBINED_OCCUPIED as u64,
+                crate::ym43::SOURCE_COMMIT
+            );
+            write_plain(&mut stream, "200 OK", &body)?;
+        }
+        "/ym/43m/availability" => {
+            let (status, body) = match crate::ym43::runtime_store() {
+                Ok(data) => (
+                    "200 OK",
+                    format!(
+                        "HTTP0_YM43_AVAILABILITY|capacity={}|records={}|source_sha256=PASS|status=SOURCE_RECORDS_VERIFIED|json=0\n",
+                        crate::ym43::CAPACITY,
+                        data.records.len()
+                    ),
+                ),
+                Err(_) => (
+                    "503 Service Unavailable",
+                    "HTTP0_YM43_AVAILABILITY|status=RECEIPTS_MISSING_OR_INVALID|no_synthetic_fallback=1|json=0\n".to_string(),
+                ),
+            };
+            write_plain(&mut stream, status, &body)?;
+        }
+        target if target.starts_with("/ym/43m/address/")
+            || target.starts_with("/bridge/43m/lookup/") =>
+        {
+            let global = target.starts_with("/bridge/43m/lookup/");
+            let prefix = if global {
+                "/bridge/43m/lookup/"
+            } else {
+                "/ym/43m/address/"
+            };
+            let id = target.strip_prefix(prefix).unwrap_or_default();
+            let (status, body) = match id.parse::<u64>() {
+                Err(_) => (
+                    "400 Bad Request",
+                    "HTTP0_3POW16_SLOT|status=BAD_ADDRESS|json=0\n".to_string(),
+                ),
+                Ok(n) if n >= crate::ym43::CAPACITY => (
+                    "400 Bad Request",
+                    "HTTP0_3POW16_SLOT|status=OUT_OF_BOUNDS|json=0\n".to_string(),
+                ),
+                Ok(n) if crate::ym43::decode(n).is_some() => {
+                    match crate::ym43::runtime_store() {
+                        Ok(data) => match data.lookup(n) {
+                            Some(record) => ("200 OK", record),
+                            None => (
+                                "404 Not Found",
+                                format!("HTTP0_YM43_SLOT|id={n}|status=UNPOPULATED|json=0\n"),
+                            ),
+                        },
+                        Err(_) => (
+                            "503 Service Unavailable",
+                            "HTTP0_YM43_SLOT|status=SOURCE_NOT_VERIFIED|no_synthetic_fallback=1|json=0\n".to_string(),
+                        ),
+                    }
+                }
+                Ok(n) if global && crate::bridge43::decode(n).is_some() => {
+                    match crate::bridge43::runtime_store() {
+                        Ok(data) => match crate::bridge43::lookup(n, data) {
+                            Some(record) => ("200 OK", record),
+                            None => (
+                                "404 Not Found",
+                                format!("HTTP0_BRIDGE43_SLOT|id={n}|status=UNPOPULATED|json=0\n"),
+                            ),
+                        },
+                        Err(_) => (
+                            "503 Service Unavailable",
+                            "HTTP0_BRIDGE43_SLOT|status=RECEIPTS_NOT_VERIFIED|no_synthetic_fallback=1|json=0\n".to_string(),
+                        ),
+                    }
+                }
+                Ok(n) => (
+                    "404 Not Found",
+                    format!("HTTP0_3POW16_SLOT|id={n}|status=UNPOPULATED|json=0\n"),
+                ),
             };
             write_plain(&mut stream, status, &body)?;
         }
