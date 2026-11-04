@@ -13,6 +13,7 @@ pub mod law_reader;
 pub mod receipts;
 pub mod server;
 pub mod sha256;
+pub mod ym43;
 
 pub const L: usize = 24;
 pub const V: usize = L * L * L; // 13,824 rooms

@@ -96,6 +96,49 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 print!("{record}");
                 return Ok(());
             }
+            "--ym43-verify" => {
+                let dir = args
+                    .get(2)
+                    .ok_or("usage: --ym43-verify <pinned_yang_mills_repo_root>")?;
+                let records = hebc::ym43::load(std::path::Path::new(dir))?;
+                if records.records.len() != hebc::ym43::OCCUPIED {
+                    return Err("Yang-Mills evidence index incomplete".into());
+                }
+                print!("{}", hebc::ym43::contract());
+                for i in 0..hebc::ym43::OCCUPIED {
+                    let address = hebc::ym43::encode(i as u8)
+                        .ok_or("invalid registered Yang-Mills address")?;
+                    if hebc::bridge43::decode(address).is_some() {
+                        return Err("Yang-Mills address collides with Clay".into());
+                    }
+                    let record = records
+                        .lookup(address)
+                        .ok_or("missing registered Yang-Mills record")?;
+                    print!("{record}");
+                }
+                println!(
+                    "HTTP0_YM43_VERIFY|capacity={}|ym_occupied={}|combined_occupied={}|source_sha256=PASS|source_fields=PASS|gap_verdict=OPEN|full_ym_rows_reexecuted=0|status=PASS|json=0",
+                    hebc::ym43::CAPACITY,
+                    hebc::ym43::OCCUPIED,
+                    hebc::ym43::COMBINED_OCCUPIED
+                );
+                return Ok(());
+            }
+            "--ym43-lookup" => {
+                let dir = args
+                    .get(2)
+                    .ok_or("usage: --ym43-lookup <pinned_ym_root> <address>")?;
+                let id = args
+                    .get(3)
+                    .ok_or("usage: --ym43-lookup <pinned_ym_root> <address>")?
+                    .parse::<u64>()?;
+                let store = hebc::ym43::load(std::path::Path::new(dir))?;
+                let record = store
+                    .lookup(id)
+                    .ok_or("unpopulated or out-of-range Yang-Mills slot")?;
+                print!("{record}");
+                return Ok(());
+            }
             "--fabric-build" => {
                 let dir = args.get(2).map(String::as_str).unwrap_or("evidence/fabric");
                 hebc::fabric::write(std::path::Path::new(dir))?;
