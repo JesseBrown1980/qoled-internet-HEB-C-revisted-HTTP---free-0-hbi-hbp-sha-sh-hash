@@ -229,7 +229,9 @@ pub fn handle_client(
             write_plain(&mut stream, status, &body)?;
         }
         target if target.starts_with("/bridge/43m/address/") => {
-            let id = target.strip_prefix("/bridge/43m/address/").unwrap_or_default();
+            let id = target
+                .strip_prefix("/bridge/43m/address/")
+                .unwrap_or_default();
             let (status, body) = match id.parse::<u64>() {
                 Err(_) => (
                     "400 Bad Request",
