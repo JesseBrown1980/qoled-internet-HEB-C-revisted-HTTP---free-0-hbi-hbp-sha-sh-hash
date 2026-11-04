@@ -139,6 +139,22 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 print!("{record}");
                 return Ok(());
             }
+            "--bench-engine" => {
+                let side = args
+                    .get(2)
+                    .ok_or("usage: --bench-engine 24|48|96 <ticks:1..243>")?
+                    .parse::<usize>()?;
+                let ticks = args
+                    .get(3)
+                    .ok_or("usage: --bench-engine 24|48|96 <ticks:1..243>")?
+                    .parse::<usize>()?;
+                if args.len() != 4 {
+                    return Err("usage: --bench-engine 24|48|96 <ticks:1..243>".into());
+                }
+                let result = hebc::scale96::run_benchmark(side, ticks)?;
+                print!("{result}");
+                return Ok(());
+            }
             "--fabric-build" => {
                 let dir = args.get(2).map(String::as_str).unwrap_or("evidence/fabric");
                 hebc::fabric::write(std::path::Path::new(dir))?;
