@@ -1,0 +1,12 @@
+ENGINE96_MEASURED|date=2026-11-04|source=GitHub_Actions|run_id=41882698750|candidate_sha=2fcf53171defc5765499b31621bb5b75a9e6cfbf|artifact_id=13350545675|artifact=actual-d3q27-96cubed-benchmark|resolution=nanoseconds|status=PASS|json=0
+ENGINE96_ROW|side=24|rooms=13824|channels=373248|ticks=3|new_forward_ns=16446135|original_forward_ns=14188226|old24_byte_equal=PASS|reversal=PASS|conservation=PASS|status=PASS|json=0
+ENGINE96_ROW|side=48|rooms=110592|channels=2985984|ticks=3|new_forward_ns=128052008|original_forward_ns=NOT_MEASURED|reversal=PASS|conservation=PASS|status=PASS|json=0
+ENGINE96_ROW|side=96|rooms=884736|channels=23887872|ticks=3|new_forward_ns=1025157327|original_forward_ns=NOT_MEASURED|two_state_buffer_bytes=47775744|reversal=PASS|conservation=PASS|coordinate_reference_t1=PASS|repeated_run_state_hashes=PASS|status=PASS|json=0
+ENGINE96_TICK|side=96|t=1|elapsed_ns=347899742|state_sha256=12ce3987ddf745b4544e9fd0a260f869229bf83b05fb6dd1ee16222bb9579130|status=PASS|json=0
+ENGINE96_TICK|side=96|t=2|elapsed_ns=338463012|state_sha256=5cfdf48191551e5c53cb575b90c93829ee6e0c3c724a166c5fbb0e0711267348|status=PASS|json=0
+ENGINE96_TICK|side=96|t=3|elapsed_ns=338794573|state_sha256=3839ad4418787f183c74282874343f8b83fad5332becdf225ddbab389f31d02e|status=PASS|json=0
+ENGINE96_INITIAL|side=96|sha256=022b886931b1afffb81a37de864191cc05b29d36826928c01ba36cd4fadcabf0|json=0
+ENGINE96_REVERSED|side=96|sha256=022b886931b1afffb81a37de864191cc05b29d36826928c01ba36cd4fadcabf0|status=PASS|json=0
+ENGINE96_GATE|source=Taylor_Green_cutoff_20261030|sha256=a7fca71ac8a85fd3acbe4188e9c246e98e4beeeaa459f3e77d40c0342aa4bb12|gates=288|status=PASS|json=0
+ENGINE96_CONTROLS|invalid_size=REJECTED|invalid_tick=REJECTED|repeat_sha=PASS|status=PASS|json=0
+ENGINE96_PERFORMANCE|observed_new24_vs_original24=new24_slower|comparison_basis=one_GitHub_runner|timing_includes=forward_collision_and_streaming_only|full_taylor_green_192tick_force=OPEN|json=0
