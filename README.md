@@ -1,5 +1,7 @@
 ## Native 96³ physical computation: 23,887,872 channels
 
+> **Connected research index (2026-11-04):** [17-repository evidence map](https://github.com/JesseBrown1980/Hard-drive-and-USB-as-GPU/blob/main/ECOSYSTEM-RESEARCH-MAP-20261104.md) · [same-gate Google qsim test in QNN](https://github.com/JesseBrown1980/GGUF-files-operating-as-trained-quantum-neural-network-models/blob/main/docs/GOOGLE-QSIM-LIKE-FOR-LIKE-20261104.md) · [physical 96³ HTTP-0 results](https://github.com/JesseBrown1980/qoled-internet-HEB-C-revisted-HTTP---free-0-hbi-hbp-sha-sh-hash/blob/main/engine96/MEASURED-20261104.hbp). These are navigation links; the verdicts and limits of this project remain as recorded here.
+
 The [new actual D3Q27 compute engine](engine96/README.md) upgrades the supported finite spatial grid from **24³** to **24³, 48³ and 96³**. At 96³ it advances **23,887,872 real ternary channels** with two 23,887,872-byte state buffers and on-the-fly periodic streaming, rather than treating virtual HTTP-0 addresses as computed channels. The prediction-first [Rust 1.81 benchmark](.github/workflows/engine96.yml) requires byte-for-byte legacy 24³ agreement, exact integer conservation, three-step reversal and independent coordinate-streaming checks. The original 243-tick 24³ engine and all certificate records remain pinned; the 192-tick driven Taylor–Green cut-off is separately scoped.
 
 ## New: 3^16 exact three-leaf Clay/Taylor bridge namespace (2026-11-04)
