@@ -1,3 +1,9 @@
+## Qutrits in powers of 3: 23,887,872 on the 96³ engine, run (2026-11-04)
+
+[The qutrit run](qutrit/README.md) makes each of the 96³ engine's channels a three-level unit, puts a Fourier layer, T gates and 46,891,008 CZ3 gates on them, and runs the engine as part of the circuit. Any amplitude of that 3²³⁸⁸⁷⁸⁷²-dimensional state reads in 1.4 s on one laptop thread, with exact reversal and the prediction pushed first. Beside it: rings of 3¹ to 3¹⁶ qutrits, a full 3¹⁶-amplitude state on 16 qutrits, one amplitude per 16-trit address, whose statistic reaches 1.999463 at cycle 40, and windows that sum up to 3¹⁶ branches inside the lattice register.
+
+**Scope:** the lattice and ring circuits have flat output probabilities, and the interference is in the 16-qutrit state and the windows. A Fourier layer across the whole register and Willow's 103-qubit depth-40 circuit are `NOT_RUN`.
+
 ## Native 96³ physical computation: 23,887,872 channels
 
 > **Connected research index (2026-11-04):** [17-repository evidence map](https://github.com/JesseBrown1980/Hard-drive-and-USB-as-GPU/blob/main/ECOSYSTEM-RESEARCH-MAP-20261104.md) · [same-gate Google qsim test in QNN](https://github.com/JesseBrown1980/GGUF-files-operating-as-trained-quantum-neural-network-models/blob/main/docs/GOOGLE-QSIM-LIKE-FOR-LIKE-20261104.md) · [physical 96³ HTTP-0 results](https://github.com/JesseBrown1980/qoled-internet-HEB-C-revisted-HTTP---free-0-hbi-hbp-sha-sh-hash/blob/main/engine96/MEASURED-20261104.hbp). These are navigation links; the verdicts and limits of this project remain as recorded here.

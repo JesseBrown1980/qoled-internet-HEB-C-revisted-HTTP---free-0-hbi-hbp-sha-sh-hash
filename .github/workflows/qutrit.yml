@@ -1,0 +1,80 @@
+name: Qutrits in powers of 3 on the 96^3 engine
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "src/qutrit.rs"
+      - "src/scale96.rs"
+      - "src/lib.rs"
+      - "src/main.rs"
+      - "qutrit/**"
+      - ".github/workflows/qutrit.yml"
+  push:
+    branches: [main]
+    paths:
+      - "src/qutrit.rs"
+      - "src/scale96.rs"
+      - "src/lib.rs"
+      - "src/main.rs"
+      - "qutrit/**"
+      - ".github/workflows/qutrit.yml"
+permissions:
+  contents: read
+jobs:
+  qutrit:
+    name: 23,887,872 qutrits, the ring ladder, windows, the 16-qutrit state, controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Checkout exact candidate source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Rust 1.81 pinned toolchain
+        run: rustup toolchain install 1.81.0 --profile minimal --component rustfmt --component clippy
+      - name: Format, lint, unit tests, build
+        run: |
+          set -euo pipefail
+          cargo +1.81.0 fmt --all -- --check
+          cargo +1.81.0 clippy --locked --offline --all-targets -- -D warnings
+          cargo +1.81.0 test --locked --offline --lib qutrit
+          cargo +1.81.0 build --release --locked --offline
+      - name: The prediction rows are the ones pushed before the run
+        run: test "$(head -n 17 qutrit/PREDICTION.hbp | sha256sum | cut -d' ' -f1)" = "f929fc840eeca7715ba03665169bdaf7cb6a960e2492a76dfa145431275cef1d"
+      - name: The whole run reproduces the receipt byte for byte
+        run: |
+          set -euo pipefail
+          target/release/hebc-portal --qutrit all > qutrit-out.hbp 2> qutrit-timing.txt
+          cmp qutrit-out.hbp qutrit/RECEIPT.hbp
+      - name: Wrong wiring exits nonzero and shows in its rows
+        run: |
+          set -euo pipefail
+          if target/release/hebc-portal --qutrit lattice 96 mutate=bad_wiring > bad.out 2> /dev/null; then
+            echo 'the dropped edge passed'
+            exit 1
+          fi
+          grep -F 'sum_rule=0' bad.out
+          grep -F 'QUTRIT_CHECK_FAILED|name=flips_held' bad.out
+      - name: The separate route, on the receipt and on small circuits
+        run: |
+          set -euo pipefail
+          python3 -I -X utf8 qutrit/second_route.py window qutrit/RECEIPT.hbp
+          python3 -I -X utf8 qutrit/second_route.py lattice qutrit/RECEIPT.hbp 96
+          python3 -I -X utf8 qutrit/second_route.py ring qutrit/RECEIPT.hbp 16
+          for spec in "1 5 6" "2 3 6" "3 3 6"; do
+            set -- $spec
+            target/release/hebc-portal --qutrit small "$1" "$2" "$3" > small.out 2> /dev/null
+            python3 -I -X utf8 qutrit/second_route.py small small.out "$1" "$2" "$3"
+          done
+      - name: A conjugated Fourier gate disagrees with the exact amplitudes
+        run: |
+          set -euo pipefail
+          target/release/hebc-portal --qutrit small 2 3 6 mutate=conjugated_fourier > mutated.out 2> /dev/null
+          python3 -I -X utf8 qutrit/second_route.py small mutated.out 2 3 6 must_disagree
+      - name: Retain the hosted rows and times
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qutrit-96-cubed
+          path: |
+            qutrit-out.hbp
+            qutrit-timing.txt
+          if-no-files-found: warn
