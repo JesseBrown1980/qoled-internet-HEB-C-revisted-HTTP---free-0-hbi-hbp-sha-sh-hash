@@ -48,6 +48,7 @@ jobs:
         run: |
           set -euo pipefail
           dir="bridge43-source/clay/bridge/taylor-green/out"
+          HEB_C_CLAY_LEAVES_DIR="$PWD/$dir" cargo +1.81.0 test --locked --offline --test bridge43_http
           cargo +1.81.0 build --release --locked --offline
           target/release/hebc-portal --bridge43-verify "$dir" | tee bridge43-verify.hbp
           grep -F 'HTTP0_BRIDGE43_VERIFY|capacity=43046721|occupied=729|loaded_rows=9|leaves=3|hashes=PASS|address_roundtrip=PASS' bridge43-verify.hbp
