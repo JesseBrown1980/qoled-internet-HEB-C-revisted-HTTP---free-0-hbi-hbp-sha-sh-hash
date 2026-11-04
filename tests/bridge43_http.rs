@@ -10,8 +10,7 @@ fn get(path: &str) -> String {
     let task = thread::spawn(move || {
         let (stream, _) = listener.accept().expect("one incoming request");
         let state = vec![1u8; hebc::N];
-        hebc::server::handle_client(stream, &state, 0, "test-only", 0, 0)
-            .expect("HTTP-0 handler");
+        hebc::server::handle_client(stream, &state, 0, "test-only", 0, 0).expect("HTTP-0 handler");
     });
     let mut conn = TcpStream::connect(addr).expect("connect loopback");
     let request = format!("GET {path} HTTP/1.1\r\nHost: localhost\r\n\r\n");
