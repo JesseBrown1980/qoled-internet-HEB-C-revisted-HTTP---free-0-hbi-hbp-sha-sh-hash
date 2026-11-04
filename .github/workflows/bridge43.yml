@@ -1,0 +1,83 @@
+name: HTTP-0 Clay/Taylor 3^16 sparse bridge
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    paths:
+      - 'src/bridge43.rs'
+      - 'src/lib.rs'
+      - 'src/main.rs'
+      - 'src/server.rs'
+      - 'docs/HTTP0-CLAY-3POWER16-BRIDGE.md'
+      - '.github/workflows/bridge43.yml'
+permissions:
+  contents: read
+jobs:
+  verify:
+    name: Exact 3-step leaves -> 3^16 HTTP-0 namespace
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout exact HTTP-0 commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Checkout pinned verified Clay comparator
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: JesseBrown1980/continuum-Clay-variation
+          ref: 36b304006adfecff13df6ed1098c9ed30433bc3b
+          path: bridge43-source/clay
+          persist-credentials: false
+      - name: Checkout pinned Taylor–Green inputs
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: JesseBrown1980/Taylor_green_regularity-resolved-and-solved
+          ref: ee71e0eea7fd61bfe5a45ebf2f590311742161f7
+          path: bridge43-source/clay/bridge/taylor-green/tg-source
+          persist-credentials: false
+      - name: Pin Rust 1.81, Clippy, rustfmt
+        run: rustup toolchain install 1.81.0 --profile minimal --component clippy --component rustfmt
+      - name: Check HTTP-0 native source and 729-address bijection
+        run: |
+          cargo +1.81.0 fmt --all -- --check
+          cargo +1.81.0 clippy --locked --offline --all-targets -- -D warnings
+          cargo +1.81.0 test --locked --offline --lib bridge43
+      - name: Reproduce the exact published three Taylor–Green leaves
+        run: bash bridge43-source/clay/bridge/taylor-green/run.sh
+      - name: Independently verify receipts with HTTP-0 and perform sparse-address probes
+        run: |
+          set -euo pipefail
+          dir="bridge43-source/clay/bridge/taylor-green/out"
+          cargo +1.81.0 build --release --locked --offline
+          target/release/hebc-portal --bridge43-verify "$dir" | tee bridge43-verify.hbp
+          grep -F 'HTTP0_BRIDGE43_VERIFY|capacity=43046721|occupied=729|loaded_rows=9|leaves=3|hashes=PASS|address_roundtrip=PASS' bridge43-verify.hbp
+          target/release/hebc-portal --bridge43-lookup "$dir" 0 | grep -F 't=1|arm=TGV|register=0'
+          target/release/hebc-portal --bridge43-lookup "$dir" 14348907 | grep -F 't=2|arm=TGV|register=0'
+          target/release/hebc-portal --bridge43-lookup "$dir" 38263832 | grep -F 't=3|arm=NULL|register=80'
+          if target/release/hebc-portal --bridge43-lookup "$dir" 81; then
+            echo 'FAIL: unpopulated address fabricated' >&2; exit 1
+          fi
+          if target/release/hebc-portal --bridge43-lookup "$dir" 43046721; then
+            echo 'FAIL: out-of-range address accepted' >&2; exit 1
+          fi
+      - name: Corrupted pinned three-leaf evidence must be rejected
+        run: |
+          set -euo pipefail
+          mkdir bridge43-tampered
+          cp bridge43-source/clay/bridge/taylor-green/out/LEAF-*.hbp bridge43-source/clay/bridge/taylor-green/out/LEAVES.hbi bridge43-tampered/
+          printf X | dd of=bridge43-tampered/LEAF-1.hbp bs=1 seek=14 conv=notrunc status=none
+          if target/release/hebc-portal --bridge43-verify bridge43-tampered; then
+            echo 'FAIL: corrupted leaf verified' >&2; exit 1
+          fi
+          echo 'HTTP0_BRIDGE43_FAULT|corrupted_receipt=REJECTED|status=PASS|json=0'
+      - name: Save exact HTTP-0/Clay bridge evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: http0-3pow16-clay-taylor
+          path: |
+            bridge43-verify.hbp
+            bridge43-source/clay/bridge/taylor-green/out/LEAF-*.hbp
+            bridge43-source/clay/bridge/taylor-green/out/LEAVES.hbi
+            bridge43-source/clay/bridge/taylor-green/out/SHA256SUMS
+          if-no-files-found: warn
