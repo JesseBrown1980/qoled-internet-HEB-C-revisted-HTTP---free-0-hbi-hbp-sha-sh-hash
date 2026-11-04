@@ -288,7 +288,6 @@ mod tests {
         assert_eq!(CAPACITY / REGISTERS as u64, 531_441);
         assert_eq!(POPULATED, 729);
         assert_eq!(CAPACITY - POPULATED as u64, 43_045_992);
-        assert!(CAPACITY >= 23_000_000);
     }
     #[test]
     fn all_729_addresses_unique_and_roundtrip_in_16_trits() {
