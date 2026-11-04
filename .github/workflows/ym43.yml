@@ -1,0 +1,97 @@
+name: HTTP-0 3^16 Yang-Mills certificate source bridge
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/ym43.rs'
+      - 'src/lib.rs'
+      - 'src/server.rs'
+      - 'src/main.rs'
+      - 'tests/ym43_http.rs'
+      - 'docs/HTTP0-YANG-MILLS-3POWER16.md'
+      - '.github/workflows/ym43.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/ym43.rs'
+      - 'src/lib.rs'
+      - 'src/server.rs'
+      - 'src/main.rs'
+      - 'tests/ym43_http.rs'
+      - 'docs/HTTP0-YANG-MILLS-3POWER16.md'
+      - '.github/workflows/ym43.yml'
+permissions:
+  contents: read
+jobs:
+  ym-source:
+    name: Pin three 3x4 Yang-Mills source receipts inside 3^16
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - name: Checkout current HTTP-0 implementation
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Checkout exact finite Yang-Mills source commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: JesseBrown1980/Finite-universe-Yang-mills-existence-and-mass-gap-using-HEB-C
+          ref: 5517268b511d5f28e307b21fc53eede3200ed7b9
+          path: ym-source
+          persist-credentials: false
+      - name: Verify commit, Git blob identity and exact SHA256 for all 3 originals
+        run: |
+          set -euo pipefail
+          test "$(git -C ym-source rev-parse HEAD)" = 5517268b511d5f28e307b21fc53eede3200ed7b9
+          base=ym-source/native/ym/results/3x4_stream/perron
+          test "$(git -C ym-source hash-object native/ym/results/3x4_stream/perron/PERRON-RESULT.hbp)" = cbd428014a4d440732a5c0a541ed57a9041becee
+          test "$(git -C ym-source hash-object native/ym/results/3x4_stream/perron/FULLREBUILD-RUN.hbp)" = d6e264cdf3a30929edc552bf85077f4aa08b799c
+          test "$(git -C ym-source hash-object native/ym/results/3x4_stream/perron/allpairs/ALLPAIRS-RUN.hbp)" = 6cf863c8ac0d4943fb5077c77fa4fc02b3e0acc2
+          printf '%s\n' \
+            "de19b354127c59ba3c2328fd310b5ff6a1103829c8d1d86c58b433aeec115a18  $base/PERRON-RESULT.hbp" \
+            "cccada48ce34abeb12d77c8c4a0917dd4d9acb489aac3a9fe5d77b29f47a0a07  $base/FULLREBUILD-RUN.hbp" \
+            "8af3e4e76672abc92bf0d17113680cda387a353de082916a5e2921756ca95ce0  $base/allpairs/ALLPAIRS-RUN.hbp" \
+            | sha256sum -c -
+      - name: Install pinned Rust 1.81
+        run: rustup toolchain install 1.81.0 --profile minimal --component rustfmt --component clippy
+      - name: Check integer source, tests, Clippy and formatting
+        run: |
+          cargo +1.81.0 fmt --all -- --check
+          cargo +1.81.0 clippy --offline --locked --all-targets -- -D warnings
+          cargo +1.81.0 test --offline --locked --lib ym43
+      - name: Build native portal and test its real source-backed HTTP endpoints
+        run: |
+          cargo +1.81.0 build --release --locked --offline
+          HEB_C_YM43_ROOT="$PWD/ym-source" cargo +1.81.0 test --offline --locked --test ym43_http
+      - name: Verify original evidence and all three disjoint virtual addresses
+        run: |
+          set -euo pipefail
+          target/release/hebc-portal --ym43-verify "$PWD/ym-source" | tee ym43-verdict.hbp
+          grep -F 'HTTP0_YM43_VERIFY|capacity=43046721|ym_occupied=3|combined_occupied=732|source_sha256=PASS|source_fields=PASS|gap_verdict=OPEN|full_ym_rows_reexecuted=0|status=PASS' ym43-verdict.hbp
+          target/release/hebc-portal --ym43-lookup "$PWD/ym-source" 81 | grep -F 'class=PERRON'
+          target/release/hebc-portal --ym43-lookup "$PWD/ym-source" 82 | grep -F 'class=FULLREBUILD'
+          target/release/hebc-portal --ym43-lookup "$PWD/ym-source" 83 | grep -F 'class=ALLPAIRS'
+          if target/release/hebc-portal --ym43-lookup "$PWD/ym-source" 84; then
+            echo 'FAIL: unpopulated YM address returned an invented record'; exit 1
+          fi
+      - name: Explicitly reject corrupted or absent YM source evidence
+        run: |
+          set -euo pipefail
+          mkdir -p ym43-tamper/native/ym/results/3x4_stream/perron/allpairs
+          cp ym-source/native/ym/results/3x4_stream/perron/PERRON-RESULT.hbp ym43-tamper/native/ym/results/3x4_stream/perron/
+          cp ym-source/native/ym/results/3x4_stream/perron/FULLREBUILD-RUN.hbp ym43-tamper/native/ym/results/3x4_stream/perron/
+          cp ym-source/native/ym/results/3x4_stream/perron/allpairs/ALLPAIRS-RUN.hbp ym43-tamper/native/ym/results/3x4_stream/perron/allpairs/
+          printf X | dd of=ym43-tamper/native/ym/results/3x4_stream/perron/FULLREBUILD-RUN.hbp bs=1 seek=40 conv=notrunc status=none
+          if target/release/hebc-portal --ym43-verify ym43-tamper; then
+            echo 'FAIL: altered fullrebuild receipt accepted'; exit 1
+          fi
+          rm ym43-tamper/native/ym/results/3x4_stream/perron/PERRON-RESULT.hbp
+          if target/release/hebc-portal --ym43-verify ym43-tamper; then
+            echo 'FAIL: missing Perron receipt accepted'; exit 1
+          fi
+          echo 'HTTP0_YM43_CONTROLS|altered_fullrebuild=REJECTED|missing_perron=REJECTED|status=PASS|json=0'
+      - name: Save immutable source-index receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: http0-ym43-source-pins
+          path: ym43-verdict.hbp
+          if-no-files-found: warn
