@@ -78,6 +78,21 @@ fn flip_sites(n: usize) -> Vec<(usize, u8)> {
     out
 }
 
+/// The lattice's flip sites: flip_sites' rooms, with the drawn sites spread over the channels, so all 27 are read.
+fn lattice_flip_sites(n: usize) -> Vec<(usize, u8)> {
+    flip_sites(n)
+        .into_iter()
+        .enumerate()
+        .map(|(i, (site, d))| {
+            if i < 7 {
+                (site, d)
+            } else {
+                (site - site % K + (i - 7) % K, d)
+            }
+        })
+        .collect()
+}
+
 fn sha(bytes: &[u8]) -> String {
     crate::sha256::hash_bytes(bytes)
 }
@@ -294,6 +309,7 @@ fn read_branch(
         lattice.qutrits()
     );
     checks.record("reversal_exact", exact);
+    checks.record("the_ticks_moved_the_state", output != input);
     checks.record("invariants_conserved", conserved);
     checks.record("phase_read_from_the_output", same);
     Ok(BranchRead {
@@ -312,7 +328,7 @@ fn lattice_flips(
     let start = Instant::now();
     let mut state = branch.input.clone();
     let n = lattice.qutrits();
-    let sites = flip_sites(n);
+    let sites = lattice_flip_sites(n);
     let mut held = 0usize;
     for &(site, d) in &sites {
         let old = state[site];
@@ -668,6 +684,7 @@ fn read_state(state: &[C]) -> Reading {
     Reading {
         norm_off_1e15: ((off >> 40) * 1_000_000_000_000_000) >> 80,
         norm_above,
+        // Good for a statistic up to 2^24. A basis state on 3^16 wraps, and the run's largest reading is 65.98.
         xeb_ppm: ((sum_p2 >> 16) * d / low) * 1_000_000 / low,
         above_ppm: [
             above[0] * 1_000_000 / d,

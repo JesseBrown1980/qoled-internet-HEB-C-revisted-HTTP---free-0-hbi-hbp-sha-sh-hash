@@ -1,0 +1,7 @@
+FIX|name=fix_baseline|rust_exit=0|rows_not_in_receipt=0|QUTRIT_FLIPS|sites=81|held=81|sum_of_trit_times_neighbours=93806350|twice_the_cz_sum=93806350|sum_rule=1|degree_rule=1|json=0|failed=0
+FIX|name=fix_n19|rust_exit=1|rows_not_in_receipt=2|QUTRIT_FLIPS|sites=81|held=78|sum_of_trit_times_neighbours=93806350|twice_the_cz_sum=93806350|sum_rule=1|degree_rule=1|json=0|failed=1
+QUTRIT_FLIPS|sites=81|held=73|sum_of_trit_times_neighbours=92035134|twice_the_cz_sum=93806350|sum_rule=0|degree_rule=1|json=0
+QUTRIT_CHECK_FAILED|name=flips_held|json=0
+QUTRIT_CHECK_FAILED|name=sum_rule|json=0
+ENGINE_ROUTE|mutant=e_noop|exit=1
+ENGINE_ROUTE|mutant=e_stream_sign|exit=1

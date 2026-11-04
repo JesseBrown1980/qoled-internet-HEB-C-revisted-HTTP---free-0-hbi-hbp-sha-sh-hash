@@ -1,0 +1,3 @@
+SECOND_ROUTE_WINDOW|m=3|chain=1|amplitudes_compared=27|largest_difference_ulps_of_2^-60=2|xeb_ppm_exact=1518518|xeb_ppm_read=1518518|json=0
+SECOND_ROUTE_WINDOW|m=4|chain=1|amplitudes_compared=81|largest_difference_ulps_of_2^-60=4|xeb_ppm_exact=1493827|xeb_ppm_read=1493827|json=0
+SECOND_ROUTE_WINDOW|m=8|chain=1|amplitudes_compared=6561|largest_difference_ulps_of_2^-60=26|xeb_ppm_exact=1499923|xeb_ppm_read=1499923|json=0

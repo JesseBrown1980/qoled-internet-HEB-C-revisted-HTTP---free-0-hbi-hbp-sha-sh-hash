@@ -1,0 +1,3 @@
+SECOND_ROUTE_LATTICE|name=A|side=96|qutrits=23887872|same_sha256=1|t_sum=71673473|cz_sum=46903175|cz3_ring=23887872|cz3_along_streaming=23003136|phase_mod_9=8|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_LATTICE|name=B|side=96|qutrits=23887872|same_sha256=1|t_sum=71649245|cz_sum=46875257|cz3_ring=23887872|cz3_along_streaming=23003136|phase_mod_9=8|equal_to_the_rust_row=1|json=0
+SECOND_ROUTE_LATTICE|name=C_A_with_one_trit_changed|side=96|qutrits=23887872|same_sha256=1|t_sum=71673480|cz_sum=46903179|cz3_ring=23887872|cz3_along_streaming=23003136|phase_mod_9=0|equal_to_the_rust_row=1|json=0

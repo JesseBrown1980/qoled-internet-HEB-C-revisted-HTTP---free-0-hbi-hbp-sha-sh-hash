@@ -1,0 +1,2 @@
+PROBE_GATES|gates=288|velocity_order_equals_my_list=1|four_distinct_channels=288|permutations=288|involutions=288|conserve_mass_momentum_energy=288|fixed_codes_min=51|fixed_codes_max=51|fixed_codes_sum=14688|of=23328|channel_use=[36, 46, 36, 46, 46, 46, 36, 46, 36, 46, 46, 46, 46, 36, 46, 46, 46, 46, 36, 46, 36, 46, 46, 46, 36, 46, 36]|json=0
+PROBE_ROOM_COVERAGE|residues=288|channels_touched_min=26|channels_touched_max=27|residues_where_each_channel_is_untouched=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 8, 0, 0, 0, 0, 8, 0, 3]|json=0

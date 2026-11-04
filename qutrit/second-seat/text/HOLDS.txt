@@ -1,0 +1,310 @@
+HOLD H1 | file=README.md | severity=high
+OLD<<<
+[The qutrit run](qutrit/README.md) makes each of the 96³ engine's channels a three-level unit, puts a Fourier layer, T gates and 46,891,008 CZ3 gates on them, and runs the engine as part of the circuit. Any amplitude of that 3²³⁸⁸⁷⁸⁷²-dimensional state reads in 1.4 s on one laptop thread, with exact reversal and the prediction pushed first. Beside it: rings of 3¹ to 3¹⁶ qutrits, a full 3¹⁶-amplitude state on 16 qutrits, one amplitude per 16-trit address, whose statistic reaches 1.999463 at cycle 40, and windows that sum up to 3¹⁶ branches inside the lattice register.
+>>>
+NEW<<<
+[The qutrit run](qutrit/README.md) makes each of the 96³ engine's channels a three-level unit and defines a circuit on them: a Fourier layer, T gates, 46,891,008 CZ3 gates, then 3 engine ticks. That circuit is a phase state whose basis strings the engine permutes, so each output string comes from exactly one input string and each amplitude is one formula over one string of trits. The run holds one string at a time: amplitudes of the 3²³⁸⁸⁷⁸⁷²-dimensional state read in 1.4 to 1.5 s each on one laptop thread, with exact reversal and the prediction pushed first. Beside it: rings of 3¹ to 3¹⁶ qutrits, a full 3¹⁶-amplitude state on 16 qutrits, one amplitude per 16-trit address, whose 3¹⁶Σp² reads 1.999463 at cycle 40 against the Porter–Thomas value of 2, and windows of up to 16 channels, with the rest of the register on one branch, that sum up to 3¹⁶ branches.
+>>>
+REASON: The headline gives the amplitude time before the circuit's kind, and a reader can take the register count for Willow-class computation.
+
+HOLD H2 | file=README.md | severity=high
+OLD<<<
+**Scope:** the lattice and ring circuits have flat output probabilities, and the interference is in the 16-qutrit state and the windows. A Fourier layer across the whole register and Willow's 103-qubit depth-40 circuit are `NOT_RUN`.
+>>>
+NEW<<<
+**Scope:** the lattice and ring circuits have flat output probabilities, each exactly 3⁻ⁿ, and a read is one pass over n trits on a classical machine, so the qutrit count there is the length of the string held. The interference is in the 16-qutrit state and the windows, up to 16 qutrits. Open: a Fourier layer across the whole register, and Willow's 103-qubit depth-40 circuit.
+>>>
+REASON: States the cost and what the count measures; replaces NOT_RUN with an open item per the operator's rule.
+
+HOLD H3 | file=qutrit/README.md | severity=high
+OLD<<<
+**Flat probabilities on the lattice and ladder.** Every output string has probability exactly 3⁻ⁿ, so those runs read chosen amplitudes and their phases.
+>>>
+NEW<<<
+**The lattice and ladder are phase states, and on the lattice the engine then permutes the basis strings.** Every output string has probability exactly 3⁻ⁿ and comes from exactly one input string, so each amplitude is one term, and sampling the output is drawing n uniform trits. Those runs read chosen amplitudes and their phases. A read is one pass over the n trits on a classical machine, with time in proportion to n: the ring rungs at powers 14, 15 and 16 took 527, 1,536 and 4,674 ms. The register count on these two objects is the length of the string held in memory. The interfering state measured here is the 16-qutrit row.
+>>>
+REASON: The scope section names the probabilities and leaves the circuit's kind and cost for the reader to infer.
+
+HOLD H4 | file=qutrit/README.md | severity=high
+OLD<<<
+- **Wrong wiring:** dropping one ring edge from the local relation at 96³ exits 1, with 75 of 81 sites holding and the sum rule at 92,035,134 against 93,806,350.
+>>>
+NEW<<<
+- **Wrong wiring:** dropping the ring edge between channels 0 and 1 in every room, 884,736 edges, from the local relation at 96³ exits 1, with 75 of 81 sites holding and the sum rule at 92,035,134 against 93,806,350. The prediction's row calls this mutation `one_room_edge_dropped`. On branch A a single dropped edge shows when both its trits are nonzero or a listed site touches it.
+>>>
+REASON: The code drops 884,736 edges; a copy dropping one edge in room 100000 or 300000 exits 0 with every check passing.
+
+HOLD H5 | file=qutrit/README.md | severity=medium
+OLD<<<
+and one read is the engine run backward from b, then one sum over the gates. The gate counts in the table below are what that sum covers.
+>>>
+NEW<<<
+and one read runs the engine backward from b, 84,934,656 collision-table lookups on that one string, then sums 70,778,880 phase terms for its T and CZ3 gates on the string it reaches. The Fourier gates act through the factor 3^(−n/2).
+>>>
+REASON: The sum covers T and CZ3 only; Fourier enters through the normalization and the collision gates are applied, on one string.
+
+HOLD H6 | file=qutrit/README.md | severity=medium
+OLD<<<
+| Gates on the lattice | 23,887,872 Fourier, 23,887,872 T, 46,891,008 CZ3 | Equal, counted on the register |
+>>>
+NEW<<<
+| Gates on the lattice | 23,887,872 Fourier, 23,887,872 T, 46,891,008 CZ3 | Equal, counted by the loop that sums one branch's phase |
+>>>
+REASON: Says how the count was made; phase_sum's Fourier count is a counter with no arithmetic on a state.
+
+HOLD H8 | file=qutrit/README.md | severity=medium
+OLD<<<
+- **Lattice:** Python regenerates the 23,887,872 trits and sums the phase with its own wiring in 19 s. The SHA-256, both sums and the phase all agree.
+>>>
+NEW<<<
+- **Lattice:** Python regenerates branch A's 23,887,872 input trits and sums the phase with its own wiring in 19 s. The input SHA-256, both sums and the phase all agree. The 3 engine ticks rest on byte-exact reversal, conservation and the [96³ workflow](../.github/workflows/engine96.yml)'s coordinate-streaming comparison of the first step.
+>>>
+REASON: The route starts at the input string on one branch; output_sha256 has no Python route, and "the SHA-256" reads as if it does.
+
+HOLD H9 | file=qutrit/README.md | severity=low
+OLD<<<
+| Ring ladder, powers 1 to 16 | The relation holds on all, and the top equals `ym43::CAPACITY` | 16 of 16 |
+>>>
+NEW<<<
+| Ring ladder, powers 1 to 16 | The relation holds on all, and the top equals `ym43::CAPACITY` | 16 of 16 powers, at every site through power 4 and at 81 listed sites above it, with repeats at powers 5 to 7 (69, 73, 80 distinct) |
+>>>
+REASON: "16 of 16" counts powers; the top rung tests 81 of 43,046,721 sites.
+
+HOLD H10 | file=qutrit/README.md | severity=medium
+OLD<<<
+| Window amplitudes against the exact transfer vector | Within 10⁻¹² | Within 1.0 × 10⁻¹⁵ |
+>>>
+NEW<<<
+| Window norm | Within 10⁻⁹ | Within 8 × 10⁻¹⁵ at every m |
+| Window amplitudes against the exact transfer vector | Within 10⁻¹² | Within 1.02 × 10⁻¹⁵, on the 29 amplitudes printed in the receipt |
+>>>
+REASON: 1166 units of 2^-60 is 1.0113e-15, above 1.0e-15; the comparison covers printed amplitudes; the predicted window norm had no row.
+
+HOLD H11 | file=qutrit/README.md | severity=medium
+OLD<<<
+**Interference in the state and the windows.** The 16-qutrit state runs 40 cycles of interfering layers. A window is a chain, so a three-entry transfer vector gives the same amplitudes in m steps.
+>>>
+NEW<<<
+**Interference in the state and the windows.** The 16-qutrit state runs 40 cycles of interfering layers, one circuit with its T powers drawn from a fixed seed. A window takes branch A's input string, before any engine tick, and adds a second Fourier layer on the first m channels of room 0. It is a chain, so a three-entry transfer vector gives the same amplitudes in m steps, and its statistic settles at 1.5. The pinned scope row names the state alone, and the window rows added at `a9f3dbe` extend it.
+>>>
+REASON: The window circuit leaves the engine out, which the lattice row implies otherwise; the pinned row's "alone" needs a note beside it.
+
+HOLD H12 | file=qutrit/README.md | severity=medium
+OLD<<<
+- **Willow's circuit:** 103 qubits at depth 40, in a different gate set. Its state space, 2¹⁰³, is first matched at 65 qutrits, since 3⁶⁴ < 2¹⁰³ < 3⁶⁵, and the state engine holds 16 here. `NOT_RUN`, and this run makes no statement about quantum advantage.
+>>>
+NEW<<<
+- **Willow's circuit:** 103 two-level qubits at depth 40, XEB fidelity 0.1%, with iSWAP-like two-qubit gates, from the [spec sheet](https://quantumai.google/static/site-assets/downloads/willow-spec-sheet.pdf). Its state space, 2¹⁰³, is first matched at 65 qutrits, since 3⁶⁴ < 2¹⁰³ < 3⁶⁵, and the state engine holds 16 here. `OPEN`. Quantum advantage is outside this folder's scope.
+>>>
+REASON: Operator's rule on not-statements and OPEN status; names the source and the gate difference, both confirmed on the spec sheet.
+
+HOLD H13 | file=qutrit/README.md | severity=medium
+OLD<<<
+- **A final Fourier layer across the whole lattice register.** Each amplitude is then a sum of 3²³⁸⁸⁷⁸⁷² terms. `NOT_RUN`.
+>>>
+NEW<<<
+- **A final Fourier layer across the whole lattice register.** Each amplitude is then a sum of 3²³⁸⁸⁷⁸⁷² terms. `OPEN`.
+- **A separate route for the 16-qutrit state.** The exact Z[ζ] rows reach 9 qutrits at 6 cycles. The 16-qutrit amplitudes, seal and statistic are this engine's rows.
+- **A Python route for the engine's ticks and for branches B and C.** It would read the output SHA-256 rows, and a second branch narrows what one branch's trits can hide.
+- **A command argument for a chosen output string.** The run reads the three branch outputs, and the formula covers every string, since the engine's map is a bijection on trit strings.
+- **An HTTP-0 route for these reads.** The run is on the portal's command line.
+>>>
+REASON: Five open items the text leaves unlisted; NOT_RUN becomes OPEN per the operator's rule. The operator can drop the last.
+
+HOLD H14 | file=qutrit/README.md | severity=medium
+OLD<<<
+**Status: built and run on one laptop CPU, in integers, with Rust 1.81 and clippy `-D warnings`. Every predicted row was met. The second seat's attack is OPEN.**
+>>>
+NEW<<<
+**Status: built and run on one laptop CPU, in integers, with Rust 1.81 and clippy `-D warnings`. GitHub's ubuntu-24.04 runner reproduced the receipt byte for byte at `6114590` in 112 s. Every predicted row was met. The second seat's attack is OPEN.**
+>>>
+REASON: Underclaim: hosted run 41919836095 passed cmp on another operating system and the text names the laptop only.
+
+HOLD H15 | file=qutrit/README.md | severity=low
+OLD<<<
+[The prediction](PREDICTION.hbp) was pushed before the code, at `42aacb7`, and its additions before the 96³ run, at `a9f3dbe`.
+>>>
+NEW<<<
+[The prediction](PREDICTION.hbp) was pushed before the code, at `42aacb7`, and its additions before the 96³ run, at `a9f3dbe`. Its row `QUTRIT_ALREADY_READ` lists what had run by then: unit tests at 24³, the 1×5, 2×3 and 3×3 circuits with the conjugated control, and the exact window statistic.
+>>>
+REASON: The additions came after the code and some small runs; the file discloses it and the summary sentence should too.
+
+HOLD H16 | file=qutrit/README.md | severity=low
+OLD<<<
+[`second_route.py`](second_route.py) shares no code with the engine, and its rows are in [`SECOND-ROUTE.hbp`](SECOND-ROUTE.hbp). [`CONTROLS.hbp`](CONTROLS.hbp) has the controls.
+>>>
+NEW<<<
+[`second_route.py`](second_route.py) is a separate Python program with its own arithmetic and wiring, written from the same circuit definition and seeds, and its rows are in [`SECOND-ROUTE.hbp`](SECOND-ROUTE.hbp). [`CONTROLS.hbp`](CONTROLS.hbp) has the controls.
+>>>
+REASON: Operator's rule; also states what the two routes hold in common.
+
+HOLD H17 | file=qutrit/README.md | severity=low
+OLD<<<
+exact amplitudes in Z[ζ] give Σ|a|² = 3^(Fourier gates) with no rounding, and
+>>>
+NEW<<<
+exact amplitudes in Z[ζ] give Σ|a|² = 3^(Fourier gates) exactly, and
+>>>
+REASON: Operator's rule.
+
+HOLD H18 | file=qutrit/README.md | severity=low
+OLD<<<
+The 16-qutrit statistic, 3¹⁶Σp², reaches the Porter–Thomas value of 2 for a deep random circuit:
+>>>
+NEW<<<
+The 16-qutrit state space equals 25.36 qubits. Its statistic, 3¹⁶Σp², reaches the Porter–Thomas value of 2 for a deep random circuit. At cycle 40 the statistic sits 537 ppm from 2 and the three fractions 31, 19 and 23 ppm from their values, each inside one standard deviation for 3¹⁶ independent Porter–Thomas amplitudes (681, 73, 52 and 33 ppm):
+>>>
+REASON: Underclaim: the readings are far tighter than the predicted bands, and the predicted 25.36 is never quoted.
+
+HOLD H19 | file=qutrit/README.md | severity=low
+OLD<<<
+## Times and memory
+>>>
+NEW<<<
+## Times
+>>>
+REASON: The section holds times; memory is in the first table.
+
+HOLD H20 | file=qutrit/README.md | severity=low
+OLD<<<
+| One amplitude read on the lattice | Under 30 s | 1.4 s |
+>>>
+NEW<<<
+| One amplitude read on the lattice | Under 30 s | 1.44, 1.47, 1.42 s on the 3 branches |
+>>>
+REASON: 1472 ms rounds to 1.5; the row can carry the three readings.
+
+HOLD H21 | file=.github/workflows/qutrit.yml | severity=low
+OLD<<<
+      - name: The prediction rows are the ones pushed before the run
+>>>
+NEW<<<
+      - name: The 17 prediction rows hash to their value at a9f3dbe
+>>>
+REASON: The step compares a hash to a constant in the same tree; order rests on git history.
+
+HOLD H22 | file=.github/workflows/qutrit.yml | severity=medium
+OLD<<<
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "src/qutrit.rs"
+      - "src/scale96.rs"
+      - "src/lib.rs"
+      - "src/main.rs"
+      - "qutrit/**"
+      - ".github/workflows/qutrit.yml"
+  push:
+    branches: [main]
+    paths:
+      - "src/qutrit.rs"
+      - "src/scale96.rs"
+      - "src/lib.rs"
+      - "src/main.rs"
+      - "qutrit/**"
+      - ".github/workflows/qutrit.yml"
+>>>
+NEW<<<
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "src/qutrit.rs"
+      - "src/scale96.rs"
+      - "src/sha256.rs"
+      - "src/ym43.rs"
+      - "src/bridge43.rs"
+      - "src/lib.rs"
+      - "src/main.rs"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "qutrit/**"
+      - ".github/workflows/qutrit.yml"
+  push:
+    branches: [main]
+    paths:
+      - "src/qutrit.rs"
+      - "src/scale96.rs"
+      - "src/sha256.rs"
+      - "src/ym43.rs"
+      - "src/bridge43.rs"
+      - "src/lib.rs"
+      - "src/main.rs"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "qutrit/**"
+      - ".github/workflows/qutrit.yml"
+>>>
+REASON: The engine calls sha256, ym43::CAPACITY, ym43::decode and bridge43::decode, whose rows are in the receipt; a change there skips this workflow.
+
+HOLD H23 | file=.github/workflows/qutrit.yml | severity=medium
+OLD<<<
+      - name: The whole run reproduces the receipt byte for byte
+>>>
+NEW<<<
+      - name: The receipt is the one the README names
+        run: test "$(sha256sum qutrit/RECEIPT.hbp | cut -d' ' -f1)" = "c16c54f7e8cc855ba54e89bb75833cc6b759a9f8ad58ca46f62161a50262ab5b"
+      - name: The whole run reproduces the receipt byte for byte
+>>>
+REASON: An engine change committed with a regenerated receipt passes cmp today; the pin makes it edit a visible constant.
+
+HOLD H24 | file=.github/workflows/qutrit.yml | severity=low
+OLD<<<
+          python3 -I -X utf8 qutrit/second_route.py window qutrit/RECEIPT.hbp
+          python3 -I -X utf8 qutrit/second_route.py lattice qutrit/RECEIPT.hbp 96
+          python3 -I -X utf8 qutrit/second_route.py ring qutrit/RECEIPT.hbp 16
+          for spec in "1 5 6" "2 3 6" "3 3 6"; do
+            set -- $spec
+            target/release/hebc-portal --qutrit small "$1" "$2" "$3" > small.out 2> /dev/null
+            python3 -I -X utf8 qutrit/second_route.py small small.out "$1" "$2" "$3"
+          done
+>>>
+NEW<<<
+          for spec in "1 5 6" "2 3 6" "3 3 6"; do
+            set -- $spec
+            target/release/hebc-portal --qutrit small "$1" "$2" "$3" > small.out 2> /dev/null
+            python3 -I -X utf8 qutrit/second_route.py small small.out "$1" "$2" "$3" >> route.hbp
+          done
+          python3 -I -X utf8 qutrit/second_route.py window qutrit/RECEIPT.hbp >> route.hbp
+          python3 -I -X utf8 qutrit/second_route.py lattice qutrit/RECEIPT.hbp 96 >> route.hbp
+          python3 -I -X utf8 qutrit/second_route.py ring qutrit/RECEIPT.hbp 16 >> route.hbp
+          cmp route.hbp qutrit/SECOND-ROUTE.hbp
+>>>
+REASON: The README cites SECOND-ROUTE.hbp rows and the workflow never compares them.
+
+HOLD H25 | file=PR #5 body | severity=low
+OLD<<<
+[The folder](qutrit/README.md) has every row.
+>>>
+NEW<<<
+[The folder](https://github.com/JesseBrown1980/qoled-internet-HEB-C-revisted-HTTP---free-0-hbi-hbp-sha-sh-hash/blob/fable5-qutrit-96cubed-20261104/qutrit/README.md) has every row. GitHub's ubuntu-24.04 runner reproduced the receipt byte for byte at `6114590` in 112 s.
+>>>
+REASON: The relative link lands on a login page for pull/new; adds the hosted reproduction.
+
+HOLD H26 | file=PR #5 body | severity=high
+OLD<<<
+**Scope:** the lattice and ring circuits have flat output probabilities, with amplitudes from a formula, and the interference is in the 16-qutrit state and the windows. A Fourier layer across the whole register and Willow's 103-qubit depth-40 circuit are `NOT_RUN`. Willow's state space is first matched at 65 qutrits, and the state engine holds 16 here.
+>>>
+NEW<<<
+**Scope:** the lattice and ring circuits are phase states, the lattice's then permuted by the engine, with flat output probabilities, each exactly 3⁻ⁿ. An amplitude is one formula over one string, a read is one pass over n trits on a classical machine, and the qutrit count there is the length of the string held. The interference is in the 16-qutrit state and the windows. Open: a Fourier layer across the whole register, Willow's 103-qubit depth-40 circuit, and a separate route for the 16-qutrit state. Willow's state space is first matched at 65 qutrits, and the state engine holds 16 here.
+>>>
+REASON: Same as H2 for the PR's reader.
+
+HOLD H27 | file=PR #5 body | severity=medium
+OLD<<<
+**Second routes:** `qutrit/second_route.py` shares no code with the engine. It uses exact Z[ζ₉] amplitudes on small circuits and recomputes the lattice's phase with its own wiring. A conjugated Fourier gate and a dropped edge both fail their checks.
+>>>
+NEW<<<
+**Second routes:** `qutrit/second_route.py` is a separate Python program with its own arithmetic and wiring. It uses exact Z[ζ₉] amplitudes on small circuits and recomputes branch A's input phase on the lattice. A conjugated Fourier gate and the 0–1 ring edge dropped in every room both fail their checks.
+>>>
+REASON: Operator's rule; scope of the lattice route; the control drops 884,736 edges.
+
+HOLD H28 | file=PR #5 body | severity=medium
+OLD<<<
+| The 96³ engine's channels | **23,887,872** | Fourier, T, 46,891,008 CZ3, 3 engine ticks. Reversal byte-exact on 3 branches, one amplitude in 1.4 s |
+>>>
+NEW<<<
+| The 96³ engine's channels | **23,887,872** | One branch at a time through Fourier, T, 46,891,008 CZ3 and 3 engine ticks. Reversal byte-exact on 3 branches, one amplitude in 1.4 to 1.5 s |
+>>>
+REASON: The table's first row reads as gates applied to a state; the run evaluates them on one branch.

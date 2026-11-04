@@ -1,0 +1,2 @@
+PROBE_RING_BRUTE|n=3|strings=27|cases=162|wrong=0|cz_sum_of_all_ones=3|json=0
+PROBE_RING_BRUTE|n=9|strings=19683|cases=354294|wrong=0|cz_sum_of_all_ones=9|json=0

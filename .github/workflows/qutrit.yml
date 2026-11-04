@@ -5,8 +5,13 @@ on:
     paths:
       - "src/qutrit.rs"
       - "src/scale96.rs"
+      - "src/sha256.rs"
+      - "src/ym43.rs"
+      - "src/bridge43.rs"
       - "src/lib.rs"
       - "src/main.rs"
+      - "Cargo.toml"
+      - "Cargo.lock"
       - "qutrit/**"
       - ".github/workflows/qutrit.yml"
   push:
@@ -14,8 +19,13 @@ on:
     paths:
       - "src/qutrit.rs"
       - "src/scale96.rs"
+      - "src/sha256.rs"
+      - "src/ym43.rs"
+      - "src/bridge43.rs"
       - "src/lib.rs"
       - "src/main.rs"
+      - "Cargo.toml"
+      - "Cargo.lock"
       - "qutrit/**"
       - ".github/workflows/qutrit.yml"
 permissions:
@@ -37,8 +47,10 @@ jobs:
           cargo +1.81.0 clippy --locked --offline --all-targets -- -D warnings
           cargo +1.81.0 test --locked --offline --lib qutrit
           cargo +1.81.0 build --release --locked --offline
-      - name: The prediction rows are the ones pushed before the run
+      - name: The 17 prediction rows hash to their value at a9f3dbe
         run: test "$(head -n 17 qutrit/PREDICTION.hbp | sha256sum | cut -d' ' -f1)" = "f929fc840eeca7715ba03665169bdaf7cb6a960e2492a76dfa145431275cef1d"
+      - name: The receipt is the one the README names
+        run: test "$(sha256sum qutrit/RECEIPT.hbp | cut -d' ' -f1)" = "c16c54f7e8cc855ba54e89bb75833cc6b759a9f8ad58ca46f62161a50262ab5b"
       - name: The whole run reproduces the receipt byte for byte
         run: |
           set -euo pipefail
@@ -56,14 +68,16 @@ jobs:
       - name: The separate route, on the receipt and on small circuits
         run: |
           set -euo pipefail
-          python3 -I -X utf8 qutrit/second_route.py window qutrit/RECEIPT.hbp
-          python3 -I -X utf8 qutrit/second_route.py lattice qutrit/RECEIPT.hbp 96
-          python3 -I -X utf8 qutrit/second_route.py ring qutrit/RECEIPT.hbp 16
           for spec in "1 5 6" "2 3 6" "3 3 6"; do
             set -- $spec
             target/release/hebc-portal --qutrit small "$1" "$2" "$3" > small.out 2> /dev/null
-            python3 -I -X utf8 qutrit/second_route.py small small.out "$1" "$2" "$3"
+            python3 -I -X utf8 qutrit/second_route.py small small.out "$1" "$2" "$3" >> route.hbp
           done
+          python3 -I -X utf8 qutrit/second_route.py window qutrit/RECEIPT.hbp >> route.hbp
+          python3 -I -X utf8 qutrit/second_route.py lattice qutrit/RECEIPT.hbp 96 >> route.hbp
+          python3 -I -X utf8 qutrit/second_route.py engine qutrit/RECEIPT.hbp 96 >> route.hbp
+          python3 -I -X utf8 qutrit/second_route.py ring qutrit/RECEIPT.hbp 16 >> route.hbp
+          cmp route.hbp qutrit/SECOND-ROUTE.hbp
       - name: A conjugated Fourier gate disagrees with the exact amplitudes
         run: |
           set -euo pipefail

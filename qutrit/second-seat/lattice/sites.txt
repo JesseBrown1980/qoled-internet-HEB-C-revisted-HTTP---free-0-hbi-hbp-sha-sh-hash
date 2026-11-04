@@ -1,0 +1,19 @@
+LATTICE_SITES|side=24|sites=81|distinct_sites=81|distinct_site_d=81|channels_hit=23|channels_missed=[12, 15, 19, 20]|missed_velocities=[(0, 0, -1), (0, 1, -1), (1, -1, 0), (1, -1, 1)]|sites_in_a_boundary_room=22|by_energy={0: 5, 1: 12, 2: 36, 3: 28}|rest_channel13_hits=5|channel_counts=[4, 4, 3, 4, 4, 2, 5, 5, 7, 3, 2, 3, 0, 5, 3, 0, 2, 2, 3, 0, 0, 6, 1, 1, 1, 6, 5]|json=0
+LATTICE_SITES|side=48|sites=81|distinct_sites=81|distinct_site_d=81|channels_hit=23|channels_missed=[12, 15, 19, 20]|missed_velocities=[(0, 0, -1), (0, 1, -1), (1, -1, 0), (1, -1, 1)]|sites_in_a_boundary_room=15|by_energy={0: 5, 1: 12, 2: 36, 3: 28}|rest_channel13_hits=5|channel_counts=[4, 4, 3, 4, 4, 2, 5, 5, 7, 3, 2, 3, 0, 5, 3, 0, 2, 2, 3, 0, 0, 6, 1, 1, 1, 6, 5]|json=0
+LATTICE_SITES|side=96|sites=81|distinct_sites=81|distinct_site_d=81|channels_hit=23|channels_missed=[12, 15, 19, 20]|missed_velocities=[(0, 0, -1), (0, 1, -1), (1, -1, 0), (1, -1, 1)]|sites_in_a_boundary_room=12|by_energy={0: 5, 1: 12, 2: 36, 3: 28}|rest_channel13_hits=5|channel_counts=[4, 4, 3, 4, 4, 2, 5, 5, 7, 3, 2, 3, 0, 5, 3, 0, 2, 2, 3, 0, 0, 6, 1, 1, 1, 6, 5]|json=0
+RING_SITES|power=1|n=3|sites=3|distinct_sites=3|distinct_site_d=3|covers_every_site=1|json=0
+RING_SITES|power=2|n=9|sites=9|distinct_sites=9|distinct_site_d=9|covers_every_site=1|json=0
+RING_SITES|power=3|n=27|sites=27|distinct_sites=27|distinct_site_d=27|covers_every_site=1|json=0
+RING_SITES|power=4|n=81|sites=81|distinct_sites=81|distinct_site_d=81|covers_every_site=1|json=0
+RING_SITES|power=5|n=243|sites=81|distinct_sites=69|distinct_site_d=72|covers_every_site=0|json=0
+RING_SITES|power=6|n=729|sites=81|distinct_sites=73|distinct_site_d=74|covers_every_site=0|json=0
+RING_SITES|power=7|n=2187|sites=81|distinct_sites=80|distinct_site_d=80|covers_every_site=0|json=0
+RING_SITES|power=8|n=6561|sites=81|distinct_sites=81|distinct_site_d=81|covers_every_site=0|json=0
+RING_SITES|power=9|n=19683|sites=81|distinct_sites=81|distinct_site_d=81|covers_every_site=0|json=0
+RING_SITES|power=10|n=59049|sites=81|distinct_sites=81|distinct_site_d=81|covers_every_site=0|json=0
+RING_SITES|power=11|n=177147|sites=81|distinct_sites=81|distinct_site_d=81|covers_every_site=0|json=0
+RING_SITES|power=12|n=531441|sites=81|distinct_sites=81|distinct_site_d=81|covers_every_site=0|json=0
+RING_SITES|power=13|n=1594323|sites=81|distinct_sites=81|distinct_site_d=81|covers_every_site=0|json=0
+RING_SITES|power=14|n=4782969|sites=81|distinct_sites=81|distinct_site_d=81|covers_every_site=0|json=0
+RING_SITES|power=15|n=14348907|sites=81|distinct_sites=81|distinct_site_d=81|covers_every_site=0|json=0
+RING_SITES|power=16|n=43046721|sites=81|distinct_sites=81|distinct_site_d=81|covers_every_site=0|json=0

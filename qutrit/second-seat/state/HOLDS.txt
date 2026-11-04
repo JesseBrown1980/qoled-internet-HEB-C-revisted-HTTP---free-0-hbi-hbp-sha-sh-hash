@@ -1,0 +1,86 @@
+HOLD H1 | file=qutrit/README.md | severity=medium
+OLD<<<
+| 16-qutrit state, norm | Within 10⁻⁹ | Within 3 × 10⁻¹⁵ at every reading |
+>>>
+NEW<<<
+| 16-qutrit state, norm | Within 10⁻⁹ | Within 4 × 10⁻¹⁵ at every reading. The receipt's column is a floor, and the largest value is 3.963 × 10⁻¹⁵, after the first Fourier layer |
+>>>
+REASON: Measured 3.963e-15 at the row whose floor prints 3, so "within 3" is stated smaller than the value (out/roundtrip_floor.hbp NORM row).
+
+HOLD H2 | file=qutrit/README.md | severity=medium
+OLD<<<
+- **Wrong wiring:** dropping one ring edge from the local relation at 96³ exits 1, with 75 of 81 sites holding and the sum rule at 92,035,134 against 93,806,350.
+>>>
+NEW<<<
+- **Wrong wiring:** dropping one ring edge from the local relation at 96³ exits 1, with 75 of 81 sites holding and the sum rule at 92,035,134 against 93,806,350.
+- **The 16-qutrit state, second seat:** a separate Rust 1.81 engine at scale 2⁵⁰ and 2⁶², sharing no lines with this one, reads every 3¹⁶Σp² and fraction at cycles 2 to 40 to the same ppm. 65.982442 at cycle 3 reads 65.982442605 at both scales.
+- **Accuracy of the 16-qutrit amplitudes:** against the 2⁶² run, the state's distance is 9.3 × 10⁻¹⁴, and a typical amplitude differs by about 16 units of 2⁻⁶⁰. Labels 1 and 2 differ by about 1,345 units, a relative 1.2 × 10⁻¹¹: the `>> 1` halves in the Fourier gate floor, a constant ±¼ unit per gate, and the 15 Fourier gates after it gather that constant at those labels. With round-half-even in those halves they differ by at most 12 units, the distance stays 9.3 × 10⁻¹⁴, and every statistic keeps its digits.
+- **Run and return:** the exact inverse after the 40 cycles returns amplitude 1 − 2 × 10⁻¹⁷ − 5 × 10⁻¹⁷i on |0…0⟩, with 1.31 × 10⁻¹³ left over the other labels, the size expected from independent rounding over 2,872 gates.
+>>>
+REASON: The folder has no route at 16 qutrits or accuracy statement for QUTRIT_STATE_AMP, and the norm row does not see this bias; numbers from out/compare_own62.hbp, out/l2_*.hbp, out/roundtrip_*.hbp.
+
+HOLD H3 | file=qutrit/README.md | severity=low
+OLD<<<
+| **State:** a 4×4 grid, each amplitude at a 16-trit address | **16** | 3¹⁶ = 43,046,721 amplitudes | All of them, 688,747,536 bytes |
+>>>
+NEW<<<
+| **State:** a 4×4 grid, numbered row by row, each amplitude at a 16-trit address whose last trit is qutrit 0 and whose first is qutrit 15 | **16** | 3¹⁶ = 43,046,721 amplitudes | All of them, 688,747,536 bytes |
+>>>
+REASON: Stride 3^q puts qutrit q at position 15-q of address_trits; consistent in the code (out/gates.hbp) and stated nowhere, and a reader of the amp rows needs it.
+
+HOLD H4 | file=qutrit/README.md | severity=medium
+OLD<<<
+| 3¹⁶Σp² | 1.000000 | 1.444444 | 65.982442 | 3.395840 | 2.003499 | 2.018045 | 2.000417 | 2.000647 | 1.999926 | 1.999317 | 1.999680 | 1.999463 |
+>>>
+NEW<<<
+| 3¹⁶Σp² | 1.000000 | 1.444444 | 65.982442 | 3.395840 | 2.003499 | 2.018045 | 2.000417 | 2.000647 | 1.999926 | 1.999317 | 1.999680 | 1.999463 |
+
+This statistic reads scrambling, and its spread at this size is 2/√(3¹⁶) = 3 × 10⁻⁴. The second seat changed the gates in a separate engine and read cycle 40. These read 2.000 within 0.0007, with the fractions in the predicted band: F† for F; a real orthogonal 3×3 for F; every T power set to 1; diag(1, ζ, ζ²) for T; a CZ3 table wrong at (2,2); one edge dropped; the 240 CZ3 on a wrong graph; one F missing. These move it: pattern 3 replaced by pattern 1 reads 4.05 on 16 qutrits, and on 3×4 Clifford powers only read 1.000, T in the first cycle only 1.691, and F never on one qutrit 6.00. The gates' identity rests on the exact small circuits, the amplitude rows and the state seal.
+>>>
+REASON: 8 of 9 wrong gate sets meet the Porter-Thomas row, so the row's reach should sit beside it (out/mut16_*.hbp, out/mut12.hbp); band [1.9, 2.1] is about 330 spreads.
+
+HOLD H5 | file=src/qutrit.rs | severity=low
+OLD<<<
+        xeb_ppm: ((sum_p2 >> 16) * d / low) * 1_000_000 / low,
+>>>
+NEW<<<
+        // Good for a statistic up to 2^24. A basis state on 3^16 wraps, and the run's largest reading is 65.98.
+        xeb_ppm: ((sum_p2 >> 16) * d / low) * 1_000_000 / low,
+>>>
+REASON: Measured wrap on a basis state and on two flat labels (true 43046721000000, read 9492289000000, out/readcheck.hbp); reported rows are untouched, and a comment keeps every receipt byte.
+
+HOLD H6 | file=qutrit/README.md | severity=low
+OLD<<<
+The 16-qutrit statistic, 3¹⁶Σp², reaches the Porter–Thomas value of 2 for a deep random circuit:
+>>>
+NEW<<<
+The 16-qutrit statistic, 3¹⁶Σp², the receipt's `xeb_ppm`, is computed from the state itself. It reaches the Porter–Thomas value of 2 for a deep random circuit:
+>>>
+REASON: The field name xeb suggests a cross-entropy with samples; the code computes the ideal state's second moment.
+
+HOLD H7 | file=qutrit/README.md | severity=medium
+OLD<<<
+**Interference in the state and the windows.** The 16-qutrit state runs 40 cycles of interfering layers. A window is a chain, so a three-entry transfer vector gives the same amplitudes in m steps.
+>>>
+NEW<<<
+**Interference in the state and the windows.** The 16-qutrit state runs 40 cycles of interfering layers. A window is a chain, so a three-entry transfer vector gives the same amplitudes in m steps. A window's amplitude row is A(y) = 3⁻ᵐ Σ_w ζ^(local(w) + 3w·y), conditioned on the other qutrits' branch. In the register that amplitude is 3^(−(n−m)/2) · ζ^rest_phase · A(y), with rest_phase in the same receipt row. A(y) is a product of 3×3 unitaries, so 3ᵐp is at most 3 at every m, which is why the fraction above 3 reads 0.
+>>>
+REASON: The rows are conditional and carry no rest_phase, stated nowhere; verified by counts over all 3^m terms and full recomputation at m=3..16 (out/own_window.hbp, out/window_labels.hbp).
+
+HOLD H8 | file=qutrit/README.md | severity=medium
+OLD<<<
+| Window statistic at m = 3, 4, 8, 12, 16 | 1518518, 1493827, 1499923, 1499999, 1499999 ppm, written first from an exact transfer vector | Equal on all five |
+>>>
+NEW<<<
+| Window statistic at m = 3, 4, 8, 12, 16 | 1518518, 1493827, 1499923, 1499999, 1499999 ppm, written first from an exact transfer vector | Equal on all five. The exact form at every m is 3/2 − ½(−1/3)ᵐ, which depends on the chain and T alone, so the branch and the fields are tested by the amplitude rows |
+>>>
+REASON: Closed form derived by hand and proved by the exact identity M²v = 6Mv + 27v (out/window_exact.hbp); the row is blind to fields and branch and should say what it tests.
+
+HOLD H9 | file=qutrit/README.md | severity=low
+OLD<<<
+| Window amplitudes against the exact transfer vector | Within 10⁻¹² | Within 1.0 × 10⁻¹⁵ |
+>>>
+NEW<<<
+| Window amplitudes against the exact transfer vector, on the fields in the receipt | Within 10⁻¹² | Within 1.0 × 10⁻¹⁵. The second seat's own wiring gives the same fields and all five state seals |
+>>>
+REASON: second_route.py reads fields from the receipt, so its check leaves them to Rust's m=3 test; my full-scan wiring closes it (out/own_window.hbp).

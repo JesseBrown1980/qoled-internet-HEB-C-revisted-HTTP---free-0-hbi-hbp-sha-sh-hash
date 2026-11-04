@@ -4,6 +4,7 @@
 #   second_route.py window_xeb M [M ...]
 #   second_route.py window RECEIPT
 #   second_route.py lattice RECEIPT SIDE
+#   second_route.py engine RECEIPT SIDE
 #   second_route.py ring RECEIPT MAX_POWER
 # Prints HBP rows, exits 1 on a failed check. json=0.
 import hashlib
@@ -278,38 +279,133 @@ def trits(n, seed):
     return bytes(out)
 
 
+def branches(path, side):
+    """The three branches of the receipt, from their own seeds and the flipped site."""
+    n = side ** 3 * 27
+    produced = {r["name"]: r for r in rows_of(path, "QUTRIT_BRANCH")}
+    a = trits(n, 0x4d59_5448_4f53_3831)
+    c = bytearray(a)
+    site = int(rows_of(path, "QUTRIT_LIGHT_CONE")[0]["flipped_site"])
+    c[site] = (c[site] + 1) % 3
+    return [("A", a, produced["A"]), ("B", trits(n, 0x4854_5450_3042_5232), produced["B"]), ("C_A_with_one_trit_changed", bytes(c), produced["C_A_with_one_trit_changed"])]
+
+
 def lattice(path, side):
-    """Branch A's phase on the whole register, from its own trits and wiring."""
+    """Each branch's phase on the whole register, from its own trits and wiring. A CZ3 edge is symmetric, so this reads each channel's line, without its sign."""
     velocities = [(a, b, c) for a in (-1, 0, 1) for b in (-1, 0, 1) for c in (-1, 0, 1)]
     n = side ** 3 * 27
-    state = trits(n, 0x4d59_5448_4f53_3831)
-    produced = [r for r in rows_of(path, "QUTRIT_BRANCH") if r["name"] == "A"][0]
-    same_sha = hashlib.sha256(state).hexdigest() == produced["input_sha256"]
-    t_sum, cz_sum, ring, stream = 0, 0, 0, 0
+    counts = rows_of(path, "QUTRIT_LATTICE")[0]
+    bad = 0
     table = (0, 1, 8)
     side2 = side * side
-    for i in range(n):
-        value = state[i]
-        t_sum += table[value]
-        k = i % 27
-        base = i - k
-        ring += 1
-        if value:
-            cz_sum += value * state[base + (k + 1) % 27]
-    for k, (a, b, c) in enumerate(velocities):
-        if (a, b, c) == (0, 0, 0):
-            continue
-        for room in range(side ** 3):
-            stream += 1
-            value = state[room * 27 + k]
+    for name, state, produced in branches(path, side):
+        same_sha = hashlib.sha256(state).hexdigest() == produced["input_sha256"]
+        t_sum, cz_sum, ring, stream = 0, 0, 0, 0
+        for i in range(n):
+            value = state[i]
+            t_sum += table[value]
+            k = i % 27
+            base = i - k
+            ring += 1
             if value:
-                x, y, z = room // side2, (room // side) % side, room % side
-                target = ((x + a) % side) * side2 + ((y + b) % side) * side + (z + c) % side
-                cz_sum += value * state[target * 27 + k]
-    good = same_sha and t_sum == int(produced["t_sum"]) and cz_sum == int(produced["cz_sum"]) and (t_sum + 3 * cz_sum) % 9 == int(produced["phase_mod_9"])
-    print("SECOND_ROUTE_LATTICE|side=%d|qutrits=%d|same_sha256=%d|t_sum=%d|cz_sum=%d|cz3_ring=%d|cz3_along_streaming=%d|phase_mod_9=%d|equal_to_the_rust_row=%d|json=0" % (
-        side, n, int(same_sha), t_sum, cz_sum, ring, stream, (t_sum + 3 * cz_sum) % 9, int(good)))
-    return 0 if good else 1
+                cz_sum += value * state[base + (k + 1) % 27]
+        for k, (a, b, c) in enumerate(velocities):
+            if (a, b, c) == (0, 0, 0):
+                continue
+            for room in range(side ** 3):
+                stream += 1
+                value = state[room * 27 + k]
+                if value:
+                    x, y, z = room // side2, (room // side) % side, room % side
+                    target = ((x + a) % side) * side2 + ((y + b) % side) * side + (z + c) % side
+                    cz_sum += value * state[target * 27 + k]
+        good = same_sha and t_sum == int(produced["t_sum"]) and cz_sum == int(produced["cz_sum"]) and (t_sum + 3 * cz_sum) % 9 == int(produced["phase_mod_9"]) and ring == int(counts["cz3_room_ring"]) and stream == int(counts["cz3_along_streaming"])
+        bad += not good
+        print("SECOND_ROUTE_LATTICE|name=%s|side=%d|qutrits=%d|same_sha256=%d|t_sum=%d|cz_sum=%d|cz3_ring=%d|cz3_along_streaming=%d|phase_mod_9=%d|equal_to_the_rust_row=%d|json=0" % (
+            name, side, n, int(same_sha), t_sum, cz_sum, ring, stream, (t_sum + 3 * cz_sum) % 9, int(good)))
+    return 1 if bad else 0
+
+
+GATE_PIN = "a7fca71ac8a85fd3acbe4188e9c246e98e4beeeaa459f3e77d40c0342aa4bb12"
+
+
+def engine_gates():
+    """The 288 collision gates, derived here from the velocities: 4 channels, and pairs of 4-trit codes with equal mass, momentum and energy."""
+    velocities = [(a, b, c) for a in (-1, 0, 1) for b in (-1, 0, 1) for c in (-1, 0, 1)]
+    energy = [a * a + b * b + c * c for a, b, c in velocities]
+    pairs = {}
+    for a in range(27):
+        for b in range(a + 1, 27):
+            key = tuple(velocities[a][j] + velocities[b][j] for j in range(3)) + (energy[a] + energy[b],)
+            pairs.setdefault(key, []).append((a, b))
+    quads = set()
+    for group in pairs.values():
+        for i in range(len(group)):
+            for j in range(i + 1, len(group)):
+                q = tuple(sorted(group[i] + group[j]))
+                if len(set(q)) == 4:
+                    quads.add(q)
+    gates = []
+    for q in sorted(quads):
+        table = list(range(81))
+        classes = {}
+        for code in range(81):
+            d = (code % 3, (code // 3) % 3, (code // 9) % 3, (code // 27) % 3)
+            key = (sum(d),) + tuple(sum(d[j] * velocities[q[j]][axis] for j in range(4)) for axis in range(3)) + (sum(d[j] * energy[q[j]] for j in range(4)),)
+            classes.setdefault(key, []).append(code)
+        for codes in classes.values():
+            kept = [c for c in codes if c != 40]
+            for i in range(0, len(kept) - 1, 2):
+                table[kept[i]], table[kept[i + 1]] = kept[i + 1], kept[i]
+        if table != list(range(81)):
+            gates.append((q, table))
+    return velocities, gates
+
+
+def engine(path, side):
+    """Each branch through the engine's 3 ticks, collision then streaming by slices of each channel, to the receipt's output SHA-256."""
+    velocities, gates = engine_gates()
+    pin = hashlib.sha256(b"".join(bytes(q) + bytes(t) for q, t in gates)).hexdigest()
+    table = [(q[0], q[1], q[2], q[3], t) for q, t in gates]
+    digits = [(c % 3, (c // 3) % 3, (c // 9) % 3, (c // 27) % 3) for c in range(81)]
+    rooms, side2 = side ** 3, side * side
+    bad = 0 if pin == GATE_PIN and len(gates) == 288 else 1
+    print("SECOND_ROUTE_GATES|gates=%d|sha256=%s|equal_to_the_pin=%d|json=0" % (len(gates), pin, int(pin == GATE_PIN)))
+    for name, state, produced in branches(path, side):
+        s = bytearray(state)
+        fired = 0
+        for tick in range(3):
+            base = 0
+            for cell in range(rooms):
+                first = tick * 32 + cell * 17
+                for j in range(32):
+                    a, b, c, d, t = table[(first + j * 37) % 288]
+                    code = s[base + a] + 3 * s[base + b] + 9 * s[base + c] + 27 * s[base + d]
+                    new = t[code]
+                    if new != code:
+                        fired += 1
+                        s[base + a], s[base + b], s[base + c], s[base + d] = digits[new]
+                base += 27
+            for k, (vx, vy, vz) in enumerate(velocities):
+                if (vx, vy, vz) == (0, 0, 0):
+                    continue
+                channel = bytes(s[k::27])
+                if vx:
+                    cut = vx * side2
+                    channel = channel[-cut:] + channel[:-cut]
+                if vy:
+                    cut = vy * side
+                    channel = b"".join(channel[i + side2 - cut:i + side2] + channel[i:i + side2 - cut] if cut > 0 else channel[i - cut:i + side2] + channel[i:i - cut] for i in range(0, rooms, side2))
+                if vz:
+                    channel = b"".join(channel[i + side - vz:i + side] + channel[i:i + side - vz] if vz > 0 else channel[i - vz:i + side] + channel[i:i - vz] for i in range(0, rooms, side))
+                s[k::27] = channel
+        output = hashlib.sha256(s).hexdigest()
+        differ = sum(1 for p, q in zip(state, s) if p != q)
+        good = output == produced["output_sha256"]
+        bad += not good
+        print("SECOND_ROUTE_ENGINE|name=%s|side=%d|ticks=3|gate_applications=%d|that_changed_the_trits=%d|channels_that_differ_input_to_output=%d|output_sha256=%s|equal_to_the_rust_row=%d|json=0" % (
+            name, side, 3 * rooms * 32, fired, differ, output, int(good)))
+    return 1 if bad else 0
 
 
 def ring(path, max_power):
@@ -340,6 +436,8 @@ def main():
         return window(sys.argv[2])
     if what == "lattice":
         return lattice(sys.argv[2], int(sys.argv[3]))
+    if what == "engine":
+        return engine(sys.argv[2], int(sys.argv[3]))
     if what == "ring":
         return ring(sys.argv[2], int(sys.argv[3]))
     return 2
