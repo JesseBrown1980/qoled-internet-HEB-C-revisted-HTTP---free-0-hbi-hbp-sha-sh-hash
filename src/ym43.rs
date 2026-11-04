@@ -96,9 +96,14 @@ fn row<'a>(lines: &'a str, kind: &str, run: Option<&str>) -> Result<&'a str, Str
     let mut matching = lines.lines().filter(|line| {
         line.starts_with(kind)
             && line.as_bytes().get(kind.len()) == Some(&b'|')
-            && run.is_none_or(|run| field(line, "run").ok() == Some(run))
+            && match run {
+                Some(expected) => field(line, "run").ok() == Some(expected),
+                None => true,
+            }
     });
-    let result = matching.next().ok_or_else(|| format!("missing {kind} row"))?;
+    let result = matching
+        .next()
+        .ok_or_else(|| format!("missing {kind} row"))?;
     if matching.next().is_some() {
         return Err(format!("ambiguous {kind} row"));
     }
@@ -124,7 +129,11 @@ fn select_statement(kind: &str, data: &str) -> Result<String, String> {
             expect(x, "best_t_cert_milli", "94070673")?;
             expect(x, "lambda1_upper_milli", "94070936")?;
             expect(x, "gap_verdict", "OPEN")?;
-            expect(x, "all_rows_rebuild_second_seat", "MATCHED_45508080_of_45508080")?;
+            expect(
+                x,
+                "all_rows_rebuild_second_seat",
+                "MATCHED_45508080_of_45508080",
+            )?;
             Ok("claim=t_cert_94070673_units_1e-6_JE|lambda1_upper_94070936_units_1e-6_JE|source_gap_verdict=OPEN|verification=SOURCE_PIN_AND_RECORDED_FIELDS".to_string())
         }
         "FULLREBUILD" => {
@@ -177,10 +186,13 @@ pub fn load(repo_root: &Path) -> Result<Store, String> {
         let input = std::fs::read(repo_root.join(source.path))
             .map_err(|e| format!("missing {}: {e}", source.path))?;
         if input.len() != source.bytes || hash_bytes(&input) != source.sha256 {
-            return Err(format!("source SHA256 or length mismatch at {}", source.path));
+            return Err(format!(
+                "source SHA256 or length mismatch at {}",
+                source.path
+            ));
         }
-        let text = std::str::from_utf8(&input)
-            .map_err(|_| format!("invalid UTF8 for {}", source.path))?;
+        let text =
+            std::str::from_utf8(&input).map_err(|_| format!("invalid UTF8 for {}", source.path))?;
         let statement = select_statement(source.kind, text)?;
         let address = encode(i as u8).ok_or("invalid YM evidence slot")?;
         if crate::bridge43::decode(address).is_some() {
