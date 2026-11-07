@@ -1,0 +1,29 @@
+name: Omega equations headless backend
+on:
+  pull_request:
+    paths:
+      - 'src/bin/omega-equations.rs'
+      - 'equations/omega-graph-20261106/**'
+      - '.github/workflows/omega-equations.yml'
+  push:
+    paths:
+      - 'src/bin/omega-equations.rs'
+      - 'equations/omega-graph-20261106/**'
+      - '.github/workflows/omega-equations.yml'
+jobs:
+  exact-equations:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.81.0
+        with:
+          components: clippy
+      - name: Rust 1.81 unit tests
+        run: cargo test --locked --bin omega-equations
+      - name: Clippy fail-closed
+        run: cargo clippy --locked --bin omega-equations -- -D warnings
+      - name: Build headless binary
+        run: cargo build --locked --bin omega-equations
+      - name: Independent exact GF3 and HTTP loopback verifier
+        run: python3 equations/omega-graph-20261106/verify_equations.py target/debug/omega-equations
