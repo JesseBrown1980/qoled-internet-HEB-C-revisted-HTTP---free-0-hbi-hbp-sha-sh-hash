@@ -1,0 +1,8 @@
+OMEGA_EQ_LADDER_PREDICTION|date=2026-11-06|status=FROZEN_BEFORE_SCALE_IMPLEMENTATION|parent_prediction_commit=592214f44ed095557fc853f7b980c47537dc420e|existing_n=23887872|objective=next_three_exact_powers_of_three|json=0
+OMEGA_EQ_LADDER|level=16|n=43046721|base=3|cut=21523360|slice=1|phase_mod3=1|rank_GF3=2|schmidt=9|no_vector_allocation=1|json=0
+OMEGA_EQ_LADDER|level=17|n=129140163|base=3|cut=64570081|slice=1|phase_mod3=1|rank_GF3=2|schmidt=9|no_vector_allocation=1|json=0
+OMEGA_EQ_LADDER|level=18|n=387420489|base=3|cut=193710244|slice=1|phase_mod3=1|rank_GF3=2|schmidt=9|no_vector_allocation=1|json=0
+OMEGA_EQ_LADDER|level=18|n=387420489|cut=193710244|slice=3|phase_mod3=0|rank_GF3=0|schmidt=1|state_spec_recurrence=1|history_hash_nonrepeating=1|json=0
+OMEGA_EQ_LADDER_SCOPE|backend=HTTP0_headless_loopback|max_n=387420489|n_semantics=logical_qutrits_in_symbolic_cycle|does_not_allocate_n_qutrits_or_3^n_amplitudes=1|quantum_hardware=0|learning_test=OPEN|json=0
+OMEGA_EQ_LADDER_NEGATIVE|n=387420490|status=REJECT|cut=0_status=REJECT|probe_equal_n_status=REJECT|bad_post_method=REJECT|no_html_bmp_or_pixel_rendering=1|json=0
+OMEGA_EQ_LADDER_VERIFICATION|Rust_1_81_test=REQUIRED|Rust_clippy_deny_warnings=REQUIRED|independent_GF3_hash_and_HTTP_route=REQUIRED|cross_scale_correctness=REQUIRED|external_anchor_before_acceptance=OPEN|json=0
