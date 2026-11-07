@@ -60,15 +60,33 @@ def verify(binary):
                 predicted=0 if t%3==0 else (1 if c in (1,n-1) else 2)
                 assert actual==predicted,(n,t,c,actual,predicted)
                 checks+=1
-    for n,t,c,p in [(3,0,1,0),(3,1,1,0),(3,2,1,1),(3,3,2,0),(6,1,3,5),(6,2,3,4),(23887872,1,11943936,23887871)]:
+    ladder=((16,43046721),(17,129140163),(18,387420489))
+    examples=[(3,0,1,0),(3,1,1,0),(3,2,1,1),(3,3,2,0),(6,1,3,5),(6,2,3,4),(23887872,1,11943936,23887871)]
+    for power,n in ladder:
+        assert n==3**power
+        for t in (0,1,2,3,243):
+            examples.append((n,t,n//2,n-1))
+    for n,t,c,p in examples:
         raw=subprocess.check_output([binary,"--query",str(n),str(t),str(c),str(p)],text=True)
         f=fields(raw)
         assert int(f["phase_mod3"])==t%3
-        assert int(f["cross_rank_GF3"])==reference_rank(n,t,c) if n<100 else int(f["cross_rank_GF3"])==2
+        expected=reference_rank(n,t,c) if n<100 else (0 if t%3==0 else (1 if c==1 or c==n-1 else 2))
+        assert int(f["cross_rank_GF3"])==expected
         assert int(f["schmidt_rank"])==3**int(f["cross_rank_GF3"])
         assert f["state_sha256"]==state(n,t%3)
         assert f["history_sha256"]==history(n,t)
         assert f["materialized_amplitudes"]=="0"
+        checks+=1
+    rows=subprocess.check_output([binary,"--ladder"],text=True).splitlines()
+    assert len(rows)==3
+    for row,(power,n) in zip(rows,ladder):
+        cells=row.split("|")
+        assert cells[0]=="OMEGA_LADDER" and cells[1]=="power="+str(power)
+        v=fields("OMEGA_EQUATIONS|"+"|".join(cells[2:]))
+        assert int(v["n"])==n and int(v["cross_rank_GF3"])==2
+        assert int(v["schmidt_rank"])==9
+        assert v["state_sha256"]==state(n,1)
+        assert v["history_sha256"]==history(n,1)
         checks+=1
     assert state(6,0)==state(6,3%3)
     assert history(6,0)!=history(6,3)
@@ -99,10 +117,36 @@ def verify(binary):
         assert b"Content-Type: text/plain" in body
         assert b"<html" not in body
         checks+=1
+        for path in (
+            "/equations/v1/ladder",
+            "/equations/v1/graph/43046721/1/21523360/43046720",
+            "/equations/v1/graph/129140163/1/64570081/129140162",
+            "/equations/v1/graph/387420489/1/193710244/387420488",
+        ):
+            with socket.create_connection(("127.0.0.1",port),timeout=3) as client:
+                client.sendall(("GET "+path+" HTTP/1.1\r\nHost: localhost\r\n\r\n").encode("ascii"))
+                client.shutdown(socket.SHUT_WR)
+                response=b""
+                while True:
+                    chunk=client.recv(8192)
+                    if not chunk:break
+                    response+=chunk
+            assert response.startswith(b"HTTP/1.1 200 OK")
+            assert b"materialized_amplitudes=0" in response
+            assert b"<html" not in response
+            if path.endswith("ladder"):
+                assert response.count(b"OMEGA_LADDER|")==3
+            checks+=1
+        with socket.create_connection(("127.0.0.1",port),timeout=3) as client:
+            client.sendall(b"GET /equations/v1/graph/387420490/1/1/0 HTTP/1.1\r\nHost: localhost\r\n\r\n")
+            client.shutdown(socket.SHUT_WR)
+            response=client.recv(8192)
+        assert response.startswith(b"HTTP/1.1 400 Bad Request")
+        checks+=1
     finally:
         process.terminate()
         process.wait(timeout=10)
-    print("OMEGA_INDEPENDENT|checks="+str(checks)+"|GF3=PASS|hash=PASS|HTTP0=PASS|max_symbolic_n=23887872|json=0")
+    print("OMEGA_INDEPENDENT|checks="+str(checks)+"|GF3=PASS|hash=PASS|HTTP0=PASS|ladder=3^16,3^17,3^18|max_symbolic_n=387420489|json=0")
 
 if __name__=="__main__":
     if len(sys.argv)!=2:raise SystemExit("usage: verify_equations.py compiled_binary")
