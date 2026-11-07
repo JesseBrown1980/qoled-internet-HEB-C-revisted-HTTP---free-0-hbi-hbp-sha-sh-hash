@@ -1,0 +1,13 @@
+OMEGA_EQ_PREDICTION|date=2026-11-06|version=1|status=FROZEN_BEFORE_CODE|model=qutrit_cycle_graph|n_bound=23887872|slices_max=243|integer_only=1|json=0
+OMEGA_EQ_MATH|state=3^(-n/2)_sum_x_omega^(w*sum_i_xi*xnext)_ket_x|omega^3=1|w=t_mod3|graph=cycle_edges_i_to_(i+1)_mod_n|n_min=3|n_max=23887872|no_amplitudes_allocated=1|json=0
+OMEGA_EQ_MEASURE|phase=mod3(w*sum_i_xi*xnext)|cut=vertices_0_through_c_minus1|rank_GF3_of_cross_adjacency=0_if_w0_else_1_if_c1_or_nminusc1_else_2|schmidt_rank=3^rank|entanglement_entropy=rank*log2(3)|json=0
+OMEGA_EQ_HASH|state_sha=SHA256_of_canonical_symbolic_spec_not_wavefunction|history_sha=SHA256_of_preceding_history_plus_current_state_hash_plus_slice|hash_is_not_physical_entanglement=1|slice_time=0_through_243|json=0
+OMEGA_EQ_PREDICT|n=3|slice=0|basis=110|phase=0|cut=1|rank=0|json=0
+OMEGA_EQ_PREDICT|n=3|slice=1|basis=110|phase=1|cut=1|rank=1|json=0
+OMEGA_EQ_PREDICT|n=3|slice=2|basis=110|phase=2|cut=1|rank=1|json=0
+OMEGA_EQ_PREDICT|n=3|slice=3|basis=110|phase=0|cut=1|rank=0|json=0
+OMEGA_EQ_PREDICT|n=6|slice=1|basis=110000|phase=1|cut=3|rank=2|schmidt_rank=9|json=0
+OMEGA_EQ_PREDICT|n=6|slice=2|basis=111111|phase=0|cut=3|rank=2|schmidt_rank=9|json=0
+OMEGA_EQ_PREDICT|n=23887872|slice=1|cut=11943936|rank=2|schmidt_rank=9|virtual_formula_state=1|json=0
+OMEGA_EQ_NEGATIVE|basis_bad_trit=REJECT|n_below_3=REJECT|n_above_bound=REJECT|invalid_cut=REJECT|untrusted_state_hash_forgery=REJECT_WITH_OUTSIDE_ANCHOR|json=0
+OMEGA_EQ_HOLD|general_state_entanglement=NOT_SUPPORTED|quantum_hardware=NOT_CLAIMED|GHZ_all_to_all_entanglement=NOT_CLAIMED|quantum_neural_network_learning=NOT_MEASURED|headless_HTTP0_loopback_only=1|json=0
