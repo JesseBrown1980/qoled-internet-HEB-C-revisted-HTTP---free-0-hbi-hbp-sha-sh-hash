@@ -1,3 +1,9 @@
+## Omega equation-only HTTP-0 backend (November 6, 2026)
+
+The [headless native Omega graph-state endpoint](equations/omega-graph-20261106/README.md) is an independent prediction-first experiment built beside the existing 96³ qutrit engine. It queries exact phase expressions, GF(3) entanglement rank, and linked state/history hashes for a compact cyclic graph-state family of up to 23,887,872 qutrits. The Rust backend accepts only loopback GET requests returning plain HBP text: **no browser frontend, BMP/pixel rendering, JSON, dense quantum matrix or remote quantum execution**. The graph-state entanglement is mathematically defined; no general quantum learning, arbitrary many-body simulation, or claim about the physical universe is established.
+
+**Status:** implementation on [PR #7](https://github.com/JesseBrown1980/qoled-internet-HEB-C-revisted-HTTP---free-0-hbi-hbp-sha-sh-hash/pull/7), independent review OPEN. Historical November 4 evidence below retains its original date.
+
 ## Qutrits in powers of 3: 23,887,872 on the 96³ engine, run (2026-11-04)
 
 [The qutrit run](qutrit/README.md) makes each of the 96³ engine's channels a three-level unit and defines a circuit on them: a Fourier layer, T gates, 46,891,008 CZ3 gates, then 3 engine ticks. That circuit is a phase state whose basis strings the engine permutes, so each output string comes from exactly one input string and each amplitude is one formula over one string of trits. The run holds one string at a time: amplitudes of the 3²³⁸⁸⁷⁸⁷²-dimensional state read in 1.4 to 1.5 s each on one laptop thread, with exact reversal and the prediction pushed first. Beside it: rings of 3¹ to 3¹⁶ qutrits, a full 3¹⁶-amplitude state on 16 qutrits, one amplitude per 16-trit address, whose 3¹⁶Σp² reads 1.999463 at cycle 40 against the Porter–Thomas value of 2, and windows of up to 16 channels, with the rest of the register on one branch, that sum up to 3¹⁶ branches.
