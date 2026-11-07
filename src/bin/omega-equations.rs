@@ -3,7 +3,7 @@
 #![deny(warnings)]
 use std::env;
 use std::io::{Read, Write};
-use std::net::{TcpListener, TcpStream};
+use std::net::TcpListener;
 
 const MAX_N: u32=23_887_872;
 const MAX_T: u16=243;
