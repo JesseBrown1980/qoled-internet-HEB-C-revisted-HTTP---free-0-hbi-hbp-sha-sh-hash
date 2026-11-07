@@ -62,7 +62,7 @@ fn route(req:&str)->(&'static str,String){
     }
     if path=="/health"{return("200 OK","OMEGA_HEALTH|backend=equation_only|json=0\n".into())}
     let p:Vec<_>=path.split('/').collect();
-    if p.len()!=8 || p[0]!="" || p[1]!="equations" || p[2]!="v1" || p[3]!="graph"{
+    if p.len()!=8 || !p[0].is_empty() || p[1]!="equations" || p[2]!="v1" || p[3]!="graph"{
         return("404 Not Found","OMEGA_ERROR|reason=UNKNOWN_ROUTE|json=0\n".into())
     }
     match parse(&p[4..]){
