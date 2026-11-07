@@ -5,7 +5,12 @@ use std::env;
 use std::io::{Read, Write};
 use std::net::TcpListener;
 
-const MAX_N: u32 = 23_887_872;
+const MAX_N: u32 = 387_420_489;
+const POWER_LADDER: [(u32, u32); 3] = [
+    (16, 43_046_721),
+    (17, 129_140_163),
+    (18, 387_420_489),
+];
 const MAX_T: u16 = 243;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -75,6 +80,16 @@ fn report(q: Query) -> String {
     format!("OMEGA_EQUATIONS|kind=qutrit_cycle_graph|n={}|slice={}|cut={}|probe={}|edge_weight={}|phase_mod3={}|cross_rank_GF3={}|schmidt_rank={}|entropy_unit=log2(3)|entropy_coefficient={}|amplitude_formula=3^(-n/2)*omega^phase|state_sha256={}|history_sha256={}|equation_only=1|materialized_amplitudes=0|physical_quantum_hardware=0|learning_not_measured=1|json=0\n",
         q.n,q.t,q.cut,q.probe,q.w(),q.phase(),q.rank(),q.schmidt(),q.rank(),state_sha(q.n,q.w()),history_sha(q.n,q.t))
 }
+fn ladder_report() -> String {
+    let mut rows = String::new();
+    for (power, n) in POWER_LADDER {
+        let query = Query::new(n, 1, n / 2, n - 1).expect("frozen ladder is valid");
+        let row = report(query);
+        let payload = row.strip_prefix("OMEGA_EQUATIONS|").expect("canonical report");
+        rows.push_str(&format!("OMEGA_LADDER|power={power}|{payload}"));
+    }
+    rows
+}
 fn parse(parts: &[&str]) -> Result<Query, &'static str> {
     if parts.len() != 4 {
         return Err("EXPECTED_N_SLICE_CUT_PROBE");
@@ -99,6 +114,9 @@ fn route(req: &str) -> (&'static str, String) {
             "405 Method Not Allowed",
             "OMEGA_ERROR|reason=GET_ONLY|json=0\n".into(),
         );
+    }
+    if path == "/equations/v1/ladder" {
+        return ("200 OK", ladder_report());
     }
     if path == "/health" {
         return (
@@ -139,6 +157,9 @@ fn serve(port: u16) -> std::io::Result<()> {
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = env::args().collect();
     match args.get(1).map(String::as_str) {
+        Some("--ladder") if args.len() == 2 => {
+            print!("{}", ladder_report());
+        }
         Some("--query") => {
             let p: Vec<_> = args[2..].iter().map(String::as_str).collect();
             let q = parse(&p).map_err(std::io::Error::other)?;
@@ -150,7 +171,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
             serve(args[2].parse::<u16>()?)?;
         }
-        _ => return Err("usage: --query N SLICE CUT PROBE | --serve PORT".into()),
+        _ => return Err("usage: --ladder | --query N SLICE CUT PROBE | --serve PORT".into()),
     }
     Ok(())
 }
@@ -167,6 +188,10 @@ mod tests {
             (6, 1, 3, 1, 2),
             (6, 2, 3, 2, 2),
             (23_887_872, 1, 11_943_936, 1, 2),
+            (43_046_721, 1, 21_523_360, 1, 2),
+            (129_140_163, 1, 64_570_081, 1, 2),
+            (387_420_489, 1, 193_710_244, 1, 2),
+            (387_420_489, 3, 193_710_244, 0, 0),
         ] {
             let q = Query::new(n, t, cut, 0).unwrap();
             assert_eq!((q.phase(), q.rank()), (phase, rank));
@@ -182,6 +207,9 @@ mod tests {
     fn reject_faults() {
         assert!(Query::new(2, 0, 1, 0).is_err());
         assert!(Query::new(MAX_N + 1, 0, 1, 0).is_err());
+        assert_eq!(POWER_LADDER[0].1, 3_u32.pow(16));
+        assert_eq!(POWER_LADDER[1].1, 3_u32.pow(17));
+        assert_eq!(POWER_LADDER[2].1, 3_u32.pow(18));
         assert!(Query::new(3, MAX_T + 1, 1, 0).is_err());
         assert!(Query::new(3, 1, 0, 0).is_err());
         assert!(Query::new(3, 1, 1, 3).is_err());
@@ -198,5 +226,12 @@ mod tests {
         assert_eq!(status, "200 OK");
         assert_eq!(body, report(q));
         assert!(body.contains("schmidt_rank=9"));
+        let (ladder_status, ladder_body) = route("GET /equations/v1/ladder HTTP/1.1\r\n\r\n");
+        assert_eq!(ladder_status, "200 OK");
+        assert_eq!(ladder_body, ladder_report());
+        assert_eq!(ladder_body.lines().count(), 3);
+        for (power, n) in POWER_LADDER {
+            assert!(ladder_body.contains(&format!("OMEGA_LADDER|power={power}|kind=qutrit_cycle_graph|n={n}|")));
+        }
     }
 }
