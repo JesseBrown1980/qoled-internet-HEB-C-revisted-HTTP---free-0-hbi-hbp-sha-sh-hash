@@ -152,6 +152,7 @@ pub fn generate_plain_html_dashboard(
         &middot; <a style="color: var(--acc);" href="/bridge/43m/contract">3^16 Clay/Taylor bridge</a>
         &middot; <a style="color: var(--acc);" href="/bridge/43m/catalog">3^16 shared evidence catalog</a>
         &middot; <a style="color: var(--acc);" href="/ym/43m/contract">Yang–Mills certificate index</a>
+        &middot; <a style="color: var(--acc);" href="/qnn/spatial12b/contract">QNN 12B virtual address contract</a>
       </div>
       <p style="font-size: 11px; color: var(--muted); margin-top: 8px;">Pinned pointers and integer 3D shape templates; not remote repository execution, GGUF inference, or demonstrated FTL transfer.</p>
     </div>
@@ -210,6 +211,30 @@ pub fn handle_client(
             if let Some(shape) = crate::fabric::vowel_shape(vowel) {
                 write_plain(&mut stream, "200 OK", &shape)?;
             }
+        }
+        "/qnn/spatial12b" | "/qnn/spatial12b/contract" => {
+            write_plain(&mut stream, "200 OK", &crate::qnn_spatial12b_bridge::contract())?;
+        }
+        target if target.starts_with("/qnn/spatial12b/address/") => {
+            let id = target
+                .strip_prefix("/qnn/spatial12b/address/")
+                .unwrap_or_default();
+            let (status, body) = match id.parse::<u64>() {
+                Err(_) => (
+                    "400 Bad Request",
+                    "HTTP0_QNN_SPATIAL12B_ADDRESS|status=BAD_ADDRESS|json=0\n".to_string(),
+                ),
+                Ok(n) if n >= crate::qnn_spatial12b_bridge::CAPACITY => (
+                    "400 Bad Request",
+                    "HTTP0_QNN_SPATIAL12B_ADDRESS|status=OUT_OF_BOUNDS|json=0\n".to_string(),
+                ),
+                Ok(n) => (
+                    "200 OK",
+                    crate::qnn_spatial12b_bridge::lookup(n)
+                        .expect("bounded QNN address decodes"),
+                ),
+            };
+            write_plain(&mut stream, status, &body)?;
         }
         "/bridge/43m" | "/bridge/43m/contract" => {
             write_plain(&mut stream, "200 OK", &crate::bridge43::contract())?;
