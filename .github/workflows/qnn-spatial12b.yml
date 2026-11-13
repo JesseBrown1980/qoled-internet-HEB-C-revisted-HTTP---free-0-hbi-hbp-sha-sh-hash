@@ -6,6 +6,7 @@ on:
       - 'src/lib.rs'
       - 'src/main.rs'
       - 'src/server.rs'
+      - 'tests/qnn_spatial12b_http.rs'
       - 'docs/HTTP0-QNN-SPATIAL12B-BRIDGE.md'
       - '.github/workflows/qnn-spatial12b.yml'
   push:
@@ -14,6 +15,7 @@ on:
       - 'src/lib.rs'
       - 'src/main.rs'
       - 'src/server.rs'
+      - 'tests/qnn_spatial12b_http.rs'
       - 'docs/HTTP0-QNN-SPATIAL12B-BRIDGE.md'
       - '.github/workflows/qnn-spatial12b.yml'
 permissions:
@@ -36,6 +38,8 @@ jobs:
         run: cargo clippy --locked --all-targets -- -D warnings
       - name: Independent QNN last-address fixture
         run: cargo test --locked --lib qnn_spatial12b_bridge -- --nocapture
+      - name: Real loopback HTTP0 200/400 route verification
+        run: cargo test --locked --test qnn_spatial12b_http -- --nocapture
       - name: Read-only native route contract
         run: |
           set -euo pipefail
