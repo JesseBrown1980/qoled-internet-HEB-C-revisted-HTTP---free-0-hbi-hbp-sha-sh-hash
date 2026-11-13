@@ -15,7 +15,10 @@ fn request(path: &str) -> String {
     });
     let mut client = TcpStream::connect(addr).expect("connect");
     client
-        .write_all(format!("GET {path} HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n").as_bytes())
+        .write_all(
+            format!("GET {path} HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n")
+                .as_bytes(),
+        )
         .expect("send request");
     let mut reply = String::new();
     client.read_to_string(&mut reply).expect("receive response");
