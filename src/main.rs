@@ -24,6 +24,20 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     if let Some(command) = args.get(1).map(String::as_str) {
         match command {
+            "--qnn-spatial12b-contract" => {
+                print!("{}", hebc::qnn_spatial12b_bridge::contract());
+                return Ok(());
+            }
+            "--qnn-spatial12b-lookup" => {
+                let id = args
+                    .get(2)
+                    .ok_or("usage: --qnn-spatial12b-lookup <virtual_id>")?
+                    .parse::<u64>()?;
+                let row = hebc::qnn_spatial12b_bridge::lookup(id)
+                    .ok_or("virtual QNN address outside 12B bound")?;
+                print!("{row}");
+                return Ok(());
+            }
             "--law-index" => {
                 print!("{}", hebc::law_reader::index());
                 return Ok(());
