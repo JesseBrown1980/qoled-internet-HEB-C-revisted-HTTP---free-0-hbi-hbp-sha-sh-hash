@@ -1,0 +1,59 @@
+name: Native HTTP0-QNN Spatial12B address bridge
+on:
+  pull_request:
+    paths:
+      - 'src/qnn_spatial12b_bridge.rs'
+      - 'src/lib.rs'
+      - 'src/main.rs'
+      - 'src/server.rs'
+      - 'tests/qnn_spatial12b_http.rs'
+      - 'docs/HTTP0-QNN-SPATIAL12B-BRIDGE.md'
+      - '.github/workflows/qnn-spatial12b.yml'
+  push:
+    paths:
+      - 'src/qnn_spatial12b_bridge.rs'
+      - 'src/lib.rs'
+      - 'src/main.rs'
+      - 'src/server.rs'
+      - 'tests/qnn_spatial12b_http.rs'
+      - 'docs/HTTP0-QNN-SPATIAL12B-BRIDGE.md'
+      - '.github/workflows/qnn-spatial12b.yml'
+permissions:
+  contents: read
+jobs:
+  bridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pin Rust 1.81
+        run: |
+          rustup toolchain install 1.81.0 --profile minimal --component clippy
+          rustup override set 1.81.0
+      - name: Reject floats, JSON and JS in new bridge
+        run: |
+          set -euo pipefail
+          ! grep -nE '\bf(32|64)\b|serde_json|unsafe\s*\{' src/qnn_spatial12b_bridge.rs
+      - name: Strict clippy
+        run: cargo clippy --locked --all-targets -- -D warnings
+      - name: Independent QNN last-address fixture
+        run: cargo test --locked --lib qnn_spatial12b_bridge -- --nocapture
+      - name: Real loopback HTTP0 200/400 route verification
+        run: cargo test --locked --test qnn_spatial12b_http -- --nocapture
+      - name: Read-only native route contract
+        run: |
+          set -euo pipefail
+          mkdir -p build/qnn-spatial12b
+          cargo run --release --locked -- --qnn-spatial12b-contract | tee build/qnn-spatial12b/CONTRACT.hbp
+          cargo run --release --locked -- --qnn-spatial12b-lookup 11999999999 | tee build/qnn-spatial12b/ADDRESS.hbp
+          grep -q 'capacity=12000000000' build/qnn-spatial12b/CONTRACT.hbp
+          grep -q 'ternary22=1010222022010011100102' build/qnn-spatial12b/ADDRESS.hbp
+          ! cargo run --release --locked -- --qnn-spatial12b-lookup 12000000000
+          (cd build/qnn-spatial12b && sha256sum CONTRACT.hbp ADDRESS.hbp > SHA256SUMS && sha256sum -c SHA256SUMS)
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-qnn-spatial12b-http0
+          path: build/qnn-spatial12b
+          if-no-files-found: warn
+          retention-days: 30
