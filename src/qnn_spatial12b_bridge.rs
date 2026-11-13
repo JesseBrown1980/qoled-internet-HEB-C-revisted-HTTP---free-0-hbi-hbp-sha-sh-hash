@@ -33,10 +33,7 @@ pub fn decode(id: u64) -> Option<Address> {
 
 #[must_use]
 pub fn encode(a: Address) -> Option<u64> {
-    if u64::from(a.x) >= WIDTH
-        || u64::from(a.y) >= WIDTH
-        || u64::from(a.channel) >= CHANNELS
-    {
+    if u64::from(a.x) >= WIDTH || u64::from(a.y) >= WIDTH || u64::from(a.channel) >= CHANNELS {
         return None;
     }
     let room = u64::from(a.z)
@@ -94,7 +91,13 @@ mod tests {
         }
         assert!(decode(CAPACITY).is_none());
         assert!(lookup(CAPACITY).is_none());
-        assert!(encode(Address { x: 0, y: 0, z: 424, channel: 0 }).is_none());
+        assert!(encode(Address {
+            x: 0,
+            y: 0,
+            z: 424,
+            channel: 0
+        })
+        .is_none());
     }
 
     #[test]
