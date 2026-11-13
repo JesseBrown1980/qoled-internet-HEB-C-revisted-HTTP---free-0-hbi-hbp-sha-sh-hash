@@ -61,9 +61,6 @@ pub fn path22(id: u64) -> Option<String> {
         *digit = b'0' + (value % 3) as u8;
         value /= 3;
     }
-    // The above reads least-significant trits into reversed positions,
-    // then reverses to match the QNN printed most-significant-first string.
-    digits.reverse();
     (value == 0).then(|| String::from_utf8(digits.to_vec()).expect("ASCII trits"))
 }
 
@@ -89,7 +86,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn Qnn_address_roundtrip_edges() {
+    fn qnn_address_roundtrip_edges() {
         for id in [0, 1, 26, 27, 23_887_871, 23_887_872, CAPACITY - 1] {
             let a = decode(id).unwrap();
             assert_eq!(encode(a), Some(id));
