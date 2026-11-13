@@ -213,7 +213,11 @@ pub fn handle_client(
             }
         }
         "/qnn/spatial12b" | "/qnn/spatial12b/contract" => {
-            write_plain(&mut stream, "200 OK", &crate::qnn_spatial12b_bridge::contract())?;
+            write_plain(
+                &mut stream,
+                "200 OK",
+                &crate::qnn_spatial12b_bridge::contract(),
+            )?;
         }
         target if target.starts_with("/qnn/spatial12b/address/") => {
             let id = target
@@ -230,8 +234,7 @@ pub fn handle_client(
                 ),
                 Ok(n) => (
                     "200 OK",
-                    crate::qnn_spatial12b_bridge::lookup(n)
-                        .expect("bounded QNN address decodes"),
+                    crate::qnn_spatial12b_bridge::lookup(n).expect("bounded QNN address decodes"),
                 ),
             };
             write_plain(&mut stream, status, &body)?;
